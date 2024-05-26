@@ -36,9 +36,7 @@ func MakeSingleLineFrom(body string) string {
 }
 
 func ExtractScripts(body string) []string {
-	var (
-		reStart = regexp.MustCompile(`<script[^>]*>(.*?)</script>`)
-	)
+	var reStart = regexp.MustCompile(`<script[^>]*>(.*?)</script>`)
 	ms := reStart.FindAllStringSubmatch(body, -1)
 	result := make([]string, 0)
 	for _, m := range ms {
@@ -47,6 +45,12 @@ func ExtractScripts(body string) []string {
 	return result	
 }
 
-func ExtractStatisticsJSONString(script string) string {
-	return ""
+func ExtractJSONString(script string) string {
+	var reJSON = regexp.MustCompile(`window.chesscom.stats = \{(.*)\}`)
+	script = strings.TrimSpace(script)
+	m := reJSON.FindStringSubmatch(script)
+	if m == nil {
+		return ""
+	}
+	return m[1]
 }
