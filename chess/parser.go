@@ -1,8 +1,14 @@
 package chess
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
 func Parse(html string) (*Rating, error) {
+	html = MakeSingleLineFrom(html)
+	scripts := ExtractScripts(html)
+	_ = scripts
 	return nil, nil
 }
 
@@ -19,4 +25,16 @@ func MakeSingleLineFrom(body string) string {
 	}
 
 	return sb.String()
+}
+
+func ExtractScripts(body string) []string {
+	var (
+		reStart = regexp.MustCompile(`<script[^>]*>(.*?)</script>`)
+	)
+	ms := reStart.FindAllStringSubmatch(body, -1)
+	result := make([]string, 0)
+	for _, m := range ms {
+		result = append(result, strings.TrimSpace(m[1]))
+	}
+	return result	
 }

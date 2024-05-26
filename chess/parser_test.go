@@ -86,3 +86,34 @@ Moe
 		})
 	}
 }
+
+func TestExtractScripts(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want []string
+	}{
+		{
+			body: `
+<html>
+<head>
+<script lang="JavaScript">
+Hello, world!
+</script>
+<script>
+Goodbye, world!
+</script>
+</head>
+</html>
+`,
+			want : []string{"Hello, world!", "Goodbye, world!"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			want := tt.want
+			have := ExtractScripts(MakeSingleLineFrom(tt.body))
+			assert.Equal(t, want, have)
+		})
+	}
+}
