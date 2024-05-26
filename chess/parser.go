@@ -8,7 +8,15 @@ import (
 func Parse(html string) (*Rating, error) {
 	html = MakeSingleLineFrom(html)
 	scripts := ExtractScripts(html)
-	_ = scripts
+	for _, script := range scripts {
+		/*
+		if strings.HasPrefix(script, "window.chesscom.stats") {
+			rating, err := ParseRating(script)
+			return rating, err
+		}
+		*/
+		_ = script
+	}
 	return nil, nil
 }
 
@@ -37,4 +45,8 @@ func ExtractScripts(body string) []string {
 		result = append(result, strings.TrimSpace(m[1]))
 	}
 	return result	
+}
+
+func ExtractStatisticsJSONString(script string) string {
+	return ""
 }
