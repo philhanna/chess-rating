@@ -6,12 +6,12 @@ func Parse(html string) (*Rating, error) {
 	return nil, nil
 }
 
-func MakeSingleLineFrom(html string) string {
-	var length = len(html)
+func MakeSingleLineFrom(body string) string {
+	var length = len(body)
 
 	sb := strings.Builder{}
 	for i := 0; i < length; i++ {
-		c := html[i]
+		c := body[i]
 		if c == '\r' || c == '\n' {
 			c = ' '
 		}
