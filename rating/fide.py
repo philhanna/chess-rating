@@ -24,6 +24,8 @@ class FIDE(Main):
         html = soup.prettify()
         _ = html
         
+        parts = []
+                
         # Get the profile container
         profile_div = soup.find("div", class_="profile-container")
         if not profile_div:
@@ -32,8 +34,29 @@ class FIDE(Main):
         # Get the user name
         player_title_h1 = profile_div.find("h1", class_="player-title")
         if not player_title_h1:
-            return None
+            return None        
+        text = f'Username="{player_title_h1.get_text().strip()}"'
+        parts.append(text)
         
-        text = player_title_h1.get_text().strip()
-        results = [text]
+        # Get the profile section, which has the ratings
+        profile_section_div = soup.find("div", class_="profile-section")
+        assert profile_section_div is not None
+        
+        # The games begin in the profile games div
+        profile_games_div = profile_section_div.find("div", class_="profile-games")
+        if profile_games_div:
+            divs = profile_games_div.find_all("div", recursive=False)
+            for div in divs:
+                ps = div.find_all("p")
+                assert ps is not None
+                assert len(ps) >= 2, f'Expected 2 <p>, found {len(ps)}'
+                ps1 = ps[0] # rating
+                ps2 = ps[1] # category
+                category = ps2.get_text().strip()
+                rating = ps1.get_text().strip()
+                part = "=".join([category, rating])
+                parts.append(part)
+        
+        results = []
+        results.append(",".join(parts))
         return results
