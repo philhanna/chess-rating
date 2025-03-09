@@ -1,16 +1,14 @@
-Package            Version
------------------- ---------
-beautifulsoup4     4.13.3
-bs4                0.0.2
-certifi            2025.1.31
-charset-normalizer 3.4.1
-idna               3.10
-iniconfig          2.0.0
-packaging          24.2
-pip                24.0
-pluggy             1.5.0
-pytest             8.3.5
-requests           2.32.3
-soupsieve          2.6
-typing_extensions  4.12.2
-urllib3            2.3.0
+beautifulsoup4==4.13.3
+bs4==0.0.2
+certifi==2025.1.31
+charset-normalizer==3.4.1
+-e git+ssh://git@github.com/philhanna/chess-rating.git@70fb7fd41b9db3c11322d4e18dbb8ce199714c23#egg=chess_rating
+idna==3.10
+iniconfig==2.0.0
+packaging==24.2
+pluggy==1.5.0
+pytest==8.3.5
+requests==2.32.3
+soupsieve==2.6
+typing_extensions==4.12.2
+urllib3==2.3.0
