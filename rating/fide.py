@@ -31,7 +31,8 @@ class FIDE(Main):
         
         # Get the user name
         player_title_h1 = profile_div.find("h1", class_="player-title")
-        assert player_title_h1 is not None, 'Could not find <h1 class="player-title">'
+        if not player_title_h1:
+            return None
         
         text = player_title_h1.get_text().strip()
         results = [text]
