@@ -54,16 +54,16 @@ def uscf_instance():
 
 def test_extract_player_count(uscf_instance, sample_html, empty_html):
     soup = BeautifulSoup(sample_html, 'html.parser')
-    assert uscf_instance._extract_player_count(soup) == 2
+    assert uscf_instance.extract_player_count(soup) == 2
     
     soup = BeautifulSoup(empty_html, 'html.parser')
-    assert uscf_instance._extract_player_count(soup) == 0
+    assert uscf_instance.extract_player_count(soup) == 0
 
 
 def test_extract_headers(uscf_instance, sample_html):
     soup = BeautifulSoup(sample_html, 'html.parser')
     expected_headers = ["Name", "ID", "Rating"]
-    assert uscf_instance._extract_headers(soup) == expected_headers
+    assert uscf_instance.extract_headers(soup) == expected_headers
 
 
 def test_extract_player_data(uscf_instance, sample_html):
@@ -71,7 +71,7 @@ def test_extract_player_data(uscf_instance, sample_html):
     headers = ["Name", "ID", "Rating"]
     expected_data = ["Name=John Doe,ID=12345,Rating=2000", "Name=Jane Smith,ID=67890,Rating=1800"]
     
-    assert uscf_instance._extract_player_data(soup, headers, 2) == expected_data
+    assert uscf_instance.extract_player_data(soup, headers, 2) == expected_data
 
 
 def test_parse_content(uscf_instance, sample_html, empty_html):
