@@ -1,0 +1,80 @@
+{
+  "id": "pehanna",
+  "username": "pehanna",
+  "perfs": {
+    "ultraBullet": {
+      "games": 2,
+      "rating": 1151,
+      "rd": 271,
+      "prog": 0,
+      "prov": true
+    },
+    "bullet": {
+      "games": 3,
+      "rating": 1046,
+      "rd": 240,
+      "prog": 0,
+      "prov": true
+    },
+    "blitz": {
+      "games": 18,
+      "rating": 1215,
+      "rd": 138,
+      "prog": -50,
+      "prov": true
+    },
+    "rapid": {
+      "games": 436,
+      "rating": 1401,
+      "rd": 92,
+      "prog": 29
+    },
+    "classical": {
+      "games": 807,
+      "rating": 1543,
+      "rd": 68,
+      "prog": 0
+    },
+    "correspondence": {
+      "games": 0,
+      "rating": 1500,
+      "rd": 500,
+      "prog": 0,
+      "prov": true
+    },
+    "puzzle": {
+      "games": 8652,
+      "rating": 1966,
+      "rd": 77,
+      "prog": 0
+    },
+    "storm": {
+      "runs": 1,
+      "score": 12
+    }
+  },
+  "patron": true,
+  "createdAt": 1692378493782,
+  "seenAt": 1741373354911,
+  "playTime": {
+    "total": 1535355,
+    "tv": 0
+  },
+  "url": "https://lichess.org/@/pehanna",
+  "playing": "https://lichess.org/mhZkL2ga/white",
+  "count": {
+    "all": 1495,
+    "rated": 1266,
+    "ai": 34,
+    "draw": 56,
+    "drawH": 54,
+    "loss": 755,
+    "lossH": 734,
+    "win": 684,
+    "winH": 673,
+    "bookmark": 2,
+    "playing": 1,
+    "import": 73,
+    "me": 0
+  }
+}
