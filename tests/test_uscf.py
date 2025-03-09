@@ -1,7 +1,7 @@
 import pytest
 from bs4 import BeautifulSoup
 
-from rating.uscf.uscf import USCF
+from rating.uscf import USCF
 
 
 @pytest.fixture

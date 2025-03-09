@@ -1,5 +1,4 @@
-import pytest
-from rating.chess_com import ChessCom
+from rating.chesscom import ChessCom
 
 def test_chesscom_initialization():
     """Test that ChessCom initializes with the correct player name."""

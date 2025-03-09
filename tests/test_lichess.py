@@ -1,7 +1,7 @@
 import pytest
 import json
 
-from rating.lichess.lichess import Lichess
+from rating.lichess import Lichess
 
 @pytest.fixture
 def sample_json():
