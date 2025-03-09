@@ -58,6 +58,7 @@ class Main(ABC):
         
         output: List[str] = self.parse_content(content)
         if not output:
+            print(f'No ratings found for "{self.player}"')
             return
         
         print("\n".join(output))

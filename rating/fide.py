@@ -27,8 +27,6 @@ class FIDE(Main):
         # Get the profile container
         profile_div = soup.find("div", class_="profile-container")
         if not profile_div:
-            errmsg = 'Could not find <div class="profile-container">'
-            print(errmsg, file=sys.stderr)
             return None
         
         # Get the user name
