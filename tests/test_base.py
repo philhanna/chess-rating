@@ -2,8 +2,10 @@ from rating.base import Base
 
 class Concrete(Base):
     def __init__(self, player=None, content=None):
+        super().__init__(player)
         self.player = player
         self.content = content
+        
 
     def get_url(self):
         return "http://example.com"
