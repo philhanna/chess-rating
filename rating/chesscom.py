@@ -1,9 +1,8 @@
 import json
-from typing import List
-from rating.main import Main
+from rating.base import Base
 
 
-class ChessCom(Main):
+class ChessCom(Base):
     """ Subclass for fetching Chess.com rating information. """
 
     def __init__(self, player: str):
@@ -47,5 +46,5 @@ class ChessCom(Main):
         # Join with commas
         result = ",".join(parts)
 
-        # Return the list
+        # Return the result
         return result

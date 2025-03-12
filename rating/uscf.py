@@ -2,10 +2,10 @@ import re
 from typing import List
 from bs4 import BeautifulSoup
 import urllib
-from rating.main import Main
+from rating.base import Base
 
 
-class USCF(Main):
+class USCF(Base):
     """ Subclass for fetching USCF rating information. """
 
     def __init__(self, player: str):

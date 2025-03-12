@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 import sys
-from typing import List
 
 import requests
 
 
-class Main(ABC):
-    """ Main is an abstract base class for running the chess rating
+class Base(ABC):
+    """ Base is an abstract base class for running the chess rating
     application.  There should be subclasses for the USCF, Lichess,
     chess.com, and FIDE rating platforms.
 
@@ -21,7 +20,7 @@ class Main(ABC):
     """
 
     def __init__(self, player: str):
-        """ Creates a new Main """
+        """ Creates a new Base """
 
         # Store the player ID or name
         self.player: str = player

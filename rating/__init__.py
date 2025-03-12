@@ -1,6 +1,6 @@
 # Main package for chess rating code
-from .main import Main
+from .base import Base
 
 __all__ = [
-    'Main',
+    'Base',
 ]

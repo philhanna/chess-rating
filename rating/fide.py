@@ -1,10 +1,8 @@
-from typing import List
-
 from bs4 import BeautifulSoup
-from rating.main import Main
+from rating.base import Base
 
 
-class FIDE(Main):
+class FIDE(Base):
     """ Subclass for fetching FIDE rating information. """
 
     def __init__(self, player: str):
@@ -15,7 +13,7 @@ class FIDE(Main):
         """ Returns the URL for the FIDE page of the player. """
         return f"https://ratings.fide.com/profile/{self.player}"
 
-    def parse_content(self, content: str) -> List[str]:
+    def parse_content(self, content: str) -> str:
         """ Parses the HTML returned from the FIDE page. """
         soup = BeautifulSoup(content, 'html.parser')
         
@@ -56,6 +54,5 @@ class FIDE(Main):
                 part = "=".join([category, rating])
                 parts.append(part)
         
-        results = []
-        results.append(",".join(parts))
-        return results
+        result = ",".join(parts)
+        return result

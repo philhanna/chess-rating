@@ -1,9 +1,8 @@
 import json
-from typing import List
-from rating.main import Main
+from rating.base import Base
 
 
-class Lichess(Main):
+class Lichess(Base):
     """ Subclass for fetching Lichess rating information. """
 
     def __init__(self, player: str):
@@ -69,5 +68,5 @@ class Lichess(Main):
         # Join with commas
         result = ",".join(parts)
 
-        # Return the list
+        # Return the result
         return result
