@@ -14,7 +14,7 @@ class ChessCom(Main):
         """ Returns the URL for the chess.com API stats page of the player. """
         return f"https://api.chess.com/pub/player/{self.player}/stats"
 
-    def parse_content(self, content: str) -> List[str]:
+    def parse_content(self, content: str) -> str:
         """ Parses the JSON returned from the chess.com API stats page.
         It extracts a rating from each top-level element with a name like
         "chess_something", with a prefix of "chess_" and a suffix of something.
@@ -45,10 +45,7 @@ class ChessCom(Main):
         parts.insert(0, part)
         
         # Join with commas
-        result_string = ",".join(parts)
-        
-        # Make it into a list of strings
-        result = [result_string]
+        result = ",".join(parts)
 
         # Return the list
         return result

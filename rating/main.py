@@ -56,12 +56,12 @@ class Main(ABC):
         if not content:
             return
         
-        output: List[str] = self.parse_content(content)
+        output: str = self.parse_content(content)
         if not output:
             print(f'No ratings found for "{self.player}"')
             return
         
-        print("\n".join(output))
+        print(output)
 
     def get(self, url: str) -> str:
         """
