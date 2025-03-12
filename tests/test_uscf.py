@@ -1,84 +1,62 @@
-import pytest
-from bs4 import BeautifulSoup
-
 from rating.uscf import USCF
 
 
-@pytest.fixture
-def sample_html():
-    return """
-    <html>
-        <body>
-            <table>
-                <tr>
-                    <td colspan="7">Players found: 2</td>
-                </tr>
-                <tr>
-                    <td>Name</td>
-                    <td>ID</td>
-                    <td>Rating</td>
-                </tr>
-                <tr>
-                    <td>John Doe</td>
-                    <td>12345</td>
-                    <td>2000</td>
-                </tr>
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>67890</td>
-                    <td>1800</td>
-                </tr>
-            </table>
-        </body>
-    </html>
+def test_get_url():
+    uscf_parser = USCF("John Doe")
+    expected_url = "https://www.uschess.org/datapage/player-search.php?name=John+Doe&state=ANY"
+    assert uscf_parser.get_url() == expected_url
+
+
+def test_get_url_special_characters():
+    uscf_parser = USCF("John O'Neil")
+    expected_url = "https://www.uschess.org/datapage/player-search.php?name=John+O%27Neil&state=ANY"
+    assert uscf_parser.get_url() == expected_url
+
+
+def test_parse_content_valid():
+    html_content = """
+    <table>
+        <tr><td colspan='7'>Players found: 1</td></tr>
+        <tr><td>ID</td><td>Name</td><td>Rating</td></tr>
+        <tr><td>12345</td><td>John Doe</td><td>2000</td></tr>
+    </table>
     """
+    uscf_parser = USCF("someplayer")
+    result = uscf_parser.parse_content(html_content)
+    expected = "ID=12345,Name=John Doe,Rating=2000"
+    assert result == expected
 
-@pytest.fixture
-def empty_html():
-    return """
-    <html>
-        <body>
-            <table>
-                <tr>
-                    <td colspan="7">Players found: 0</td>
-                </tr>
-            </table>
-        </body>
-    </html>
+
+def test_parse_content_no_players():
+    html_content = """
+    <td colspan='7'>Players found: 0</td>
     """
-
-@pytest.fixture
-def uscf_instance():
-    return USCF("John Doe")
-
-
-def test_extract_player_count(uscf_instance, sample_html, empty_html):
-    soup = BeautifulSoup(sample_html, 'html.parser')
-    assert uscf_instance.extract_player_count(soup) == 2
-    
-    soup = BeautifulSoup(empty_html, 'html.parser')
-    assert uscf_instance.extract_player_count(soup) == 0
+    uscf_parser = USCF("someplayer")
+    result = uscf_parser.parse_content(html_content)
+    assert result == ""
 
 
-def test_extract_headers(uscf_instance, sample_html):
-    soup = BeautifulSoup(sample_html, 'html.parser')
-    expected_headers = ["Name", "ID", "Rating"]
-    assert uscf_instance.extract_headers(soup) == expected_headers
+def test_parse_content_missing_headers():
+    html_content = """
+    <table>
+        <tr><td colspan='7'>Players found: 1</td></tr>
+        <tr><td>12345</td><td>John Doe</td><td>2000</td></tr>
+    </table>
+    """
+    uscf_parser = USCF("someplayer")
+    result = uscf_parser.parse_content(html_content)
+    assert result == ""
 
 
-def test_extract_player_data(uscf_instance, sample_html):
-    soup = BeautifulSoup(sample_html, 'html.parser')
-    headers = ["Name", "ID", "Rating"]
-    expected_data = "Name=John Doe,ID=12345,Rating=2000\nName=Jane Smith,ID=67890,Rating=1800"
-    
-    assert uscf_instance.extract_player_data(soup, headers, 2) == expected_data
-
-
-def test_parse_content(uscf_instance, sample_html, empty_html):
-    expected = "Name=John Doe,ID=12345,Rating=2000\nName=Jane Smith,ID=67890,Rating=1800"
-    actual = uscf_instance.parse_content(sample_html)
-    assert expected == actual
-    
-    expected = ""
-    actual = uscf_instance.parse_content(empty_html)
-    assert expected == actual
+def test_parse_content_unrated_player():
+    html_content = """
+    <table>
+        <tr><td colspan='7'>Players found: 1</td></tr>
+        <tr><td>ID</td><td>Name</td><td>Rating</td></tr>
+        <tr><td>67890</td><td>Jane Doe</td><td>Unrated</td></tr>
+    </table>
+    """
+    uscf_parser = USCF("someplayer")
+    result = uscf_parser.parse_content(html_content)
+    expected = "ID=67890,Name=Jane Doe"
+    assert result == expected

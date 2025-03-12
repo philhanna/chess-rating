@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-import sys
 
-import requests
+from rating import http_get
 
 
 class Base(ABC):
@@ -51,9 +50,7 @@ class Base(ABC):
         
         url = self.get_url()
         
-        content = self.get(url)
-        if not content:
-            return
+        content = http_get(url)
         
         output: str = self.parse_content(content)
         if not output:
@@ -61,31 +58,6 @@ class Base(ABC):
             return
         
         print(output)
-
-    def get(self, url: str) -> str:
-        """
-        Sends an HTTP GET request to the specified URL and returns the response body as a string.
-
-        Args:
-            url (str): The URL to send the GET request to.
-
-        Returns:
-            str: The response content as a string, or None, if an error occurred
-
-        Raises:
-            RuntimeError: If the request encounters an error (e.g., network issues, HTTP errors).
-        """
-        try:
-            headers = {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0"
-            }
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()
-            return response.text
-        except requests.RequestException as e:
-            errmsg = f"Error: {e}"
-            print(errmsg, file=sys.stderr)
-            return None
 
     # ------------------------------------------------------------------
     #   Abstract methods implemented by all subclasses
@@ -96,12 +68,8 @@ class Base(ABC):
         """ Returns the URL that get the ratings page. Must be implemented
         by subclasses. """
 
-        pass
-
     @abstractmethod
     def parse_content(self, content: str) -> str:
         """ Reads the content returned by the HTTP get() and extracts
         the rating or ratings from it.  Must be implemented by
         subclasses. """
-
-        pass
