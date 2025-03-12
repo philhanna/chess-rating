@@ -1,0 +1,88 @@
+{
+  "chess_daily": {
+    "last": {
+      "rating": 777,
+      "date": 1718988164,
+      "rd": 337
+    },
+    "best": {
+      "rating": 1200,
+      "date": 1344800577,
+      "game": "https://www.chess.com/game/daily/663907233"
+    },
+    "record": {
+      "win": 1,
+      "loss": 0,
+      "draw": 0,
+      "time_per_move": 72924,
+      "timeout_percent": 0
+    }
+  },
+  "chess_rapid": {
+    "last": {
+      "rating": 1690,
+      "date": 1716786812,
+      "rd": 71
+    },
+    "best": {
+      "rating": 1836,
+      "date": 1673386978,
+      "game": "https://www.chess.com/game/live/88618950099"
+    },
+    "record": {
+      "win": 111,
+      "loss": 96,
+      "draw": 9
+    }
+  },
+  "chess_bullet": {
+    "last": {
+      "rating": 1611,
+      "date": 1701272491,
+      "rd": 124
+    },
+    "best": {
+      "rating": 1706,
+      "date": 1612323595,
+      "game": "https://www.chess.com/game/live/3350451214"
+    },
+    "record": {
+      "win": 122,
+      "loss": 97,
+      "draw": 7
+    }
+  },
+  "chess_blitz": {
+    "last": {
+      "rating": 1790,
+      "date": 1730605618,
+      "rd": 88
+    },
+    "best": {
+      "rating": 1811,
+      "date": 1604071953,
+      "game": "https://www.chess.com/game/live/5666671437"
+    },
+    "record": {
+      "win": 1155,
+      "loss": 1063,
+      "draw": 101
+    }
+  },
+  "tactics": {
+    "highest": {
+      "rating": 3005,
+      "date": 1735827218
+    },
+    "lowest": {
+      "rating": 1284,
+      "date": 1400454493
+    }
+  },
+  "puzzle_rush": {
+    "best": {
+      "total_attempts": 52,
+      "score": 49
+    }
+  }
+}
