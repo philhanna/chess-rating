@@ -100,7 +100,7 @@ class Main(ABC):
         pass
 
     @abstractmethod
-    def parse_content(self, content: str) -> List[str]:
+    def parse_content(self, content: str) -> str:
         """ Reads the content returned by the HTTP get() and extracts
         the rating or ratings from it.  Must be implemented by
         subclasses. """

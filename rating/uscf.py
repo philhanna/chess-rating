@@ -33,7 +33,7 @@ class USCF(Main):
         
         return [re.sub(r'\s+', '_', td.get_text().strip()) for td in tr.find_all("td")]
 
-    def extract_player_data(self, soup: BeautifulSoup, headers: List[str], n_players: int) -> List[str]:
+    def extract_player_data(self, soup: BeautifulSoup, headers: List[str], n_players: int) -> str:
         """ Extracts player data rows and formats them into a list of strings. """
         result_list = []
         tr = soup.find('td', {'colspan': '7'}).find_parent("tr").find_next_sibling("tr")
@@ -63,19 +63,21 @@ class USCF(Main):
             joined_result = ",".join(result)
             result_list.append(joined_result)
 
-        return result_list
+        result = "\n".join(result_list)
+        return result
 
     def get_url(self) -> str:
         """ Returns the URL for the USCF API stats page of the player. """
         player_encoded = urllib.parse.quote_plus(self.player)
         return f"https://www.uschess.org/datapage/player-search.php?name={player_encoded}&state=ANY"
 
-    def parse_content(self, content: str) -> List[str]:
+    def parse_content(self, content: str) -> str:
         """ Parses the HTML returned from the USCF API stats page. """
         soup = BeautifulSoup(content, 'html.parser')
         n_players = self.extract_player_count(soup)
         if n_players == 0:
-            return []
+            return ""
         
         headers = self.extract_headers(soup)
-        return self.extract_player_data(soup, headers, n_players)
+        result = self.extract_player_data(soup, headers, n_players)
+        return result

@@ -14,7 +14,7 @@ class Lichess(Main):
         """ Returns the URL for the Lichess API stats page of the player. """
         return f"https://lichess.org/api/user/{self.player}"
 
-    def parse_content(self, content: str) -> List[str]:
+    def parse_content(self, content: str) -> str:
         """ Parses the JSON returned from the lichess API stats page.
         It extracts a rating from each direct child elements of "perfs"
         that have a "games" child with a value greater than zero and a
@@ -67,10 +67,7 @@ class Lichess(Main):
         parts.insert(0, part)
 
         # Join with commas
-        result_string = ",".join(parts)
-
-        # Make it into a list of strings
-        result = [result_string]
+        result = ",".join(parts)
 
         # Return the list
         return result

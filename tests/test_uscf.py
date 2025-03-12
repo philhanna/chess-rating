@@ -69,11 +69,16 @@ def test_extract_headers(uscf_instance, sample_html):
 def test_extract_player_data(uscf_instance, sample_html):
     soup = BeautifulSoup(sample_html, 'html.parser')
     headers = ["Name", "ID", "Rating"]
-    expected_data = ["Name=John Doe,ID=12345,Rating=2000", "Name=Jane Smith,ID=67890,Rating=1800"]
+    expected_data = "Name=John Doe,ID=12345,Rating=2000\nName=Jane Smith,ID=67890,Rating=1800"
     
     assert uscf_instance.extract_player_data(soup, headers, 2) == expected_data
 
 
 def test_parse_content(uscf_instance, sample_html, empty_html):
-    assert uscf_instance.parse_content(sample_html) == ["Name=John Doe,ID=12345,Rating=2000", "Name=Jane Smith,ID=67890,Rating=1800"]
-    assert uscf_instance.parse_content(empty_html) == []
+    expected = "Name=John Doe,ID=12345,Rating=2000\nName=Jane Smith,ID=67890,Rating=1800"
+    actual = uscf_instance.parse_content(sample_html)
+    assert expected == actual
+    
+    expected = ""
+    actual = uscf_instance.parse_content(empty_html)
+    assert expected == actual
