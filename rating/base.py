@@ -49,9 +49,9 @@ class Base(ABC):
         """
         
         url = self.get_url()
-        
+        assert url is not None
         content = http_get(url)
-        
+        assert content is not None
         output: str = self.parse_content(content)
         if not output:
             print(f'No ratings found for "{self.player}"')
