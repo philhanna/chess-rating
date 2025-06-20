@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from rating import http_get
+from rating import ConfigLoader
 
 
 class Base(ABC):
@@ -18,9 +19,9 @@ class Base(ABC):
     subclasses, like the HTTP "get" method.
     """
 
-    def __init__(self, player: str):
+    def __init__(self, player: str = None):
         """ Creates a new Base """
-
+        
         # Store the player ID or name
         self.player: str = player
 
