@@ -14,6 +14,7 @@ class USCF(Base):
 
     def get_url(self) -> str:
         """ Returns the URL for the USCF API stats page of the player. """
+        self.player = str(self.player)
         player_encoded = urllib.parse.quote_plus(self.player)
         return f"https://www.uschess.org/datapage/player-search.php?name={player_encoded}&state=ANY"
 
