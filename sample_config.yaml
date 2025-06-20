@@ -10,3 +10,6 @@ Chess:
   url: https://api.chess.com/pub/player/{{user}}/stats
   defaultUser: pehanna7
   
+FIDE:
+  url: https://ratings.fide.com/profile/{self.player}
+  defaultUser: 30976537
