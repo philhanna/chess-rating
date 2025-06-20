@@ -3,9 +3,7 @@ import os
 import sys
 import requests
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(current_dir, ".."))
-
+PACKAGE_NAME = "chess-rating"
 
 def http_get(url: str) -> str:
     """
@@ -32,8 +30,9 @@ def http_get(url: str) -> str:
         print(errmsg, file=sys.stderr)
         return None
 
+from .config_loader import ConfigLoader
 
 __all__ = [
     'http_get',
-    'PROJECT_ROOT',
+    'ConfigLoader',
 ]

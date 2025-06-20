@@ -1,0 +1,12 @@
+lichess:
+  url: https://lichess.org/@/{{user}}
+  defaultUser: pehanna
+
+USCF:
+  url: https://www.uschess.org/datapage/player-search.php
+  defaultUser: 12910923
+
+Chess:
+  url: https://api.chess.com/pub/player/{{user}}/stats
+  defaultUser: pehanna7
+  
