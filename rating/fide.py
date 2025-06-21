@@ -54,5 +54,5 @@ class FIDE(Base):
                 part = "=".join([category, rating])
                 parts.append(part)
         
-        result = ",".join(parts)
+        result = "|".join(parts)
         return result

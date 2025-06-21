@@ -17,6 +17,10 @@ parser = argparse.ArgumentParser(
 # Positional argument for the player's ID or name
 parser.add_argument("player", nargs="?", default=None, help="The player's ID or name.")
 
+# JSON option
+parser.add_argument("-j", "--json", action="store_true",
+                    help="Create JSON output")
+
 # Create a mutually exclusive group
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-u", "--uscf", action="store_true",
@@ -47,4 +51,6 @@ else:  # USCF is the default
     app = USCF(player)
 
 if app:
+    if args.json:
+        app.json = True
     app.run()

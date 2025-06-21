@@ -1,0 +1,4 @@
+username=pehanna7,blitz=743,daily=982,rapid=1073
+username=pehanna,blitz=1215,bullet=1046,classical=1562,puzzle=2104,rapid=1353,ultraBullet=1151
+Username="Hanna, John",STANDARD=1694,RAPID=Not rated,BLITZ=Not rated
+USCF_ID=12910923,Rating=1218,Q_Rtg=1255,State=NC,Exp_Date=2027-07-31,Name=HANNA, PHIL

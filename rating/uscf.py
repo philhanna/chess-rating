@@ -85,7 +85,7 @@ class USCF(Base):
                 pair = f"{headers[i]}={data[i]}"
                 result.append(pair)
 
-            joined_result = ",".join(result)
+            joined_result = "|".join(result)
             result_list.append(joined_result)
 
         result = "\n".join(result_list)

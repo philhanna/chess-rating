@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from rating import http_get
+from rating import http_get, toJson
 from rating import ConfigLoader
 
 
@@ -23,7 +23,8 @@ class Base(ABC):
         """ Creates a new Base """
         
         # Store the player ID or name
-        self.player: str = player
+        self.player: str = player        
+        self.json: bool = False
 
     # ------------------------------------------------------------------
     #   Common methods used by all subclasses
@@ -58,8 +59,10 @@ class Base(ABC):
             print(f'No ratings found for "{self.player}"')
             return
         
+        if self.json:
+            output = toJson(output)
         print(output)
-
+       
     # ------------------------------------------------------------------
     #   Abstract methods implemented by all subclasses
     # ------------------------------------------------------------------

@@ -1,5 +1,5 @@
 # Main package for chess rating code
-import os
+import json
 import sys
 import requests
 
@@ -30,9 +30,21 @@ def http_get(url: str) -> str:
         print(errmsg, file=sys.stderr)
         return None
 
+def toJson(s: str) -> str:
+    d = dict()
+    parts = s.split("|")
+    for part in parts:
+        part = part.replace('"', '')
+        k, v = part.split("=")
+        d[k] = v
+        
+    jsonstr = json.dumps(d, indent=4)
+    return jsonstr
+    
 from .config_loader import ConfigLoader
 
 __all__ = [
     'http_get',
     'ConfigLoader',
+    'toJson',
 ]

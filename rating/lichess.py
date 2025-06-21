@@ -66,7 +66,7 @@ class Lichess(Base):
         parts.insert(0, part)
 
         # Join with commas
-        result = ",".join(parts)
+        result = "|".join(parts)
 
         # Return the result
         return result
