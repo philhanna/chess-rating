@@ -35,7 +35,7 @@ def test_get_url(lichess_instance):
 
 
 def test_parse_content(lichess_instance, sample_json, empty_json):
-    expected_result = "username=testplayer,blitz=1600,bullet=1500,classical=1700"
+    expected_result = "username=testplayer|blitz=1600|bullet=1500|classical=1700"
     assert lichess_instance.parse_content(sample_json) == expected_result
     
     assert lichess_instance.parse_content(empty_json) == "username=testplayer"

@@ -14,7 +14,7 @@ def test_extract_player_data_valid():
     soup = BeautifulSoup(html_content, 'html.parser')
     headers = ["ID", "Name", "Rating"]
     result = USCF.extract_player_data(soup, headers, 2)
-    expected = "ID=12345,Name=John Doe,Rating=2000\nID=67890,Name=Jane Smith,Rating=1800"
+    expected = "ID=12345|Name=John Doe|Rating=2000\nID=67890|Name=Jane Smith|Rating=1800"
     assert result == expected
 
 
@@ -29,7 +29,7 @@ def test_extract_player_data_unrated():
     soup = BeautifulSoup(html_content, 'html.parser')
     headers = ["ID", "Name", "Rating"]
     result = USCF.extract_player_data(soup, headers, 1)
-    expected = "ID=54321,Name=Alice Brown"
+    expected = "ID=54321|Name=Alice Brown"
     assert result == expected
 
 
@@ -58,7 +58,7 @@ def test_extract_player_data_more_players_than_exist():
     soup = BeautifulSoup(html_content, 'html.parser')
     headers = ["ID", "Name", "Rating"]
     result = USCF.extract_player_data(soup, headers, 2)
-    expected = "ID=88888,Name=Charlie Green,Rating=1900"
+    expected = "ID=88888|Name=Charlie Green|Rating=1900"
     assert result == expected
 
 

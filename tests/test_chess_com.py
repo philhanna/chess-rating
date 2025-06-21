@@ -38,7 +38,7 @@ def test_parse_content_valid():
     })
     chess_com_parser = ChessCom("someplayer")
     result = chess_com_parser.parse_content(json_content)
-    expected = "username=someplayer,blitz=2500,bullet=2600,rapid=2400"
+    expected = "username=someplayer|blitz=2500|bullet=2600|rapid=2400"
     assert result == expected
 
 

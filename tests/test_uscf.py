@@ -23,7 +23,7 @@ def test_parse_content_valid():
     """
     uscf_parser = USCF("someplayer")
     result = uscf_parser.parse_content(html_content)
-    expected = "ID=12345,Name=John Doe,Rating=2000"
+    expected = "ID=12345|Name=John Doe|Rating=2000"
     assert result == expected
 
 
@@ -58,5 +58,5 @@ def test_parse_content_unrated_player():
     """
     uscf_parser = USCF("someplayer")
     result = uscf_parser.parse_content(html_content)
-    expected = "ID=67890,Name=Jane Doe"
+    expected = "ID=67890|Name=Jane Doe"
     assert result == expected

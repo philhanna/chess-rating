@@ -39,7 +39,7 @@ def test_parse_content_valid():
     """
     fide_parser = FIDE("someplayer")
     result = fide_parser.parse_content(html_content)
-    expected = 'Username="Magnus Carlsen",Standard=2835,Rapid=2810,Blitz=2885'
+    expected = 'Username="Magnus Carlsen"|Standard=2835|Rapid=2810|Blitz=2885'
     assert result == expected
 
 

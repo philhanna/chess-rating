@@ -123,7 +123,7 @@ def test_extract_player_data_valid():
     uscf_parser = USCF("someplayer")
     headers = ["ID", "Name", "Rating"]
     result = uscf_parser.extract_player_data(soup, headers, 1)
-    expected = "ID=12345,Name=John Doe,Rating=2000"
+    expected = "ID=12345|Name=John Doe|Rating=2000"
     assert result == expected
 
 
