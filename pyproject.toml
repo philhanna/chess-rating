@@ -18,5 +18,5 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["rating"]
+packages = ["rating", "rating.ports", "rating.adapters"]
 

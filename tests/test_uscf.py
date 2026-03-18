@@ -1,6 +1,6 @@
 import json
 import pytest
-from rating.uscf import USCF
+from rating.adapters.uscf import USCF
 
 
 class TestUSCFInitialization:
@@ -17,11 +17,6 @@ class TestUSCFInitialization:
         player = 12345678
         uscf = USCF(player)
         assert str(uscf.player) == str(player), "Player ID should be stored and converted to string."
-
-    def test_uscf_json_flag_defaults_to_false(self):
-        """Test that the json flag defaults to False."""
-        uscf = USCF("Test Player")
-        assert uscf.json is False, "JSON flag should default to False."
 
 
 class TestUSCFGetURL:

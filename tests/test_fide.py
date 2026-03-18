@@ -1,5 +1,5 @@
 import pytest
-from rating.fide import FIDE
+from rating.adapters.fide import FIDE
 
 
 def test_fide_initialization():
