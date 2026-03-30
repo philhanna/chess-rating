@@ -35,7 +35,15 @@ def test_get_url(lichess_instance):
 
 
 def test_parse_content(lichess_instance, sample_json, empty_json):
-    expected_result = "username=testplayer|blitz=1600|bullet=1500|classical=1700"
-    assert lichess_instance.parse_content(sample_json) == expected_result
-    
-    assert lichess_instance.parse_content(empty_json) == "username=testplayer"
+    result = lichess_instance.parse_content(sample_json)
+    assert result.provider == "lichess"
+    assert result.player.id == "testplayer"
+    assert result.player.display_name == "testplayer"
+    assert result.ratings["standard"] == 1700
+    assert result.ratings["blitz"] == 1600
+    assert result.ratings["bullet"] == 1500
+    assert result.ratings["rapid"] is None
+
+    empty_result = lichess_instance.parse_content(empty_json)
+    assert all(value is None for value in empty_result.ratings.values())
+    assert empty_result.extras == {}

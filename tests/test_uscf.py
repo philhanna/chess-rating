@@ -89,8 +89,11 @@ class TestUSCFParseContent:
         })
         uscf = USCF("John Doe")
         result = uscf.parse_content(json_content)
-        expected = "player=John Doe|date=2023-06-15|rating=1850"
-        assert result == expected, "Should correctly parse and format the rating data."
+        assert result.provider == "uscf"
+        assert result.player.id == "John Doe"
+        assert result.player.display_name == "John Doe"
+        assert result.ratings["standard"] == 1850
+        assert result.metadata.as_of == "2023-06-15"
 
     def test_parse_content_with_different_rating(self):
         """Test parsing JSON with different rating values."""
@@ -108,8 +111,8 @@ class TestUSCFParseContent:
         })
         uscf = USCF("Magnus Player")
         result = uscf.parse_content(json_content)
-        expected = "player=Magnus Player|date=2024-12-10|rating=2200"
-        assert result == expected
+        assert result.ratings["standard"] == 2200
+        assert result.metadata.as_of == "2024-12-10"
 
     def test_parse_content_with_very_high_rating(self):
         """Test parsing JSON with very high rating."""
@@ -127,7 +130,7 @@ class TestUSCFParseContent:
         })
         uscf = USCF("GrandMaster")
         result = uscf.parse_content(json_content)
-        assert "rating=2999" in result
+        assert result.ratings["standard"] == 2999
 
     def test_parse_content_with_zero_rating(self):
         """Test parsing JSON with zero rating (unrated player)."""
@@ -145,7 +148,7 @@ class TestUSCFParseContent:
         })
         uscf = USCF("Unrated Player")
         result = uscf.parse_content(json_content)
-        assert "rating=0" in result
+        assert result.ratings["standard"] == 0
 
     def test_parse_content_with_special_characters_in_player_name(self):
         """Test parsing with special characters in player name."""
@@ -163,7 +166,8 @@ class TestUSCFParseContent:
         })
         uscf = USCF("Jean-Claude O'Brien")
         result = uscf.parse_content(json_content)
-        assert "player=Jean-Claude O'Brien" in result
+        assert result.player.id == "Jean-Claude O'Brien"
+        assert result.player.display_name == "Jean-Claude O'Brien"
 
 
 class TestUSCFParseContentErrors:
@@ -285,7 +289,7 @@ class TestUSCFComplexScenarios:
         uscf = USCF("Test Player")
         result = uscf.parse_content(json_content)
         # Should use the first rating record
-        assert "rating=1850" in result
+        assert result.ratings["standard"] == 1850
 
     def test_parse_content_with_multiple_items(self):
         """Test parsing JSON with multiple items (uses first one)."""
@@ -312,8 +316,8 @@ class TestUSCFComplexScenarios:
         uscf = USCF("Test Player")
         result = uscf.parse_content(json_content)
         # Should use the first item
-        assert "date=2025-02-01" in result
-        assert "rating=1850" in result
+        assert result.metadata.as_of == "2025-02-01"
+        assert result.ratings["standard"] == 1850
 
     def test_uscf_player_attribute_persistence(self):
         """Test that player attribute persists after get_url call."""
@@ -342,7 +346,7 @@ class TestUSCFComplexScenarios:
         assert uscf.player == original_player
 
     def test_parse_content_return_type(self):
-        """Test that parse_content returns a string."""
+        """Test that parse_content returns a normalized profile."""
         json_content = json.dumps({
             "items": [
                 {
@@ -357,10 +361,11 @@ class TestUSCFComplexScenarios:
         })
         uscf = USCF("Test Player")
         result = uscf.parse_content(json_content)
-        assert isinstance(result, str), "parse_content should return a string"
+        assert result.provider == "uscf"
+        assert isinstance(result.ratings, dict)
 
     def test_parse_content_output_format(self):
-        """Test that parse_content output follows the correct format."""
+        """Test that parse_content populates the normalized schema correctly."""
         json_content = json.dumps({
             "items": [
                 {
@@ -375,9 +380,8 @@ class TestUSCFComplexScenarios:
         })
         uscf = USCF("Test Player")
         result = uscf.parse_content(json_content)
-        # Check format: player=|date=|rating=
-        assert result.startswith("player="), "Output should start with 'player='"
-        assert "|date=" in result, "Output should contain '|date='"
-        assert "|rating=" in result, "Output should contain '|rating='"
-        # Count pipes
-        assert result.count("|") == 2, "Output should have exactly 2 pipe separators"
+        assert result.provider == "uscf"
+        assert result.player.id == "Test Player"
+        assert result.ratings["standard"] == 1500
+        assert result.metadata.as_of == "2025-02-01"
+        assert result.metadata.source_url == uscf.get_url()

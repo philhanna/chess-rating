@@ -7,6 +7,13 @@ rating in the normalized pipe-delimited format expected by the application.
 import json
 import urllib
 
+from rating.domain.models import (
+    NormalizedRatingProfile,
+    PlayerIdentity,
+    RatingMetadata,
+    build_ratings,
+    normalize_rating_value,
+)
 from rating.ports.http_port import HttpPort
 from rating.ports.rating_port import RatingPort
 
@@ -31,7 +38,7 @@ class USCF(RatingPort):
         self.player = str(player)
         self._http_client = http_client
 
-    def fetch(self) -> str:
+    def fetch(self) -> NormalizedRatingProfile:
         """Fetch the player's USCF history and normalize the latest rating.
 
         Returns
@@ -53,7 +60,7 @@ class USCF(RatingPort):
         player_encoded = urllib.parse.quote_plus(self.player)
         return f"https://ratings-api.uschess.org/api/v1/members/{player_encoded}/sections"
 
-    def parse_content(self, json_string: str) -> str:
+    def parse_content(self, json_string: str) -> NormalizedRatingProfile:
         """Extract the latest section end date and post-rating from the payload.
 
         The returned string includes the player token, the section end date,
@@ -64,4 +71,9 @@ class USCF(RatingPort):
         # represents the latest published rating snapshot.
         date = data["items"][0]["endDate"]
         rating = data["items"][0]["ratingRecords"][0]["postRating"]
-        return f"player={self.player}|date={date}|rating={rating}"
+        return NormalizedRatingProfile(
+            provider="uscf",
+            player=PlayerIdentity(id=self.player, display_name=self.player),
+            ratings=build_ratings(standard=normalize_rating_value(rating)),
+            metadata=RatingMetadata(as_of=date, source_url=self.get_url()),
+        )

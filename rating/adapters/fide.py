@@ -6,6 +6,14 @@ this adapter scrapes the public profile page and extracts the visible ratings.
 
 from bs4 import BeautifulSoup
 
+from rating.domain.models import (
+    NormalizedRatingProfile,
+    PlayerIdentity,
+    RatingMetadata,
+    build_ratings,
+    normalize_rating_value,
+    to_snake_case,
+)
 from rating.ports.http_port import HttpPort
 from rating.ports.rating_port import RatingPort
 
@@ -30,7 +38,7 @@ class FIDE(RatingPort):
         self.player = player
         self._http_client = http_client
 
-    def fetch(self) -> str:
+    def fetch(self) -> NormalizedRatingProfile:
         """Fetch the FIDE profile page and normalize its visible ratings.
 
         Returns
@@ -51,7 +59,7 @@ class FIDE(RatingPort):
         """Build the public FIDE profile URL for the configured player."""
         return f"https://ratings.fide.com/profile/{self.player}"
 
-    def parse_content(self, content: str) -> str:
+    def parse_content(self, content: str) -> NormalizedRatingProfile:
         """Scrape the player's name and rating categories from the HTML page.
 
         The method is intentionally defensive: if FIDE changes the page enough
@@ -59,8 +67,6 @@ class FIDE(RatingPort):
         emitting misleading partial data.
         """
         soup = BeautifulSoup(content, 'html.parser')
-
-        parts = []
 
         profile_div = soup.find("div", class_="profile-container")
         if not profile_div:
@@ -70,11 +76,12 @@ class FIDE(RatingPort):
         if not player_title_h1:
             return None
         # Preserve the display name exactly as shown on the public profile.
-        parts.append(f'Username="{player_title_h1.get_text().strip()}"')
+        display_name = player_title_h1.get_text().strip()
 
         profile_section_div = soup.find("div", class_="profile-section")
         assert profile_section_div is not None
 
+        raw_ratings = {}
         profile_games_div = profile_section_div.find("div", class_="profile-games")
         if profile_games_div:
             # Each direct child div represents one rating category card whose
@@ -87,6 +94,20 @@ class FIDE(RatingPort):
                 # FIDE renders the numeric value before the category label.
                 category = ps[1].get_text().strip()
                 rating = ps[0].get_text().strip()
-                parts.append(f"{category}={rating}")
+                raw_ratings[to_snake_case(category)] = normalize_rating_value(rating)
 
-        return "|".join(parts)
+        ratings = build_ratings(
+            standard=raw_ratings.pop("standard", None),
+            rapid=raw_ratings.pop("rapid", None),
+            blitz=raw_ratings.pop("blitz", None),
+            bullet=raw_ratings.pop("bullet", None),
+            correspondence=raw_ratings.pop("correspondence", None),
+        )
+
+        return NormalizedRatingProfile(
+            provider="fide",
+            player=PlayerIdentity(id=self.player, display_name=display_name),
+            ratings=ratings,
+            extras=raw_ratings,
+            metadata=RatingMetadata(source_url=self.get_url()),
+        )

@@ -6,6 +6,14 @@ pipe-delimited format used by the rest of the application.
 
 import json
 
+from rating.domain.models import (
+    NormalizedRatingProfile,
+    PlayerIdentity,
+    RatingMetadata,
+    build_ratings,
+    normalize_rating_value,
+    to_snake_case,
+)
 from rating.ports.http_port import HttpPort
 from rating.ports.rating_port import RatingPort
 
@@ -31,7 +39,7 @@ class Lichess(RatingPort):
         self.player = player
         self._http_client = http_client
 
-    def fetch(self) -> str:
+    def fetch(self) -> NormalizedRatingProfile:
         """Fetch and normalize the configured player's Lichess ratings.
 
         Returns
@@ -52,7 +60,7 @@ class Lichess(RatingPort):
         """Build the Lichess API URL for the configured player."""
         return f"https://lichess.org/api/user/{self.player}"
 
-    def parse_content(self, content: str) -> str:
+    def parse_content(self, content: str) -> NormalizedRatingProfile:
         """Extract active performance ratings from the Lichess JSON payload.
 
         Only performance categories with at least one recorded game are kept,
@@ -68,11 +76,26 @@ class Lichess(RatingPort):
             if isinstance(value, dict) and "games" in value and value["games"] > 0 and "rating" in value
         }
 
-        # Sort keys so repeated fetches produce stable output ordering.
-        parts = [f"{category}={rating}" for category, rating in filtered_perfs.items()]
-        parts.sort()
-        # Prefix the output with the requested username for consistency with
-        # the other provider adapters.
-        parts.insert(0, f"username={self.player}")
+        ratings = build_ratings(
+            standard=normalize_rating_value(filtered_perfs.get("classical")),
+            rapid=normalize_rating_value(filtered_perfs.get("rapid")),
+            blitz=normalize_rating_value(filtered_perfs.get("blitz")),
+            bullet=normalize_rating_value(filtered_perfs.get("bullet")),
+            correspondence=normalize_rating_value(filtered_perfs.get("correspondence")),
+        )
+        extras = {
+            to_snake_case(category): normalize_rating_value(value)
+            for category, value in filtered_perfs.items()
+            if category not in {"classical", "rapid", "blitz", "bullet", "correspondence"}
+        }
 
-        return "|".join(parts)
+        return NormalizedRatingProfile(
+            provider="lichess",
+            player=PlayerIdentity(
+                id=jsonobj.get("id", self.player),
+                display_name=jsonobj.get("username", self.player),
+            ),
+            ratings=ratings,
+            extras=extras,
+            metadata=RatingMetadata(source_url=self.get_url()),
+        )

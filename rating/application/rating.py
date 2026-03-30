@@ -16,30 +16,38 @@ from rating.adapters.lichess import Lichess
 from rating.adapters.requests_http import RequestsHttpAdapter
 from rating.adapters.uscf import USCF
 from rating.config_loader import ConfigLoader
+from rating.domain.models import CANONICAL_RATING_KEYS, NormalizedRatingProfile
 
 
-def _to_json(s: str) -> str:
-    """Convert legacy pipe-delimited adapter output into formatted JSON.
+def _format_rating_value(value) -> str:
+    """Render a normalized rating value for plain-text CLI output."""
+    return "Not rated" if value is None else str(value)
 
-    The platform adapters currently return strings in a compact
-    ``key=value|key=value`` format. When the ``--json`` flag is used, the CLI
-    translates that output into a JSON object for easier downstream
-    consumption.
 
-    Args:
-        s: Adapter output formatted as pipe-separated ``key=value`` pairs.
+def _to_json(profile: NormalizedRatingProfile) -> str:
+    """Convert a normalized rating profile into formatted JSON."""
+    return json.dumps(profile.to_dict(), indent=4)
 
-    Returns:
-        A pretty-printed JSON string containing the same key/value data.
-    """
-    d = {}
-    for part in s.split("|"):
-        # The adapter output may already contain quoted fragments, so the CLI
-        # strips those before splitting the field into key and value.
-        part = part.replace('"', "")
-        k, v = part.split("=")
-        d[k] = v
-    return json.dumps(d, indent=4)
+
+def _to_pipe(profile: NormalizedRatingProfile) -> str:
+    """Render a normalized rating profile in the CLI's plain-text format."""
+    parts = [
+        f"provider={profile.provider}",
+        f"player_id={profile.player.id}",
+    ]
+    if profile.player.display_name is not None:
+        parts.append(f"display_name={profile.player.display_name}")
+
+    for key in CANONICAL_RATING_KEYS:
+        parts.append(f"{key}={_format_rating_value(profile.ratings.get(key))}")
+
+    for key in sorted(profile.extras):
+        parts.append(f"{key}={_format_rating_value(profile.extras[key])}")
+
+    if profile.metadata.as_of is not None:
+        parts.append(f"as_of={profile.metadata.as_of}")
+
+    return "|".join(parts)
 
 
 def main() -> None:
@@ -101,15 +109,14 @@ def main() -> None:
         player = args.player or config["USCF"]["defaultUser"]
         app = USCF(player, http_client)
 
-    output = app.fetch()
-    if not output:
+    profile = app.fetch()
+    if not profile:
         print(f'No ratings found for "{player}"')
     else:
-        # The adapters return plain text by default; JSON conversion is an
-        # output-formatting concern handled entirely at the CLI layer.
         if args.json:
-            output = _to_json(output)
-        print(output)
+            print(_to_json(profile))
+        else:
+            print(_to_pipe(profile))
 
 
 if __name__ == "__main__":

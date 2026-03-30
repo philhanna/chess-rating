@@ -6,6 +6,14 @@ available chess_* ratings into the application's normalized string format.
 
 import json
 
+from rating.domain.models import (
+    NormalizedRatingProfile,
+    PlayerIdentity,
+    RatingMetadata,
+    build_ratings,
+    normalize_rating_value,
+    to_snake_case,
+)
 from rating.ports.http_port import HttpPort
 from rating.ports.rating_port import RatingPort
 
@@ -32,7 +40,7 @@ class ChessCom(RatingPort):
         self.player = player
         self._http_client = http_client
 
-    def fetch(self) -> str:
+    def fetch(self) -> NormalizedRatingProfile:
         """Fetch and normalize the configured player's Chess.com ratings.
 
         Returns
@@ -53,7 +61,7 @@ class ChessCom(RatingPort):
         """Build the Chess.com stats endpoint for the configured player."""
         return f"https://api.chess.com/pub/player/{self.player}/stats"
 
-    def parse_content(self, content: str) -> str:
+    def parse_content(self, content: str) -> NormalizedRatingProfile:
         """Extract published Chess.com ratings from the JSON response.
 
         The Chess.com stats payload includes many sections. Only keys beginning
@@ -64,17 +72,28 @@ class ChessCom(RatingPort):
 
         # The API exposes multiple sections; only keep rating-bearing chess_*
         # entries and read the latest published rating from each one.
-        ratings = {
-            key: value["last"].get("rating", "N/A")
+        raw_ratings = {
+            key: value["last"].get("rating")
             for key, value in parsed_data.items()
             if key.startswith("chess_") and isinstance(value, dict) and "last" in value
         }
 
-        # Strip the common chess_ prefix so the output keys stay concise.
-        parts = [f"{key.split('_', 1)[1]}={rating}" for key, rating in ratings.items()]
-        # Sort the categories to produce deterministic output regardless of the
-        # JSON field order returned by the remote API.
-        parts.sort()
-        parts.insert(0, f"username={self.player}")
+        ratings = build_ratings(
+            rapid=normalize_rating_value(raw_ratings.get("chess_rapid")),
+            blitz=normalize_rating_value(raw_ratings.get("chess_blitz")),
+            bullet=normalize_rating_value(raw_ratings.get("chess_bullet")),
+            correspondence=normalize_rating_value(raw_ratings.get("chess_daily")),
+        )
+        extras = {
+            to_snake_case(key.split("_", 1)[1]): normalize_rating_value(value)
+            for key, value in raw_ratings.items()
+            if key not in {"chess_rapid", "chess_blitz", "chess_bullet", "chess_daily"}
+        }
 
-        return "|".join(parts)
+        return NormalizedRatingProfile(
+            provider="chesscom",
+            player=PlayerIdentity(id=self.player, display_name=self.player),
+            ratings=ratings,
+            extras=extras,
+            metadata=RatingMetadata(source_url=self.get_url()),
+        )

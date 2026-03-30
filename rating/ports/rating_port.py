@@ -5,6 +5,9 @@ ask for rating data without caring which external service is being queried.
 """
 
 from abc import ABC, abstractmethod
+from typing import Optional
+
+from rating.domain.models import NormalizedRatingProfile
 
 
 class RatingPort(ABC):
@@ -17,12 +20,12 @@ class RatingPort(ABC):
     """
 
     @abstractmethod
-    def fetch(self) -> str:
+    def fetch(self) -> Optional[NormalizedRatingProfile]:
         """Fetch and return normalized rating data for the configured player.
 
         Returns
         -------
-        str | None
-            A provider-independent, pipe-delimited rating string on success,
-            or ``None`` when the provider cannot supply usable data.
+        NormalizedRatingProfile | None
+            A provider-independent rating profile on success, or ``None`` when
+            the provider cannot supply usable data.
         """

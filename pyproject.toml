@@ -30,7 +30,7 @@ dev = [
 rating = "rating.application.rating:main"
 
 [tool.setuptools]
-packages = ["rating", "rating.application", "rating.ports", "rating.adapters"]
+packages = ["rating", "rating.application", "rating.domain", "rating.ports", "rating.adapters"]
 
 [tool.pytest.ini_options]
 markers = [

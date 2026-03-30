@@ -39,8 +39,12 @@ def test_parse_content_valid():
     """
     fide_parser = FIDE("someplayer")
     result = fide_parser.parse_content(html_content)
-    expected = 'Username="Magnus Carlsen"|Standard=2835|Rapid=2810|Blitz=2885'
-    assert result == expected
+    assert result.provider == "fide"
+    assert result.player.id == "someplayer"
+    assert result.player.display_name == "Magnus Carlsen"
+    assert result.ratings["standard"] == 2835
+    assert result.ratings["rapid"] == 2810
+    assert result.ratings["blitz"] == 2885
 
 
 def test_parse_content_missing_profile_container():
@@ -98,7 +102,9 @@ def test_parse_content_missing_profile_games():
     """
     fide_parser = FIDE("someplayer")
     result = fide_parser.parse_content(html_content)
-    assert result == 'Username="Magnus Carlsen"'
+    assert result.player.display_name == "Magnus Carlsen"
+    assert all(value is None for value in result.ratings.values())
+    assert result.extras == {}
 
 
 def test_parse_content_malformed_games():

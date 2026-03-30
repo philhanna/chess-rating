@@ -41,8 +41,14 @@ def test_parse_content_valid():
     })
     chess_com_parser = ChessCom("someplayer")
     result = chess_com_parser.parse_content(json_content)
-    expected = "username=someplayer|blitz=2500|bullet=2600|rapid=2400"
-    assert result == expected
+    assert result.provider == "chesscom"
+    assert result.player.id == "someplayer"
+    assert result.player.display_name == "someplayer"
+    assert result.ratings["blitz"] == 2500
+    assert result.ratings["bullet"] == 2600
+    assert result.ratings["rapid"] == 2400
+    assert result.ratings["standard"] is None
+    assert result.metadata.source_url == "https://api.chess.com/pub/player/someplayer/stats"
 
 
 def test_parse_content_missing_ratings():
@@ -53,8 +59,8 @@ def test_parse_content_missing_ratings():
     })
     chess_com_parser = ChessCom("someplayer")
     result = chess_com_parser.parse_content(json_content)
-    expected = "username=someplayer"
-    assert result == expected
+    assert all(value is None for value in result.ratings.values())
+    assert result.extras == {}
 
 
 def test_parse_content_no_chess_categories():
@@ -63,16 +69,17 @@ def test_parse_content_no_chess_categories():
     })
     chess_com_parser = ChessCom("someplayer")
     result = chess_com_parser.parse_content(json_content)
-    expected = "username=someplayer"
-    assert result == expected
+    assert all(value is None for value in result.ratings.values())
+    assert result.extras == {}
 
 
 def test_parse_content_empty_json():
     json_content = json.dumps({})
     chess_com_parser = ChessCom("someplayer")
     result = chess_com_parser.parse_content(json_content)
-    expected = "username=someplayer"
-    assert result == expected
+    assert result.player.id == "someplayer"
+    assert all(value is None for value in result.ratings.values())
+    assert result.extras == {}
 
 
 def test_parse_content_invalid_json():
@@ -94,7 +101,9 @@ def test_fetch_returns_normalized_output_from_http_response():
 
     result = chess_player.fetch()
 
-    assert result == "username=someplayer|blitz=2500|bullet=2600"
+    assert result.ratings["blitz"] == 2500
+    assert result.ratings["bullet"] == 2600
+    assert result.provider == "chesscom"
     http_client.get.assert_called_once_with("https://api.chess.com/pub/player/someplayer/stats")
 
 
