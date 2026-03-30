@@ -62,6 +62,7 @@ class _FakeLoader:
             "lichess": {"defaultUser": "lichess-default"},
             "Chess": {"defaultUser": "chess-default"},
             "FIDE": {"defaultUser": "fide-default"},
+            "database": {"path": "/tmp/test-history.sqlite3"},
         }
 
 
@@ -69,9 +70,27 @@ class _FakeHttpClient:
     pass
 
 
+class _FakeHistoryAdapter:
+    created_paths = []
+    saved_profiles = []
+
+    def __init__(self, database_path):
+        self.database_path = database_path
+        self.__class__.created_paths.append(database_path)
+
+    def save(self, profile):
+        self.__class__.saved_profiles.append(profile)
+
+    @classmethod
+    def reset(cls):
+        cls.created_paths = []
+        cls.saved_profiles = []
+
+
 def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
     created = {}
     profile = _make_profile(provider="uscf", player_id="uscf-default", display_name="uscf-default")
+    _FakeHistoryAdapter.reset()
 
     class FakeUSCF:
         def __init__(self, player, http_client):
@@ -83,6 +102,7 @@ def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
 
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "SQLiteHistoryAdapter", _FakeHistoryAdapter)
     monkeypatch.setattr(rating, "USCF", FakeUSCF)
     monkeypatch.setattr(rating, "Lichess", object)
     monkeypatch.setattr(rating, "ChessCom", object)
@@ -94,6 +114,8 @@ def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
     output = capsys.readouterr().out.strip()
     assert created["player"] == "uscf-default"
     assert isinstance(created["http_client"], _FakeHttpClient)
+    assert _FakeHistoryAdapter.created_paths == ["/tmp/test-history.sqlite3"]
+    assert _FakeHistoryAdapter.saved_profiles == [profile]
     assert "provider=uscf" in output
     assert "player_id=uscf-default" in output
 
@@ -101,6 +123,7 @@ def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
 def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
     created = {}
     profile = _make_profile(provider="lichess", player_id="named-player", display_name="named-player")
+    _FakeHistoryAdapter.reset()
 
     class FakeLichess:
         def __init__(self, player, http_client):
@@ -112,6 +135,7 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
 
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "SQLiteHistoryAdapter", _FakeHistoryAdapter)
     monkeypatch.setattr(rating, "Lichess", FakeLichess)
     monkeypatch.setattr(rating, "USCF", object)
     monkeypatch.setattr(rating, "ChessCom", object)
@@ -123,6 +147,7 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
     output = json.loads(capsys.readouterr().out)
     assert created["player"] == "named-player"
     assert isinstance(created["http_client"], _FakeHttpClient)
+    assert _FakeHistoryAdapter.saved_profiles == [profile]
     assert output["provider"] == "lichess"
     assert output["player"]["id"] == "named-player"
 
@@ -130,6 +155,7 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
 def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
     created = {}
     profile = _make_profile(provider="chesscom", player_id="chess-default", display_name="chess-default")
+    _FakeHistoryAdapter.reset()
 
     class FakeChessCom:
         def __init__(self, player, http_client):
@@ -141,6 +167,7 @@ def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
 
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "SQLiteHistoryAdapter", _FakeHistoryAdapter)
     monkeypatch.setattr(rating, "ChessCom", FakeChessCom)
     monkeypatch.setattr(rating, "USCF", object)
     monkeypatch.setattr(rating, "Lichess", object)
@@ -151,11 +178,13 @@ def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
 
     output = capsys.readouterr().out.strip()
     assert created["player"] == "chess-default"
+    assert _FakeHistoryAdapter.saved_profiles == [profile]
     assert "provider=chesscom" in output
 
 
 def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
     created = {}
+    _FakeHistoryAdapter.reset()
 
     class FakeFIDE:
         def __init__(self, player, http_client):
@@ -167,6 +196,7 @@ def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
 
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "SQLiteHistoryAdapter", _FakeHistoryAdapter)
     monkeypatch.setattr(rating, "FIDE", FakeFIDE)
     monkeypatch.setattr(rating, "USCF", object)
     monkeypatch.setattr(rating, "Lichess", object)
@@ -177,7 +207,36 @@ def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
 
     output = capsys.readouterr().out.strip()
     assert created["player"] == "fide-default"
+    assert _FakeHistoryAdapter.saved_profiles == []
     assert output == 'No ratings found for "fide-default"'
+
+
+def test_main_dry_run_skips_persistence(monkeypatch, capsys):
+    profile = _make_profile(provider="lichess", player_id="named-player", display_name="named-player")
+    _FakeHistoryAdapter.reset()
+
+    class FakeLichess:
+        def __init__(self, *_args, **_kwargs):
+            pass
+
+        def fetch(self):
+            return profile
+
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "SQLiteHistoryAdapter", _FakeHistoryAdapter)
+    monkeypatch.setattr(rating, "Lichess", FakeLichess)
+    monkeypatch.setattr(rating, "USCF", object)
+    monkeypatch.setattr(rating, "ChessCom", object)
+    monkeypatch.setattr(rating, "FIDE", object)
+    monkeypatch.setattr("sys.argv", ["rating", "--lichess", "--dry-run", "named-player"])
+
+    rating.main()
+
+    output = capsys.readouterr().out.strip()
+    assert _FakeHistoryAdapter.created_paths == []
+    assert _FakeHistoryAdapter.saved_profiles == []
+    assert "provider=lichess" in output
 
 
 def test_module_main_guard_executes(monkeypatch, capsys):

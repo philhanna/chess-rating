@@ -8,7 +8,7 @@ default location.
 
 import os
 import yaml
-from platformdirs import user_config_dir
+from platformdirs import user_config_dir, user_data_dir
 from rating import PACKAGE_NAME
 
 
@@ -44,6 +44,10 @@ class ConfigLoader:
         filename = os.path.join(user_config_dir(PACKAGE_NAME), "config.yaml")
         return filename
 
+    def _get_default_database_path(self):
+        """Return the default path for the history SQLite database."""
+        return os.path.join(user_data_dir(PACKAGE_NAME), "history.sqlite3")
+
     def _load_config(self):
         """Read and parse the YAML configuration file.
 
@@ -58,4 +62,8 @@ class ConfigLoader:
         # Let file and YAML parsing errors propagate naturally so the CLI or
         # tests can surface a clear failure instead of silently guessing.
         with open(self.filename, "r") as fp:
-            return yaml.safe_load(fp)
+            config = yaml.safe_load(fp) or {}
+
+        database_config = config.setdefault("database", {})
+        database_config.setdefault("path", self._get_default_database_path())
+        return config

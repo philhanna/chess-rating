@@ -14,6 +14,7 @@ from rating.adapters.chesscom import ChessCom
 from rating.adapters.fide import FIDE
 from rating.adapters.lichess import Lichess
 from rating.adapters.requests_http import RequestsHttpAdapter
+from rating.adapters.sqlite_history import SQLiteHistoryAdapter
 from rating.adapters.uscf import USCF
 from rating.config_loader import ConfigLoader
 from rating.domain.models import CANONICAL_RATING_KEYS, NormalizedRatingProfile
@@ -50,6 +51,12 @@ def _to_pipe(profile: NormalizedRatingProfile) -> str:
     return "|".join(parts)
 
 
+def _save_profile(profile: NormalizedRatingProfile, database_path: str) -> None:
+    """Persist a normalized profile to the configured history database."""
+    history = SQLiteHistoryAdapter(database_path)
+    history.save(profile)
+
+
 def main() -> None:
     """Run the CLI and print either rating data or a not-found message.
 
@@ -79,6 +86,11 @@ def main() -> None:
     )
     parser.add_argument("player", nargs="?", default=None, help="The player's ID or name.")
     parser.add_argument("-j", "--json", action="store_true", help="Create JSON output")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Fetch and print ratings without saving them to the history database",
+    )
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
@@ -113,6 +125,8 @@ def main() -> None:
     if not profile:
         print(f'No ratings found for "{player}"')
     else:
+        if not args.dry_run:
+            _save_profile(profile, config["database"]["path"])
         if args.json:
             print(_to_json(profile))
         else:
