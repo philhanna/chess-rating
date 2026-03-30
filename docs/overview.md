@@ -1,4 +1,4 @@
-# Chess Rating — Claude Code Notes
+# Chess Rating Overview
 
 ## Project Overview
 CLI tool that fetches and prints a player's chess rating from USCF, FIDE, Lichess, or Chess.com.
@@ -14,6 +14,11 @@ Hexagonal (ports and adapters):
 - `rating/__main__.py` — CLI entry point; wires up adapters via argparse
 - `rating/config_loader.py` — loads `sample_config.yaml` for default usernames per platform
 
+## Documentation
+- `docs/overview.md` — high-level project notes and test workflow
+- `docs/system_tests.md` — notes on system-test markers and how to run them
+- `docs/uscf_functions.md` — call tree for the legacy USCF helper port in `tests/uscf_functions.py`
+
 ## Running Tests
 ```bash
 pytest                  # unit tests only (system tests excluded by default)
@@ -25,10 +30,13 @@ System tests (hit real network) are marked `@pytest.mark.system` and excluded by
 pytest -m system
 ```
 
+The pytest defaults live in `[tool.pytest.ini_options]` in `pyproject.toml`.
+
 ## Test Patterns
 - Tests mock `HttpPort` using `unittest.mock.Mock(spec=HttpPort)`
-- Test data (HTML/JSON fixtures) lives in `testdata/` organized by platform
+- Test data lives in `tests/testdata/` organized by platform
 - Each adapter test file: `tests/test_<platform>.py`
+- `tests/uscf_functions.py` is a Python port of the legacy US Chess helper logic used by the tests
 
 ## Dependencies
 - `requests`, `bs4` (BeautifulSoup), `numpy`
