@@ -10,7 +10,7 @@ The main idea is:
 
 ## Where The Wiring Happens
 
-The composition root is [`rating/__main__.py`](/home/saspeh/dev/python/chess-rating/rating/__main__.py).
+The composition root is [`rating/application/rating.py`](/home/saspeh/dev/python/chess-rating/rating/application/rating.py).
 
 That is where the application:
 
@@ -28,7 +28,7 @@ In other words, the actual wiring of ports to adapters is done in the CLI layer,
 python -m rating
     |
     v
-rating/__main__.py
+rating/application/rating.py
     |
     +-- ConfigLoader
     |
@@ -147,10 +147,10 @@ That means:
 - It isolates HTTP access behind `HttpPort`.
 - It keeps each provider-specific parser in its own adapter.
 - It makes tests simpler because adapters can receive mocked HTTP dependencies.
-- It keeps the composition logic in one place: [`rating/__main__.py`](/home/saspeh/dev/python/chess-rating/rating/__main__.py).
+- It keeps the composition logic in one place: [`rating/application/rating.py`](/home/saspeh/dev/python/chess-rating/rating/application/rating.py).
 
 ## Short Summary
 
-If you want to know where ports and adapters are actually connected together, look at [`rating/__main__.py`](/home/saspeh/dev/python/chess-rating/rating/__main__.py).
+If you want to know where ports and adapters are actually connected together, look at [`rating/application/rating.py`](/home/saspeh/dev/python/chess-rating/rating/application/rating.py).
 
 That file is the application's composition root.

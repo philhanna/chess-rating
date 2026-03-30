@@ -27,13 +27,16 @@ dev = [
 ]
 
 [project.scripts]
-rating = "rating.__main__:main"
+rating = "rating.application.rating:main"
 
 [tool.setuptools]
-packages = ["rating", "rating.ports", "rating.adapters"]
+packages = ["rating", "rating.application", "rating.ports", "rating.adapters"]
 
 [tool.pytest.ini_options]
 markers = [
     "system: marks tests as system tests",
 ]
 addopts = '-m "not system"'
+required_plugins = [
+    "pytest-cov",
+]

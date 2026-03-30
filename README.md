@@ -30,6 +30,13 @@ Run the default test suite with:
 pytest
 ```
 
+Coverage reporting requires the dev/test dependencies:
+
+```bash
+python -m pip install -e '.[dev]'
+./with_coverage.sh
+```
+
 System tests are marked with `@pytest.mark.system` and excluded by default. Run them explicitly with:
 
 ```bash
@@ -47,7 +54,7 @@ rating -c some_chesscom_user
 rating -f some_fide_id
 ```
 
-You can still run the module directly with `python -m rating`, but the packaged command is the preferred entry point.
+You can still run the module directly with `python -m rating`, but the packaged command is the preferred entry point. The main CLI implementation lives in `rating.application.rating`, while `rating.__main__` remains a thin compatibility wrapper.
 
 ## How to call
 ```

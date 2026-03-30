@@ -11,7 +11,8 @@ Hexagonal (ports and adapters):
 - `rating/ports/rating_port.py` — abstract `RatingPort` (each platform implements `fetch() -> str`)
 - `rating/ports/http_port.py` — abstract `HttpPort` (infrastructure adapter for HTTP)
 - `rating/adapters/` — one file per platform (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) plus `requests_http.py` (the real HTTP adapter)
-- `rating/__main__.py` — CLI entry point; wires up adapters via argparse
+- `rating/application/rating.py` — CLI composition root; wires up adapters via argparse
+- `rating/__main__.py` — thin wrapper that preserves `python -m rating`
 - `rating/config_loader.py` — loads the user's `config.yaml` from the platform-specific config directory, with `sample_config.yaml` as the example template
 
 ## Documentation
@@ -23,7 +24,12 @@ Hexagonal (ports and adapters):
 ## Running Tests
 ```bash
 pytest                  # unit tests only (system tests excluded by default)
-./with_coverage.sh      # pytest -v --cov=rating
+./with_coverage.sh      # python -m pytest -v --cov=rating
+```
+
+Coverage requires the dev/test dependencies to be installed first:
+```bash
+python -m pip install -e '.[dev]'
 ```
 
 System tests (hit real network) are marked `@pytest.mark.system` and excluded by default via the pytest settings in `pyproject.toml`. Run them with:
