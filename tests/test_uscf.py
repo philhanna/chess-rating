@@ -1,6 +1,9 @@
 import json
 import pytest
+from unittest.mock import Mock
+
 from rating.adapters.uscf import USCF
+from rating.ports.http_port import HttpPort
 
 
 class TestUSCFInitialization:
@@ -385,3 +388,45 @@ class TestUSCFComplexScenarios:
         assert result.ratings["standard"] == 1500
         assert result.metadata.as_of == "2025-02-01"
         assert result.metadata.source_url == uscf.get_url()
+
+
+class TestUSCFFetch:
+    """Tests for USCF fetch orchestration."""
+
+    def test_fetch_returns_normalized_profile_from_http_response(self):
+        json_content = json.dumps({
+            "items": [
+                {
+                    "endDate": "2025-02-01",
+                    "ratingRecords": [
+                        {
+                            "postRating": 1500
+                        }
+                    ]
+                }
+            ]
+        })
+        http_client = Mock(spec=HttpPort)
+        http_client.get.return_value = json_content
+
+        uscf = USCF("Test Player", http_client)
+
+        result = uscf.fetch()
+
+        assert result.provider == "uscf"
+        assert result.player.id == "Test Player"
+        assert result.ratings["standard"] == 1500
+        assert result.metadata.as_of == "2025-02-01"
+        assert result.metadata.source_url == uscf.get_url()
+        http_client.get.assert_called_once_with(uscf.get_url())
+
+    def test_fetch_returns_none_when_http_client_returns_none(self):
+        http_client = Mock(spec=HttpPort)
+        http_client.get.return_value = None
+
+        uscf = USCF("Test Player", http_client)
+
+        result = uscf.fetch()
+
+        assert result is None
+        http_client.get.assert_called_once_with(uscf.get_url())
