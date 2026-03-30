@@ -39,6 +39,8 @@ The pytest defaults live in `[tool.pytest.ini_options]` in `pyproject.toml`.
 - `tests/uscf_functions.py` is a Python port of the legacy US Chess helper logic used by the tests
 
 ## Dependencies
-- `requests`, `bs4` (BeautifulSoup), `numpy`
-- Install: `pip install -r requirements.txt`
+- Runtime: `requests`, `beautifulsoup4`, `numpy`, `platformdirs`, `PyYAML`
+- Dev/test extra: `pytest`, `pytest-cov`, `coverage`
+- Install runtime package: `pip install .`
+- Install with dev tools: `pip install .[dev]`
 - Virtual environment: `venv/`

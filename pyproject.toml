@@ -12,9 +12,18 @@ description = "Chess rating"
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "requests",
+    "beautifulsoup4",
     "numpy",
-    "bs4"
+    "platformdirs",
+    "PyYAML",
+    "requests",
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage",
+    "pytest",
+    "pytest-cov",
 ]
 
 [tool.setuptools]

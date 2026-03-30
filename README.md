@@ -2,6 +2,34 @@
 
 A Python command-line tool that retrieves and prints the chess rating of a person from the specified ratings platform.
 
+## Setup
+
+Install the package and its runtime dependencies with:
+
+```bash
+python -m pip install -e .
+```
+
+If you also want the development and test tools, install the optional `dev` extra:
+
+```bash
+python -m pip install -e '.[dev]'
+```
+
+## Running tests
+
+Run the default test suite with:
+
+```bash
+pytest
+```
+
+System tests are marked with `@pytest.mark.system` and excluded by default. Run them explicitly with:
+
+```bash
+pytest -m system
+```
+
 ## How to call
 ```
 usage: chess_rating.py [-h] [-u | -l | -c | -f] player
