@@ -121,3 +121,141 @@ A get request for that URL returns JSON that looks like this:
   },
   ...
 }
+```
+
+The application reads the `chess_*` categories from this response and
+normalizes them into the shared rating profile schema. For example:
+
+- `chess_rapid.last.rating` -> `ratings.rapid`
+- `chess_blitz.last.rating` -> `ratings.blitz`
+- `chess_bullet.last.rating` -> `ratings.bullet`
+- `chess_daily.last.rating` -> `ratings.correspondence`
+
+## Lichess
+Data from Lichess is obtained using this URL:
+
+https://lichess.org/api/user/{userid}
+
+A get request for that URL returns JSON that includes a `perfs` object like
+this:
+
+```json
+{
+  "id": "pehanna",
+  "username": "pehanna",
+  "perfs": {
+    "bullet": {
+      "games": 5,
+      "rating": 1500
+    },
+    "blitz": {
+      "games": 10,
+      "rating": 1600
+    },
+    "rapid": {
+      "games": 0,
+      "rating": 1400
+    },
+    "classical": {
+      "games": 7,
+      "rating": 1700
+    },
+    "puzzle": {
+      "games": 3,
+      "rating": 2100
+    }
+  }
+}
+```
+
+The application keeps only categories with at least one game played and
+normalizes them like this:
+
+- `classical` -> `ratings.standard`
+- `rapid` -> `ratings.rapid`
+- `blitz` -> `ratings.blitz`
+- `bullet` -> `ratings.bullet`
+- provider-specific categories such as `puzzle` or `ultraBullet` -> `extras`
+
+## USCF
+Data from US Chess is obtained using this URL:
+
+https://ratings-api.uschess.org/api/v1/members/{userid}/sections
+
+A get request for that URL returns JSON containing a list of section results
+for the player, such as:
+
+```json
+{
+  "items": [
+    {
+      "sectionNumber": 1,
+      "sectionName": "March U1600",
+      "startDate": "2026-03-04",
+      "endDate": "2026-03-25",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "preRating": 1227,
+          "postRating": 1260,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202603250203",
+        "name": "Triangle Chess Adults Marathon March",
+        "stateCode": "NC"
+      }
+    }
+  ]
+}
+```
+
+The application currently uses the newest section entry only. From that first
+item, it extracts:
+
+- `items[0].ratingRecords[0].postRating` -> `ratings.standard`
+- `items[0].endDate` -> `metadata.as_of`
+
+For more detail on this payload shape, see
+[docs/uscf_sections.md](/home/saspeh/dev/python/chess-rating/docs/uscf_sections.md).
+
+## FIDE
+Data from FIDE is obtained using this URL:
+
+https://ratings.fide.com/profile/{userid}
+
+FIDE does not provide the needed data as a simple JSON API for this use case,
+so the application reads the public HTML profile page and extracts the visible
+rating cards. The relevant part of the page looks roughly like this:
+
+```html
+<div class="profile-container">
+  <h1 class="player-title">Magnus Carlsen</h1>
+</div>
+<div class="profile-section">
+  <div class="profile-games">
+    <div>
+      <p>2835</p>
+      <p>Standard</p>
+    </div>
+    <div>
+      <p>2810</p>
+      <p>Rapid</p>
+    </div>
+    <div>
+      <p>2885</p>
+      <p>Blitz</p>
+    </div>
+  </div>
+</div>
+```
+
+The application scrapes the player name and rating categories from this HTML
+and normalizes them like this:
+
+- `Standard` -> `ratings.standard`
+- `Rapid` -> `ratings.rapid`
+- `Blitz` -> `ratings.blitz`
+- values such as `Not rated` -> `null` in JSON output / `Not rated` in plain text
+- any additional FIDE categories -> `extras`
