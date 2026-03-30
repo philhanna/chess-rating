@@ -8,8 +8,21 @@ from abc import ABC, abstractmethod
 
 
 class RatingPort(ABC):
-    """Abstract contract for retrieving normalized rating data for one player."""
+    """Abstract contract for retrieving normalized rating data for one player.
+
+    Each external rating provider, such as Chess.com, Lichess, FIDE, or USCF,
+    implements this port. The application can therefore request rating data
+    through one shared interface without being coupled to provider-specific
+    APIs, response formats, or scraping details.
+    """
 
     @abstractmethod
     def fetch(self) -> str:
-        """Return normalized rating output for the configured player, or ``None`` on error."""
+        """Fetch and return normalized rating data for the configured player.
+
+        Returns
+        -------
+        str | None
+            A provider-independent, pipe-delimited rating string on success,
+            or ``None`` when the provider cannot supply usable data.
+        """

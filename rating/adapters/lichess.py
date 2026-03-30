@@ -11,19 +11,41 @@ from rating.ports.rating_port import RatingPort
 
 
 class Lichess(RatingPort):
-    """Fetch and normalize Lichess ratings for a single player."""
+    """Fetch and normalize Lichess ratings for a single player.
+
+    Lichess exposes rating data through a JSON profile endpoint containing a
+    ``perfs`` object. This adapter filters that object down to active rating
+    categories and converts the result into the application's shared string
+    representation.
+
+    Parameters
+    ----------
+    player:
+        Lichess username to query.
+    http_client:
+        Concrete HTTP adapter used to perform outbound requests.
+    """
 
     def __init__(self, player: str, http_client: HttpPort = None):
-        """Store the player identifier and injected HTTP client."""
+        """Initialize the adapter with a username and HTTP dependency."""
         self.player = player
         self._http_client = http_client
 
     def fetch(self) -> str:
-        """Request the player's profile and return normalized rating data."""
+        """Fetch and normalize the configured player's Lichess ratings.
+
+        Returns
+        -------
+        str | None
+            Pipe-delimited rating output on success, or ``None`` if the
+            underlying HTTP request fails.
+        """
         url = self.get_url()
         content = self._http_client.get(url)
         if content is None:
             return None
+        # Delegate the provider-specific data shaping to a dedicated method to
+        # keep fetch orchestration simple and predictable.
         return self.parse_content(content)
 
     def get_url(self) -> str:
@@ -31,7 +53,11 @@ class Lichess(RatingPort):
         return f"https://lichess.org/api/user/{self.player}"
 
     def parse_content(self, content: str) -> str:
-        """Extract active performance ratings from the Lichess JSON payload."""
+        """Extract active performance ratings from the Lichess JSON payload.
+
+        Only performance categories with at least one recorded game are kept,
+        which avoids including empty placeholders returned by the API.
+        """
         jsonobj = json.loads(content)
 
         # Lichess returns many performance buckets; keep only categories that
@@ -45,6 +71,8 @@ class Lichess(RatingPort):
         # Sort keys so repeated fetches produce stable output ordering.
         parts = [f"{category}={rating}" for category, rating in filtered_perfs.items()]
         parts.sort()
+        # Prefix the output with the requested username for consistency with
+        # the other provider adapters.
         parts.insert(0, f"username={self.player}")
 
         return "|".join(parts)
