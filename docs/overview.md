@@ -12,10 +12,11 @@ Hexagonal (ports and adapters):
 - `rating/ports/http_port.py` — abstract `HttpPort` (infrastructure adapter for HTTP)
 - `rating/adapters/` — one file per platform (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) plus `requests_http.py` (the real HTTP adapter)
 - `rating/__main__.py` — CLI entry point; wires up adapters via argparse
-- `rating/config_loader.py` — loads `sample_config.yaml` for default usernames per platform
+- `rating/config_loader.py` — loads the user's `config.yaml` from the platform-specific config directory, with `sample_config.yaml` as the example template
 
 ## Documentation
 - `docs/overview.md` — high-level project notes and test workflow
+- `docs/ports_and_adapters.md` — where the composition root lives and how ports are wired to adapters
 - `docs/system_tests.md` — notes on system-test markers and how to run them
 - `docs/uscf_functions.md` — call tree for the legacy USCF helper port in `tests/uscf_functions.py`
 

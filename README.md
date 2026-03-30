@@ -51,7 +51,7 @@ You can still run the module directly with `python -m rating`, but the packaged 
 
 ## How to call
 ```
-usage: chess_rating.py [-h] [-u | -l | -c | -f] player
+usage: rating [-h] [-v] [-j] [-u | -l | -c | -f] [player]
 
 Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com.
 
@@ -60,6 +60,8 @@ positional arguments:
 
 options:
   -h, --help     show this help message and exit
+  -v, --version  show the project version and exit
+  -j, --json     Create JSON output
   -u, --uscf     Use USCF platform
   -l, --lichess  Use Lichess platform
   -c, --chess    Use chess.com platform
