@@ -16,6 +16,12 @@ If you also want the development and test tools, install the optional `dev` extr
 python -m pip install -e '.[dev]'
 ```
 
+After installation, the CLI is available as:
+
+```bash
+rating --help
+```
+
 ## Running tests
 
 Run the default test suite with:
@@ -29,6 +35,19 @@ System tests are marked with `@pytest.mark.system` and excluded by default. Run 
 ```bash
 pytest -m system
 ```
+
+## Running the CLI
+
+Use the installed console script:
+
+```bash
+rating -u some_uscf_id
+rating -l some_lichess_user
+rating -c some_chesscom_user
+rating -f some_fide_id
+```
+
+You can still run the module directly with `python -m rating`, but the packaged command is the preferred entry point.
 
 ## How to call
 ```

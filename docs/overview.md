@@ -3,7 +3,7 @@
 ## Project Overview
 CLI tool that fetches and prints a player's chess rating from USCF, FIDE, Lichess, or Chess.com.
 
-Run: `python -m rating [-u|-l|-c|-f] [player]`
+Run: `rating [-u|-l|-c|-f] [player]`
 
 ## Architecture
 Hexagonal (ports and adapters):

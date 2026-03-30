@@ -26,6 +26,9 @@ dev = [
     "pytest-cov",
 ]
 
+[project.scripts]
+rating = "rating.__main__:main"
+
 [tool.setuptools]
 packages = ["rating", "rating.ports", "rating.adapters"]
 

@@ -64,6 +64,7 @@ def main() -> None:
     config = loader.config
 
     parser = argparse.ArgumentParser(
+        prog="rating",
         description="Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com."
     )
     parser.add_argument(
