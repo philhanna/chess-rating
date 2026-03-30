@@ -12,8 +12,9 @@ loaded from the local configuration file.
 
 import argparse
 import json
+from importlib.metadata import version
 
-from rating import __version__
+from rating import PACKAGE_NAME
 from rating.adapters.chesscom import ChessCom
 from rating.adapters.fide import FIDE
 from rating.adapters.lichess import Lichess
@@ -69,7 +70,7 @@ def main() -> None:
         "-v",
         "--version",
         action="version",
-        version=f"%(prog)s {__version__}",
+        version=f"%(prog)s {version(PACKAGE_NAME)}",
         help="Show the project version and exit",
     )
     parser.add_argument("player", nargs="?", default=None, help="The player's ID or name.")
