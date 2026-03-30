@@ -1,0 +1,45 @@
+{
+  "fideId": "566008093",
+  "gender": "Male",
+  "lastChangedDate": "2026-03-01",
+  "rank": 25003,
+  "stateRank": 950,
+  "ratings": [
+    {
+      "rating": 1060,
+      "ratingSystem": "R",
+      "isProvisional": false,
+      "floor": 150
+    },
+    {
+      "rating": 1116,
+      "ratingSystem": "Q",
+      "isProvisional": false,
+      "floor": 150
+    },
+    {
+      "ratingSystem": "B",
+      "isProvisional": true
+    },
+    {
+      "ratingSystem": "OR",
+      "isProvisional": true
+    },
+    {
+      "ratingSystem": "OQ",
+      "isProvisional": true
+    },
+    {
+      "ratingSystem": "OB",
+      "isProvisional": true
+    }
+  ],
+  "id": "12910923",
+  "firstName": "PHIL",
+  "lastName": "HANNA",
+  "stateRep": "NC",
+  "jurisdiction": "NC",
+  "expirationDate": "2027-07-31",
+  "fideCountry": "USA",
+  "status": "Active"
+}

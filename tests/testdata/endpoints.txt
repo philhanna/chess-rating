@@ -1,0 +1,2 @@
+curl https://ratings-api.uschess.org/api/v1/members/<id>
+curl https://ratings-api.uschess.org/api/v1/members/<id>/sections

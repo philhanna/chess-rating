@@ -1,0 +1,2454 @@
+{
+  "items": [
+    {
+      "id": "01KMM16V8XEFN9M2XNH15RTKY6",
+      "sectionNumber": 1,
+      "sectionName": "March U1600",
+      "startDate": "2026-03-04",
+      "endDate": "2026-03-25",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KMM16V5TEPBP7V0D6G2A2EJ8",
+          "sectionNumber": 1,
+          "preRating": 1227,
+          "preRatingDecimal": 1227.41,
+          "postRating": 1260,
+          "postRatingDecimal": 1260.03,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202603250203",
+        "name": "Triangle Chess Adults Marathon March",
+        "startDate": "2026-03-04",
+        "endDate": "2026-03-25",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KMGSC2DB6H0XJHVPM82J5TD3",
+      "sectionNumber": 3,
+      "sectionName": "Under 1400",
+      "startDate": "2026-03-20",
+      "endDate": "2026-03-20",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01KMGSC2DB75DXMQVQC8JBKZQE",
+          "sectionNumber": 3,
+          "preRating": 1237,
+          "preRatingDecimal": 1237.36,
+          "postRating": 1227,
+          "postRatingDecimal": 1227.41,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01KMGSC2DB75DXMQVQC8JBKZQE",
+          "sectionNumber": 3,
+          "preRating": 1269,
+          "preRatingDecimal": 1269.03,
+          "postRating": 1259,
+          "postRatingDecimal": 1259.04,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202603200473",
+        "name": "WFCC 23",
+        "startDate": "2026-03-20",
+        "endDate": "2026-03-20",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KK2Q2QSPS9ZGF330W72SN6Y7",
+      "sectionNumber": 3,
+      "sectionName": "Section 3",
+      "startDate": "2026-03-06",
+      "endDate": "2026-03-06",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01KK2PPRCGXJGMF90M8B05VJXW",
+          "sectionNumber": 3,
+          "preRating": 1165,
+          "preRatingDecimal": 1164.9,
+          "postRating": 1237,
+          "postRatingDecimal": 1237.36,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01KK2PPRCGXJGMF90M8B05VJXW",
+          "sectionNumber": 3,
+          "preRating": 1203,
+          "preRatingDecimal": 1203.02,
+          "postRating": 1269,
+          "postRatingDecimal": 1269.03,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202603060033",
+        "name": "Gallberry Games 3-6-2026",
+        "startDate": "2026-03-06",
+        "endDate": "2026-03-06",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KJBAD9Z7NJ24BAP0FJFZYGV1",
+      "sectionNumber": 3,
+      "sectionName": "Under1400",
+      "startDate": "2026-02-20",
+      "endDate": "2026-02-20",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01KJBAD9Z6YWW5CF8QPSDRJ9XS",
+          "sectionNumber": 3,
+          "preRating": 1060,
+          "preRatingDecimal": 1059.72,
+          "postRating": 1165,
+          "postRatingDecimal": 1164.9,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01KJBAD9Z6YWW5CF8QPSDRJ9XS",
+          "sectionNumber": 3,
+          "preRating": 1116,
+          "preRatingDecimal": 1115.51,
+          "postRating": 1203,
+          "postRatingDecimal": 1203.02,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202602200113",
+        "name": "WFCC 22",
+        "startDate": "2026-02-20",
+        "endDate": "2026-02-20",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KHEA5QE9N1GZ46Y5EX114GWN",
+      "sectionNumber": 2,
+      "sectionName": "Section 2",
+      "startDate": "2026-02-13",
+      "endDate": "2026-02-13",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01KHE99C9TZWM59NN3D9QYABSB",
+          "sectionNumber": 2,
+          "preRating": 1058,
+          "preRatingDecimal": 1057.53,
+          "postRating": 1060,
+          "postRatingDecimal": 1059.72,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01KHE99C9TZWM59NN3D9QYABSB",
+          "sectionNumber": 2,
+          "preRating": 1118,
+          "preRatingDecimal": 1118.32,
+          "postRating": 1116,
+          "postRatingDecimal": 1115.51,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202602130243",
+        "name": "Gallberry Games Feb. Friday the 13th 2026",
+        "startDate": "2026-02-13",
+        "endDate": "2026-02-13",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KFPCT8PBG4AYPBM4AA3Z4B7Y",
+      "sectionNumber": 3,
+      "sectionName": "Group 3",
+      "startDate": "2026-01-23",
+      "endDate": "2026-01-23",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01KFPBMTNGC8R65BV9DZ7ARH0A",
+          "sectionNumber": 3,
+          "preRating": 1064,
+          "preRatingDecimal": 1064,
+          "postRating": 1058,
+          "postRatingDecimal": 1057.53,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01KFPBMTNGC8R65BV9DZ7ARH0A",
+          "sectionNumber": 3,
+          "preRating": 1141,
+          "preRatingDecimal": 1140.85,
+          "postRating": 1118,
+          "postRatingDecimal": 1118.32,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202601230033",
+        "name": "Retired Guys at Wilson Co. Library",
+        "startDate": "2026-01-23",
+        "endDate": "2026-01-23",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KFCCDVC10H5A1CGR6CP7WCKK",
+      "sectionNumber": 6,
+      "sectionName": "Under 1300",
+      "startDate": "2026-01-17",
+      "endDate": "2026-01-19",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KFCCDVBCAJ0M3RBFD7Y5NZCX",
+          "sectionNumber": 6,
+          "preRating": 1074,
+          "preRatingDecimal": 1074.28,
+          "postRating": 1064,
+          "postRatingDecimal": 1064,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202601190263",
+        "name": "2026 Charlotte Open",
+        "startDate": "2026-01-17",
+        "endDate": "2026-01-19",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KDRPQ7M8MAVS3Q2J0VPFPFT2",
+      "sectionNumber": 5,
+      "sectionName": "Under 1300 Section",
+      "startDate": "2025-12-26",
+      "endDate": "2025-12-29",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KDRPQ7KPWV2ZVWNJ7FQF8AGM",
+          "sectionNumber": 5,
+          "preRating": 1208,
+          "preRatingDecimal": 1208.24,
+          "postRating": 1074,
+          "postRatingDecimal": 1074.28,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202512290113",
+        "name": "50th Annual Eastern Open!",
+        "startDate": "2025-12-26",
+        "endDate": "2025-12-29",
+        "stateCode": "VA"
+      }
+    },
+    {
+      "id": "01KCWG40DBMFZF917DR0PGANCV",
+      "sectionNumber": 2,
+      "sectionName": "1300-1599",
+      "startDate": "2025-12-19",
+      "endDate": "2025-12-19",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01KAQ6QF886GBQ4QYD6Z7BY6QX",
+          "sectionNumber": 2,
+          "preRating": 1218,
+          "preRatingDecimal": 1218.01,
+          "postRating": 1208,
+          "postRatingDecimal": 1208.24,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01KAQ6QF886GBQ4QYD6Z7BY6QX",
+          "sectionNumber": 2,
+          "preRating": 1132,
+          "preRatingDecimal": 1131.94,
+          "postRating": 1141,
+          "postRatingDecimal": 1140.85,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202512190033",
+        "name": "WFCC 20",
+        "startDate": "2025-12-19",
+        "endDate": "2025-12-19",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KCQQD6TZ4WYB0JPXV0BSVMGE",
+      "sectionNumber": 1,
+      "sectionName": "December 2025",
+      "startDate": "2025-12-03",
+      "endDate": "2025-12-17",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KCQQD6SEK99XBX10HFMCG98K",
+          "sectionNumber": 1,
+          "preRating": 1183,
+          "preRatingDecimal": 1182.97,
+          "postRating": 1218,
+          "postRatingDecimal": 1218.01,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202512170143",
+        "name": "Triangle Chess Adults Marathon",
+        "startDate": "2025-12-03",
+        "endDate": "2025-12-17",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KB1SBRXBZMVHKJPPXDTNWYMZ",
+      "sectionNumber": 1,
+      "sectionName": "November ALL",
+      "startDate": "2025-11-05",
+      "endDate": "2025-11-26",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KB1SBRX4X8BSPGFFK1Z112RS",
+          "sectionNumber": 1,
+          "preRating": 1229,
+          "preRatingDecimal": 1228.95,
+          "postRating": 1183,
+          "postRatingDecimal": 1182.97,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202511260043",
+        "name": "Triangle Chess Adults Marathon",
+        "startDate": "2025-11-05",
+        "endDate": "2025-11-26",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KAQ4VZP1F8R7R7GR286R8HRM",
+      "sectionNumber": 2,
+      "sectionName": "Under 1400",
+      "startDate": "2025-11-21",
+      "endDate": "2025-11-21",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01KAQ1SZSK5APFCZHMGCZ2W007",
+          "sectionNumber": 2,
+          "preRating": 1268,
+          "preRatingDecimal": 1268.07,
+          "postRating": 1229,
+          "postRatingDecimal": 1228.95,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01KAQ1SZSK5APFCZHMGCZ2W007",
+          "sectionNumber": 2,
+          "preRating": 1158,
+          "preRatingDecimal": 1158.09,
+          "postRating": 1132,
+          "postRatingDecimal": 1131.94,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202511210413",
+        "name": "WFCC 19",
+        "startDate": "2025-11-21",
+        "endDate": "2025-11-21",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KACFNWSH5EN79ZM0D8J8KDX8",
+      "sectionNumber": 2,
+      "sectionName": "U1600",
+      "startDate": "2025-11-15",
+      "endDate": "2025-11-16",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KACFNWRZX61942WQJ21AM8BB",
+          "sectionNumber": 2,
+          "preRating": 1164,
+          "preRatingDecimal": 1164.14,
+          "postRating": 1268,
+          "postRatingDecimal": 1268.07,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202511160853",
+        "name": "2025 NC Seniors Chess Championship",
+        "startDate": "2025-11-15",
+        "endDate": "2025-11-16",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MZ6DJ9M8Z1B15PDT8YQ17T",
+      "sectionNumber": 4,
+      "sectionName": "U1200",
+      "startDate": "2025-10-03",
+      "endDate": "2025-10-05",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MZ6DJ9TK6MFNDAE1BVTFP7",
+          "sectionNumber": 4,
+          "preRating": 1215,
+          "preRatingDecimal": 1215.02,
+          "postRating": 1164,
+          "postRatingDecimal": 1164.14,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202510054672",
+        "name": "'25 NORTH CAROLINA STATE CH. (NATIONAL CHESS WEEK)",
+        "startDate": "2025-10-03",
+        "endDate": "2025-10-05",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MZ3AMR4Q0RSDQA9720A8FN",
+      "sectionNumber": 1,
+      "sectionName": "SEPTEMBER MARATHON",
+      "startDate": "2025-09-03",
+      "endDate": "2025-09-24",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MZ3AMRK305XNDVZP5XB4FT",
+          "sectionNumber": 1,
+          "preRating": 1199,
+          "preRatingDecimal": 1198.55,
+          "postRating": 1215,
+          "postRatingDecimal": 1215.02,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202509246312",
+        "name": "TRIANGLE CHESS ADULTS ONLY",
+        "startDate": "2025-09-03",
+        "endDate": "2025-09-24",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MZ219TFVY9Y8GRM2DPYN5P",
+      "sectionNumber": 2,
+      "sectionName": "U1400",
+      "startDate": "2025-09-20",
+      "endDate": "2025-09-20",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MZ219TWJYW6AGM4C5P8A34",
+          "sectionNumber": 2,
+          "preRating": 1046,
+          "preRatingDecimal": 1046.2,
+          "postRating": 1199,
+          "postRatingDecimal": 1198.55,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202509202982",
+        "name": "HIH 9 25",
+        "startDate": "2025-09-20",
+        "endDate": "2025-09-20",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MZ1T93N66RBBJ3644HECQV",
+      "sectionNumber": 1,
+      "sectionName": "ROUNDABOUT",
+      "startDate": "2025-09-19",
+      "endDate": "2025-09-19",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MZ1T93X1KT2KMMK8F4ZXTM",
+          "sectionNumber": 1,
+          "preRating": 997,
+          "preRatingDecimal": 997.19,
+          "postRating": 1046,
+          "postRatingDecimal": 1046.2,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202509192322",
+        "name": "TACC57 FREE FRIDAY 2 ROUNDER",
+        "startDate": "2025-09-19",
+        "endDate": "2025-09-19",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MYXAY3DH0HF1FEEVMV17WQ",
+      "sectionNumber": 1,
+      "sectionName": "AUGUST CHAMPIONSHIP",
+      "startDate": "2025-08-06",
+      "endDate": "2025-08-27",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYXAY3MDJQKCE09PCVXH97",
+          "sectionNumber": 1,
+          "preRating": 1061,
+          "preRatingDecimal": 1060.61,
+          "postRating": 997,
+          "postRatingDecimal": 997.19,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202508279732",
+        "name": "ADULTS ONLY AUGUST 2025",
+        "startDate": "2025-08-06",
+        "endDate": "2025-08-27",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MYQG5ZZRSDHXDRN6HSJQ2E",
+      "sectionNumber": 1,
+      "sectionName": "OPEN ADULTS",
+      "startDate": "2025-07-02",
+      "endDate": "2025-07-30",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYQG5Z7E9FS3G12MG24EEA",
+          "sectionNumber": 1,
+          "preRating": 1085,
+          "preRatingDecimal": 1085.12,
+          "postRating": 1061,
+          "postRatingDecimal": 1060.61,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202507303782",
+        "name": "TRIANGLE CHESS ADULTS JULY 2025",
+        "startDate": "2025-07-02",
+        "endDate": "2025-07-30",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MYMMHK02FCYJX13RN2FDRJ",
+      "sectionNumber": 2,
+      "sectionName": "SECTION 2",
+      "startDate": "2025-07-18",
+      "endDate": "2025-07-18",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYMMHJCXK4TW3AJM3BS8QK",
+          "sectionNumber": 2,
+          "preRating": 1178,
+          "preRatingDecimal": 1178.08,
+          "postRating": 1085,
+          "postRatingDecimal": 1085.12,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MYMMHJCXK4TW3AJM3BS8QK",
+          "sectionNumber": 2,
+          "preRating": 1260,
+          "preRatingDecimal": 1259.95,
+          "postRating": 1158,
+          "postRatingDecimal": 1158.09,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202507186122",
+        "name": "WAKE FOREST 7-18-2025",
+        "startDate": "2025-07-18",
+        "endDate": "2025-07-18",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MYKE64F4C6P8CTNY3J6M6A",
+      "sectionNumber": 1,
+      "sectionName": "OPEN",
+      "startDate": "2025-07-12",
+      "endDate": "2025-07-12",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYKE64TW4JDN3X3AKXQZ1E",
+          "sectionNumber": 1,
+          "preRating": 1151,
+          "preRatingDecimal": 1150.75,
+          "postRating": 1178,
+          "postRatingDecimal": 1178.08,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MYKE64TW4JDN3X3AKXQZ1E",
+          "sectionNumber": 1,
+          "preRating": 1248,
+          "preRatingDecimal": 1248.42,
+          "postRating": 1260,
+          "postRatingDecimal": 1259.95,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202507122472",
+        "name": "TRIANGLE CHESS ADULT AND YOUTH",
+        "startDate": "2025-07-12",
+        "endDate": "2025-07-12",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MYJ9ZDZWSSKB4H5AGAZ49S",
+      "sectionNumber": 6,
+      "sectionName": "UNDER 1400",
+      "startDate": "2025-07-02",
+      "endDate": "2025-07-06",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYJ9ZDMJNDG2B0QR3T71G4",
+          "sectionNumber": 6,
+          "preRating": 1182,
+          "preRatingDecimal": 1182.25,
+          "postRating": 1151,
+          "postRatingDecimal": 1150.75,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202507069592",
+        "name": "53RD ANNUAL WORLD OPEN",
+        "startDate": "2025-07-02",
+        "endDate": "2025-07-06",
+        "stateCode": "PA"
+      }
+    },
+    {
+      "id": "01K8MYEP4EH98W07V5SAN7PF8N",
+      "sectionNumber": 3,
+      "sectionName": "U1300",
+      "startDate": "2025-06-21",
+      "endDate": "2025-06-21",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYEP4EQYH42JSHWPKG04FT",
+          "sectionNumber": 3,
+          "preRating": 1186,
+          "preRatingDecimal": 1185.87,
+          "postRating": 1182,
+          "postRatingDecimal": 1182.25,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MYEP4EQYH42JSHWPKG04FT",
+          "sectionNumber": 3,
+          "preRating": 1264,
+          "preRatingDecimal": 1264.1,
+          "postRating": 1248,
+          "postRatingDecimal": 1248.42,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202506210032",
+        "name": "2025 NC SUPER SENIOR CHAMPIONSHIP",
+        "startDate": "2025-06-21",
+        "endDate": "2025-06-21",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MYDQD9XMTCR0DVCPEHKNQJ",
+      "sectionNumber": 6,
+      "sectionName": "U1300",
+      "startDate": "2025-06-13",
+      "endDate": "2025-06-15",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYDQD9KZJCNFZFSHP37HHB",
+          "sectionNumber": 6,
+          "preRating": 1235,
+          "preRatingDecimal": 1235.33,
+          "postRating": 1186,
+          "postRatingDecimal": 1185.87,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202506156762",
+        "name": "2025 CAROLINAS CLASSIC",
+        "startDate": "2025-06-13",
+        "endDate": "2025-06-15",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MYBGW48MSCTFHY22GKPN8A",
+      "sectionNumber": 2,
+      "sectionName": "U1400",
+      "startDate": "2025-06-07",
+      "endDate": "2025-06-07",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MYBGW4KYD7BPBXZ06MG1B3",
+          "sectionNumber": 2,
+          "preRating": 1254,
+          "preRatingDecimal": 1254.1,
+          "postRating": 1235,
+          "postRatingDecimal": 1235.33,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202506072412",
+        "name": "HIH 6 25",
+        "startDate": "2025-06-07",
+        "endDate": "2025-06-07",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MY95FS8ZXAPZJCD7F4FVFP",
+      "sectionNumber": 1,
+      "sectionName": "ALL",
+      "startDate": "2025-05-07",
+      "endDate": "2025-05-28",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MY95FSVRXV9D9ZYPDFSPB9",
+          "sectionNumber": 1,
+          "preRating": 1229,
+          "preRatingDecimal": 1229.05,
+          "postRating": 1254,
+          "postRatingDecimal": 1254.1,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202505286782",
+        "name": "TRIANGLE CHESS MARATHON MAY25",
+        "startDate": "2025-05-07",
+        "endDate": "2025-05-28",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MY64N7PDQ2GF1AJNYSX6BN",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1400",
+      "startDate": "2025-05-16",
+      "endDate": "2025-05-16",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MY64N6CWGJXDSS5BD0C4G9",
+          "sectionNumber": 2,
+          "preRating": 1159,
+          "preRatingDecimal": 1158.62,
+          "postRating": 1229,
+          "postRatingDecimal": 1229.05,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MY64N6CWGJXDSS5BD0C4G9",
+          "sectionNumber": 2,
+          "preRating": 1249,
+          "preRatingDecimal": 1249.26,
+          "postRating": 1264,
+          "postRatingDecimal": 1264.1,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202505168692",
+        "name": "WFCC 16",
+        "startDate": "2025-05-16",
+        "endDate": "2025-05-16",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MY2RD8T12GC30CKTDM1KTM",
+      "sectionNumber": 1,
+      "sectionName": "APRIL 2025 - ADULTS ONLY",
+      "startDate": "2025-04-02",
+      "endDate": "2025-04-30",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MY2RD8YAF021K1WNANZW9T",
+          "sectionNumber": 1,
+          "preRating": 1161,
+          "preRatingDecimal": 1161.09,
+          "postRating": 1159,
+          "postRatingDecimal": 1158.62,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202504300692",
+        "name": "TRIANGLE CHESS ADULT MARATHON",
+        "startDate": "2025-04-02",
+        "endDate": "2025-04-30",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MY26PW4HZX58BQN3P8ERZK",
+      "sectionNumber": 3,
+      "sectionName": "U1400",
+      "startDate": "2025-04-25",
+      "endDate": "2025-04-27",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MY26PVR7M8BFVATS8TZT90",
+          "sectionNumber": 3,
+          "preRating": 1229,
+          "preRatingDecimal": 1228.92,
+          "postRating": 1161,
+          "postRatingDecimal": 1161.09,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202504278872",
+        "name": "2025 CCC ALTO SPRING 2025",
+        "startDate": "2025-04-25",
+        "endDate": "2025-04-27",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXTXH99VJ2Y6H96VDZDHWM",
+      "sectionNumber": 1,
+      "sectionName": "SECTION 1",
+      "startDate": "2025-03-28",
+      "endDate": "2025-03-28",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXTXH9R5BHMTSJ1G8XWV5H",
+          "sectionNumber": 1,
+          "preRating": 1243,
+          "preRatingDecimal": 1242.77,
+          "postRating": 1229,
+          "postRatingDecimal": 1228.92,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MXTXH9R5BHMTSJ1G8XWV5H",
+          "sectionNumber": 1,
+          "preRating": 1275,
+          "preRatingDecimal": 1275.39,
+          "postRating": 1249,
+          "postRatingDecimal": 1249.26,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202503288552",
+        "name": "GALLBERRY GAMES",
+        "startDate": "2025-03-28",
+        "endDate": "2025-03-28",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXTKFEDBTMNK430BQ14KZW",
+      "sectionNumber": 1,
+      "sectionName": "ALL IN MARCH",
+      "startDate": "2025-03-05",
+      "endDate": "2025-03-26",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXTKFEE9FG3K89XV30BGD7",
+          "sectionNumber": 1,
+          "preRating": 1238,
+          "preRatingDecimal": 1237.65,
+          "postRating": 1243,
+          "postRatingDecimal": 1242.77,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202503267492",
+        "name": "TRIANGLE CHESS ADULTS MARCH 2025",
+        "startDate": "2025-03-05",
+        "endDate": "2025-03-26",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXS3ZTEW864TTXWR3B5GWN",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1400",
+      "startDate": "2025-03-21",
+      "endDate": "2025-03-21",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXS3ZT8QW2GEPV4EX9TPBN",
+          "sectionNumber": 2,
+          "preRating": 1290,
+          "preRatingDecimal": 1290.27,
+          "postRating": 1238,
+          "postRatingDecimal": 1237.65,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MXS3ZT8QW2GEPV4EX9TPBN",
+          "sectionNumber": 2,
+          "preRating": 1335,
+          "preRatingDecimal": 1334.72,
+          "postRating": 1275,
+          "postRatingDecimal": 1275.39,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202503213862",
+        "name": "WFCC 15",
+        "startDate": "2025-03-21",
+        "endDate": "2025-03-21",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXNZ418RHCD7J78BAM4K8C",
+      "sectionNumber": 2,
+      "sectionName": "SECTION 1",
+      "startDate": "2025-03-07",
+      "endDate": "2025-03-07",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXNZ41NDS3GN054RQT97YR",
+          "sectionNumber": 2,
+          "preRating": 1239,
+          "preRatingDecimal": 1239.11,
+          "postRating": 1290,
+          "postRatingDecimal": 1290.27,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MXNZ41NDS3GN054RQT97YR",
+          "sectionNumber": 2,
+          "preRating": 1330,
+          "preRatingDecimal": 1330.22,
+          "postRating": 1335,
+          "postRatingDecimal": 1334.72,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202503075872",
+        "name": "GALLBERRY GAMES 3-7-2025",
+        "startDate": "2025-03-07",
+        "endDate": "2025-03-07",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXM16MQMNWFTZC3ASZ3TG6",
+      "sectionNumber": 1,
+      "sectionName": "ALL",
+      "startDate": "2025-02-05",
+      "endDate": "2025-02-26",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXM16KHVQDNRAFRZ73K79P",
+          "sectionNumber": 1,
+          "preRating": 1282,
+          "preRatingDecimal": 1282.12,
+          "postRating": 1239,
+          "postRatingDecimal": 1239.11,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202502269322",
+        "name": "ADULTS ONLY FEBRUARY 2025",
+        "startDate": "2025-02-05",
+        "endDate": "2025-02-26",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXJN896RKYGFBEZTX8ZYJA",
+      "sectionNumber": 3,
+      "sectionName": "U1400",
+      "startDate": "2025-02-22",
+      "endDate": "2025-02-22",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXJN89A5FEN7QK5SK2QEBW",
+          "sectionNumber": 3,
+          "preRating": 1338,
+          "preRatingDecimal": 1338.49,
+          "postRating": 1282,
+          "postRatingDecimal": 1282.12,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202502225772",
+        "name": "HVCC 63",
+        "startDate": "2025-02-22",
+        "endDate": "2025-02-22",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXF6S2JR0B7YGN4WME8MFN",
+      "sectionNumber": 3,
+      "sectionName": "SECTION 3",
+      "startDate": "2025-02-07",
+      "endDate": "2025-02-07",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXF6S1844DA8V4C56SGVM0",
+          "sectionNumber": 3,
+          "preRating": 1203,
+          "preRatingDecimal": 1202.54,
+          "postRating": 1338,
+          "postRatingDecimal": 1338.49,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MXF6S1844DA8V4C56SGVM0",
+          "sectionNumber": 3,
+          "preRating": 1239,
+          "preRatingDecimal": 1238.53,
+          "postRating": 1330,
+          "postRatingDecimal": 1330.22,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202502076302",
+        "name": "GALLBERRY GAMES 2-7-2025",
+        "startDate": "2025-02-07",
+        "endDate": "2025-02-07",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXD8X7S81VJ2GRD00JJ5RX",
+      "sectionNumber": 1,
+      "sectionName": "SECTION 1",
+      "startDate": "2025-01-31",
+      "endDate": "2025-01-31",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXD8X78D5VDRZHZZTYXN91",
+          "sectionNumber": 1,
+          "preRating": 1232,
+          "preRatingDecimal": 1232.05,
+          "postRating": 1203,
+          "postRatingDecimal": 1202.54,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MXD8X78D5VDRZHZZTYXN91",
+          "sectionNumber": 1,
+          "preRating": 1275,
+          "preRatingDecimal": 1275.15,
+          "postRating": 1239,
+          "postRatingDecimal": 1238.53,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202501312202",
+        "name": "GALLBERRY GAMES 1-31-2025",
+        "startDate": "2025-01-31",
+        "endDate": "2025-01-31",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXD2JZBPAW1MDF3F67DSNG",
+      "sectionNumber": 1,
+      "sectionName": "ADULTS",
+      "startDate": "2025-01-29",
+      "endDate": "2025-01-29",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXD2JZ7RHA01WZPHJ9FSXS",
+          "sectionNumber": 1,
+          "preRating": 1237,
+          "preRatingDecimal": 1236.56,
+          "postRating": 1232,
+          "postRatingDecimal": 1232.05,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202501291592",
+        "name": "ADULTS ONLY JANUARY B",
+        "startDate": "2025-01-29",
+        "endDate": "2025-01-29",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MXAYJ7Z2V1TFJ8HYJTFKZ7",
+      "sectionNumber": 6,
+      "sectionName": "U1300",
+      "startDate": "2025-01-18",
+      "endDate": "2025-01-20",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MXAYJ7A54J3N63CMJ10KD3",
+          "sectionNumber": 6,
+          "preRating": 1312,
+          "preRatingDecimal": 1311.95,
+          "postRating": 1237,
+          "postRatingDecimal": 1236.56,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202501205862",
+        "name": "2025 CHARLOTTE OPEN",
+        "startDate": "2025-01-18",
+        "endDate": "2025-01-20",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MX9J0YHVBRD0YN862KCVA5",
+      "sectionNumber": 1,
+      "sectionName": "OPEN",
+      "startDate": "2025-01-08",
+      "endDate": "2025-01-15",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MX9J0Y5R3AC2W2B3T2TNYG",
+          "sectionNumber": 1,
+          "preRating": 1336,
+          "preRatingDecimal": 1336.03,
+          "postRating": 1312,
+          "postRatingDecimal": 1311.95,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202501155192",
+        "name": "TRIANGLE CHESS ADULTS JAN25 A",
+        "startDate": "2025-01-08",
+        "endDate": "2025-01-15",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MX736A8YJ08GBSRQM997Z5",
+      "sectionNumber": 5,
+      "sectionName": "REGISTRATIONS AFTERNOON",
+      "startDate": "2025-01-01",
+      "endDate": "2025-01-01",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MX736A8YT8R3T031ZWVZD1",
+          "sectionNumber": 5,
+          "preRating": 1277,
+          "preRatingDecimal": 1276.57,
+          "postRating": 1336,
+          "postRatingDecimal": 1336.03,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MX736A8YT8R3T031ZWVZD1",
+          "sectionNumber": 5,
+          "preRating": 1220,
+          "preRatingDecimal": 1219.73,
+          "postRating": 1275,
+          "postRatingDecimal": 1275.15,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202501014532",
+        "name": "TRIANGLE CHESS JAN 1 2025",
+        "startDate": "2025-01-01",
+        "endDate": "2025-01-01",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MX68RQZ6H1CM71YXE8RRYY",
+      "sectionNumber": 3,
+      "sectionName": "SECTION 3",
+      "startDate": "2024-12-27",
+      "endDate": "2024-12-27",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MX68RQ50QBAR0RQQ5CXR6N",
+          "sectionNumber": 3,
+          "preRating": 1247,
+          "preRatingDecimal": 1246.8,
+          "postRating": 1277,
+          "postRatingDecimal": 1276.57,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MX68RQ50QBAR0RQQ5CXR6N",
+          "sectionNumber": 3,
+          "preRating": 1184,
+          "preRatingDecimal": 1183.86,
+          "postRating": 1220,
+          "postRatingDecimal": 1219.73,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202412272322",
+        "name": "GALLBERRY GAMES 12-27-2024",
+        "startDate": "2024-12-27",
+        "endDate": "2024-12-27",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MX5A911C50RPASN4HPMZTM",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1400",
+      "startDate": "2024-12-20",
+      "endDate": "2024-12-20",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MX5A918H3FC53NAKV3PWKG",
+          "sectionNumber": 2,
+          "preRating": 1222,
+          "preRatingDecimal": 1221.73,
+          "postRating": 1247,
+          "postRatingDecimal": 1246.8,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MX5A918H3FC53NAKV3PWKG",
+          "sectionNumber": 2,
+          "preRating": 1148,
+          "preRatingDecimal": 1147.58,
+          "postRating": 1184,
+          "postRatingDecimal": 1183.86,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202412208942",
+        "name": "WFCC 13",
+        "startDate": "2024-12-20",
+        "endDate": "2024-12-20",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MX5QWFFQW1XCXZAZSRE0BK",
+      "sectionNumber": 3,
+      "sectionName": "ADULTS ONLY WEDNESDAY",
+      "startDate": "2024-12-18",
+      "endDate": "2024-12-18",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MX5QWF0WV1TKWH7KMJ46XJ",
+          "sectionNumber": 3,
+          "preRating": 1208,
+          "preRatingDecimal": 1208.26,
+          "postRating": 1222,
+          "postRatingDecimal": 1221.73,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202412219692",
+        "name": "ADULT AND YOUTH BEFORE CHRISTMAS24",
+        "startDate": "2024-12-18",
+        "endDate": "2024-12-21",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWXM24A1X7K9H7T0EYKJS1",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1300",
+      "startDate": "2024-11-15",
+      "endDate": "2024-11-15",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWXM24NW685RFFE0FWK34Z",
+          "sectionNumber": 2,
+          "preRating": 1105,
+          "preRatingDecimal": 1104.72,
+          "postRating": 1208,
+          "postRatingDecimal": 1208.26,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWXM24NW685RFFE0FWK34Z",
+          "sectionNumber": 2,
+          "preRating": 1032,
+          "preRatingDecimal": 1032.27,
+          "postRating": 1148,
+          "postRatingDecimal": 1147.58,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202411157672",
+        "name": "WFCC 12",
+        "startDate": "2024-11-15",
+        "endDate": "2024-11-15",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWXE9ZKVXR8TKCH5QA3FRK",
+      "sectionNumber": 1,
+      "sectionName": "ALL IN ONE",
+      "startDate": "2024-11-06",
+      "endDate": "2024-11-13",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWXE9ZTMXKVFMYQK3NPP94",
+          "sectionNumber": 1,
+          "preRating": 1087,
+          "preRatingDecimal": 1086.75,
+          "postRating": 1105,
+          "postRatingDecimal": 1104.72,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202411137032",
+        "name": "TRIANGLE CHESS ADULTS NOV 1",
+        "startDate": "2024-11-06",
+        "endDate": "2024-11-13",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWWN53A0EGNH9YSSW1C97T",
+      "sectionNumber": 3,
+      "sectionName": "SMALL SWISS",
+      "startDate": "2024-11-09",
+      "endDate": "2024-11-09",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWWN5304M1BNNK8TJ0RQ0W",
+          "sectionNumber": 3,
+          "preRating": 1149,
+          "preRatingDecimal": 1149.02,
+          "postRating": 1087,
+          "postRatingDecimal": 1086.75,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWWN5304M1BNNK8TJ0RQ0W",
+          "sectionNumber": 3,
+          "preRating": 1089,
+          "preRatingDecimal": 1088.91,
+          "postRating": 1032,
+          "postRatingDecimal": 1032.27,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202411095162",
+        "name": "TRIANGLE ADULT AND YOUTH 11-9-24",
+        "startDate": "2024-11-09",
+        "endDate": "2024-11-09",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWVF1M13NFY46Q5QVMQMNG",
+      "sectionNumber": 3,
+      "sectionName": "U1400",
+      "startDate": "2024-11-01",
+      "endDate": "2024-11-03",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWVF1MPHWAAXGWC7TCG1RM",
+          "sectionNumber": 3,
+          "preRating": 1129,
+          "preRatingDecimal": 1129.44,
+          "postRating": 1149,
+          "postRatingDecimal": 1149.02,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202411030912",
+        "name": "CCC ALTO FALL 2024",
+        "startDate": "2024-11-01",
+        "endDate": "2024-11-03",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWSRGAH0T31CW86C48PD64",
+      "sectionNumber": 2,
+      "sectionName": "QUAD 2",
+      "startDate": "2024-10-26",
+      "endDate": "2024-10-26",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWSRGAPD73H5AQPZQP7XGV",
+          "sectionNumber": 2,
+          "preRating": 1139,
+          "preRatingDecimal": 1139.5,
+          "postRating": 1129,
+          "postRatingDecimal": 1129.44,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWSRGAPD73H5AQPZQP7XGV",
+          "sectionNumber": 2,
+          "preRating": 1097,
+          "preRatingDecimal": 1096.73,
+          "postRating": 1089,
+          "postRatingDecimal": 1088.91,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202410266242",
+        "name": "TRIANGLE CHESS ADULTS A YOUTH",
+        "startDate": "2024-10-26",
+        "endDate": "2024-10-26",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWQVNQ2MQMEM940KEF2R8R",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1300",
+      "startDate": "2024-10-18",
+      "endDate": "2024-10-18",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWQVNQF8P75591Y8B57T1S",
+          "sectionNumber": 2,
+          "preRating": 1142,
+          "preRatingDecimal": 1141.73,
+          "postRating": 1139,
+          "postRatingDecimal": 1139.5,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWQVNQF8P75591Y8B57T1S",
+          "sectionNumber": 2,
+          "preRating": 1104,
+          "preRatingDecimal": 1104,
+          "postRating": 1097,
+          "postRatingDecimal": 1096.73,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202410180132",
+        "name": "WFCC 11",
+        "startDate": "2024-10-18",
+        "endDate": "2024-10-18",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWN6M5NXAAXD54V6ZTQ7W3",
+      "sectionNumber": 2,
+      "sectionName": "SECTION 2",
+      "startDate": "2024-10-04",
+      "endDate": "2024-10-04",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWN6M580QREAGXG22KAXY1",
+          "sectionNumber": 2,
+          "preRating": 1109,
+          "preRatingDecimal": 1109.29,
+          "postRating": 1142,
+          "postRatingDecimal": 1141.73,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWN6M580QREAGXG22KAXY1",
+          "sectionNumber": 2,
+          "preRating": 1081,
+          "preRatingDecimal": 1080.59,
+          "postRating": 1104,
+          "postRatingDecimal": 1104,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202410041522",
+        "name": "GALLBERRY GAMES",
+        "startDate": "2024-10-04",
+        "endDate": "2024-10-04",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWJGW1VE2PZVYCD2MD8PBY",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1300",
+      "startDate": "2024-09-20",
+      "endDate": "2024-09-20",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWJGW0FFBMWJYHFBF7YW05",
+          "sectionNumber": 2,
+          "preRating": 997,
+          "preRatingDecimal": 996.94,
+          "postRating": 1109,
+          "postRatingDecimal": 1109.29,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWJGW0FFBMWJYHFBF7YW05",
+          "sectionNumber": 2,
+          "preRating": 999,
+          "preRatingDecimal": 998.55,
+          "postRating": 1081,
+          "postRatingDecimal": 1080.59,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202409203112",
+        "name": "WFCC 10",
+        "startDate": "2024-09-20",
+        "endDate": "2024-09-20",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWHG405Y0691D69QKV31J8",
+      "sectionNumber": 1,
+      "sectionName": "SECTION 1",
+      "startDate": "2024-09-13",
+      "endDate": "2024-09-13",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWHG40H528JEMZYQ4QDJRW",
+          "sectionNumber": 1,
+          "preRating": 990,
+          "preRatingDecimal": 989.77,
+          "postRating": 997,
+          "postRatingDecimal": 996.94,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWHG40H528JEMZYQ4QDJRW",
+          "sectionNumber": 1,
+          "preRating": 999,
+          "preRatingDecimal": 998.99,
+          "postRating": 999,
+          "postRatingDecimal": 998.55,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202409139332",
+        "name": "GALLBERRY GAMES AT THE LIBRARY 9-13-2024",
+        "startDate": "2024-09-13",
+        "endDate": "2024-09-13",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWEQPPWV33RSRT8KXQH862",
+      "sectionNumber": 6,
+      "sectionName": "UNDER 1300 SECTION",
+      "startDate": "2024-08-23",
+      "endDate": "2024-08-25",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWEQPPA332E87W4VDFZ90H",
+          "sectionNumber": 6,
+          "preRating": 1003,
+          "preRatingDecimal": 1003.25,
+          "postRating": 990,
+          "postRatingDecimal": 989.77,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202408259962",
+        "name": "56TH ANNUAL ATLANTIC OPEN!",
+        "startDate": "2024-08-23",
+        "endDate": "2024-08-25",
+        "stateCode": "DC"
+      }
+    },
+    {
+      "id": "01K8MWCXJ97MKA3MPF3Q8YV2MB",
+      "sectionNumber": 2,
+      "sectionName": "U1400",
+      "startDate": "2024-08-17",
+      "endDate": "2024-08-17",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWCXJ9NT6C7C55NXP355RN",
+          "sectionNumber": 2,
+          "preRating": 1033,
+          "preRatingDecimal": 1032.8,
+          "postRating": 1003,
+          "postRatingDecimal": 1003.25,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202408174682",
+        "name": "HIH 8 24",
+        "startDate": "2024-08-17",
+        "endDate": "2024-08-17",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWCPGY7SE9YKHNXK0376ZW",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1300",
+      "startDate": "2024-08-16",
+      "endDate": "2024-08-16",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWCPGY7P176971QXDAQ0CJ",
+          "sectionNumber": 2,
+          "preRating": 1008,
+          "preRatingDecimal": 1007.85,
+          "postRating": 1033,
+          "postRatingDecimal": 1032.8,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWCPGY7P176971QXDAQ0CJ",
+          "sectionNumber": 2,
+          "preRating": 979,
+          "preRatingDecimal": 978.63,
+          "postRating": 999,
+          "postRatingDecimal": 998.99,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202408164122",
+        "name": "WFCC 9",
+        "startDate": "2024-08-16",
+        "endDate": "2024-08-16",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MWAN0H3PWGCN96FARDNMM2",
+      "sectionNumber": 2,
+      "sectionName": "SECTION 2",
+      "startDate": "2024-08-02",
+      "endDate": "2024-08-02",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MWAN0HCNASDC6S2296WFDQ",
+          "sectionNumber": 2,
+          "preRating": 892,
+          "preRatingDecimal": 891.68,
+          "postRating": 1008,
+          "postRatingDecimal": 1007.85,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MWAN0HCNASDC6S2296WFDQ",
+          "sectionNumber": 2,
+          "preRating": 871,
+          "preRatingDecimal": 870.77,
+          "postRating": 979,
+          "postRatingDecimal": 978.63,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202408027202",
+        "name": "GALLBERRY GAMES 8-2-2024",
+        "startDate": "2024-08-02",
+        "endDate": "2024-08-02",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW9R1JZKJB20YV34TJ3W32",
+      "sectionNumber": 8,
+      "sectionName": "QUAD 8",
+      "startDate": "2024-07-28",
+      "endDate": "2024-07-28",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW9R1JSG8FEXJVAR43A7XD",
+          "sectionNumber": 8,
+          "preRating": 911,
+          "preRatingDecimal": 910.6,
+          "postRating": 892,
+          "postRatingDecimal": 891.68,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MW9R1JSG8FEXJVAR43A7XD",
+          "sectionNumber": 8,
+          "preRating": 886,
+          "preRatingDecimal": 886.44,
+          "postRating": 871,
+          "postRatingDecimal": 870.77,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202407283512",
+        "name": "TRIANGLE CHESS QUADS",
+        "startDate": "2024-07-28",
+        "endDate": "2024-07-28",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW8G04GE8JQ2W29RASTG1C",
+      "sectionNumber": 8,
+      "sectionName": "QUAD 8",
+      "startDate": "2024-07-21",
+      "endDate": "2024-07-21",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW8G04YVH3NDGNBH7TCBHT",
+          "sectionNumber": 8,
+          "preRating": 965,
+          "preRatingDecimal": 964.88,
+          "postRating": 911,
+          "postRatingDecimal": 910.6,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MW8G04YVH3NDGNBH7TCBHT",
+          "sectionNumber": 8,
+          "preRating": 939,
+          "preRatingDecimal": 938.5,
+          "postRating": 886,
+          "postRatingDecimal": 886.44,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202407219222",
+        "name": "TRIANGLE CHESS 7-21-24",
+        "startDate": "2024-07-21",
+        "endDate": "2024-07-21",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW850PKSENEFKCQC1SSDR1",
+      "sectionNumber": 3,
+      "sectionName": "SECTION 3",
+      "startDate": "2024-07-20",
+      "endDate": "2024-07-20",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW850PSDYGFXZCN46E33HF",
+          "sectionNumber": 3,
+          "preRating": 807,
+          "preRatingDecimal": 807.47,
+          "postRating": 965,
+          "postRatingDecimal": 964.88,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MW850PSDYGFXZCN46E33HF",
+          "sectionNumber": 3,
+          "preRating": 803,
+          "preRatingDecimal": 802.76,
+          "postRating": 939,
+          "postRatingDecimal": 938.5,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202407208562",
+        "name": "NC SUPERSENIOR",
+        "startDate": "2024-07-20",
+        "endDate": "2024-07-20",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW757RXS6K672TRM64Q7EH",
+      "sectionNumber": 7,
+      "sectionName": "QUAD 7",
+      "startDate": "2024-07-14",
+      "endDate": "2024-07-14",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW757RZQA2GFXC9K9RG9ZE",
+          "sectionNumber": 7,
+          "preRating": 853,
+          "preRatingDecimal": 853.35,
+          "postRating": 807,
+          "postRatingDecimal": 807.47,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MW757RZQA2GFXC9K9RG9ZE",
+          "sectionNumber": 7,
+          "preRating": 859,
+          "preRatingDecimal": 859.33,
+          "postRating": 803,
+          "postRatingDecimal": 802.76,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202407144852",
+        "name": "TRIANGLE CHESS QUADS",
+        "startDate": "2024-07-14",
+        "endDate": "2024-07-14",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW5V1BG0GQ1JSMCFYQWZQT",
+      "sectionNumber": 8,
+      "sectionName": "QUAD 8",
+      "startDate": "2024-07-07",
+      "endDate": "2024-07-07",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW5V1BANJ75QVMW7E1TA97",
+          "sectionNumber": 8,
+          "preRating": 901,
+          "preRatingDecimal": 901.09,
+          "postRating": 853,
+          "postRatingDecimal": 853.35,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MW5V1BANJ75QVMW7E1TA97",
+          "sectionNumber": 8,
+          "preRating": 909,
+          "preRatingDecimal": 908.96,
+          "postRating": 859,
+          "postRatingDecimal": 859.33,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202407070862",
+        "name": "TRIANGLE CHESS JULY 7 2024",
+        "startDate": "2024-07-07",
+        "endDate": "2024-07-07",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW5D8ACNASDFVHM6SCY4NJ",
+      "sectionNumber": 1,
+      "sectionName": "REDWHITEBLUE",
+      "startDate": "2024-07-04",
+      "endDate": "2024-07-04",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW5D8A1DWZADWEPQNH3NZN",
+          "sectionNumber": 1,
+          "preRating": 921,
+          "preRatingDecimal": 921.12,
+          "postRating": 901,
+          "postRatingDecimal": 901.09,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202407049712",
+        "name": "TACC49 - TWO ON THE 4TH",
+        "startDate": "2024-07-04",
+        "endDate": "2024-07-04",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW4ZQ55BNDBCV9W3ZD2KS0",
+      "sectionNumber": 2,
+      "sectionName": "UNDER 1000",
+      "startDate": "2024-06-28",
+      "endDate": "2024-06-30",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW4ZQ5DAMP8HZ9K5SPASXJ",
+          "sectionNumber": 2,
+          "preRating": 914,
+          "preRatingDecimal": 914.07,
+          "postRating": 921,
+          "postRatingDecimal": 921.12,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202406308012",
+        "name": "WORLD OPEN LOWER SECTIONS",
+        "startDate": "2024-06-28",
+        "endDate": "2024-06-30",
+        "stateCode": "PA"
+      }
+    },
+    {
+      "id": "01K8MW3G64Y0GSSN411KYE5EXN",
+      "sectionNumber": 6,
+      "sectionName": "QUAD 6",
+      "startDate": "2024-06-23",
+      "endDate": "2024-06-23",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW3G64BSCTBNEH7QFJNHP7",
+          "sectionNumber": 6,
+          "preRating": 909,
+          "preRatingDecimal": 908.51,
+          "postRating": 914,
+          "postRatingDecimal": 914.07,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MW3G64BSCTBNEH7QFJNHP7",
+          "sectionNumber": 6,
+          "preRating": 907,
+          "preRatingDecimal": 906.9,
+          "postRating": 909,
+          "postRatingDecimal": 908.96,
+          "ratingSource": "Q"
+        }
+      ],
+      "event": {
+        "id": "202406232952",
+        "name": "TRIANGLE CHESS QUADS 06-23-2024",
+        "startDate": "2024-06-23",
+        "endDate": "2024-06-23",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW2DCNR9N4F30A0RTTS479",
+      "sectionNumber": 6,
+      "sectionName": "QUAD 6",
+      "startDate": "2024-06-16",
+      "endDate": "2024-06-16",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW2DCNC5RG3CCT62TRNW05",
+          "sectionNumber": 6,
+          "preRating": 935,
+          "preRatingDecimal": 935.44,
+          "postRating": 909,
+          "postRatingDecimal": 908.51,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MW2DCNC5RG3CCT62TRNW05",
+          "sectionNumber": 6,
+          "preRating": 934,
+          "preRatingDecimal": 934.41,
+          "postRating": 907,
+          "postRatingDecimal": 906.9,
+          "ratingSource": "Q",
+          "postProvisionalGameCount": 22
+        }
+      ],
+      "event": {
+        "id": "202406168602",
+        "name": "TRIANGLE CHESS 6-16-2024",
+        "startDate": "2024-06-16",
+        "endDate": "2024-06-16",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MW12NM9J69KE1TJ7VHXNWR",
+      "sectionNumber": 7,
+      "sectionName": "U1100",
+      "startDate": "2024-06-07",
+      "endDate": "2024-06-09",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MW12NMTE12CA08VVJVHZ0C",
+          "sectionNumber": 7,
+          "preRating": 928,
+          "preRatingDecimal": 927.92,
+          "postRating": 935,
+          "postRatingDecimal": 935.44,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202406094922",
+        "name": "2024 CAROLINAS CLASSIC",
+        "startDate": "2024-06-07",
+        "endDate": "2024-06-09",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MVZP4EK68FF49KH5ZQ1FYS",
+      "sectionNumber": 6,
+      "sectionName": "QUAD 6",
+      "startDate": "2024-06-02",
+      "endDate": "2024-06-02",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MVZP4D0X8YX5079ZEBFTKG",
+          "sectionNumber": 6,
+          "preRating": 929,
+          "preRatingDecimal": 928.66,
+          "postRating": 928,
+          "postRatingDecimal": 927.92,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MVZP4D0X8YX5079ZEBFTKG",
+          "sectionNumber": 6,
+          "preRating": 937,
+          "preRatingDecimal": 936.78,
+          "postRating": 934,
+          "postRatingDecimal": 934.41,
+          "ratingSource": "Q",
+          "postProvisionalGameCount": 19
+        }
+      ],
+      "event": {
+        "id": "202406020542",
+        "name": "TRIANGLE CHESS 6-2-2024",
+        "startDate": "2024-06-02",
+        "endDate": "2024-06-02",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MVYGF713DTE2Z1R5ZMZFNB",
+      "sectionNumber": 3,
+      "sectionName": "TREE",
+      "startDate": "2024-05-27",
+      "endDate": "2024-05-27",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MVYGF7X2T0HMMMRBRQ8C9M",
+          "sectionNumber": 3,
+          "preRating": 912,
+          "preRatingDecimal": 912.17,
+          "postRating": 929,
+          "postRatingDecimal": 928.66,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202405276902",
+        "name": "TACC48",
+        "startDate": "2024-05-27",
+        "endDate": "2024-05-27",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MVX3ZWF6BPR5JXXX6Y57FF",
+      "sectionNumber": 4,
+      "sectionName": "QUAD 4",
+      "startDate": "2024-05-19",
+      "endDate": "2024-05-19",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MVX3ZWRR7F09E4KV49D99H",
+          "sectionNumber": 4,
+          "preRating": 987,
+          "preRatingDecimal": 986.58,
+          "postRating": 912,
+          "postRatingDecimal": 912.17,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MVX3ZWRR7F09E4KV49D99H",
+          "sectionNumber": 4,
+          "preRating": 1018,
+          "preRatingDecimal": 1018.06,
+          "postRating": 937,
+          "postRatingDecimal": 936.78,
+          "ratingSource": "Q",
+          "postProvisionalGameCount": 16
+        }
+      ],
+      "event": {
+        "id": "202405191842",
+        "name": "TRIANGLE CHESS 5-19-2024",
+        "startDate": "2024-05-19",
+        "endDate": "2024-05-19",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MVTG8XK2R6DTHXDGVR74JK",
+      "sectionNumber": 7,
+      "sectionName": "QUAD 7",
+      "startDate": "2024-05-05",
+      "endDate": "2024-05-05",
+      "format": "RoundRobin",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MVTG8XN2CRXV3VNZDSS524",
+          "sectionNumber": 7,
+          "preRating": 854,
+          "preRatingDecimal": 853.99,
+          "postRating": 987,
+          "postRatingDecimal": 986.58,
+          "ratingSource": "R"
+        },
+        {
+          "eventId": "01K8MVTG8XN2CRXV3VNZDSS524",
+          "sectionNumber": 7,
+          "preRating": 878,
+          "preRatingDecimal": 878.37,
+          "postRating": 1018,
+          "postRatingDecimal": 1018.06,
+          "ratingSource": "Q",
+          "postProvisionalGameCount": 13
+        }
+      ],
+      "event": {
+        "id": "202405053242",
+        "name": "SUNDAY MORRISVILLE 5-5-2024",
+        "startDate": "2024-05-05",
+        "endDate": "2024-05-05",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MVQQVXFMCEXPQF1CEAP7HG",
+      "sectionNumber": 3,
+      "sectionName": "U1400",
+      "startDate": "2024-04-19",
+      "endDate": "2024-04-21",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MVQQVXA9HFFAZ41MJ9NZ6K",
+          "sectionNumber": 3,
+          "preRating": 828,
+          "preRatingDecimal": 828.49,
+          "postRating": 854,
+          "postRatingDecimal": 853.99,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202404212892",
+        "name": "CCC ALTO SPRING 2024",
+        "startDate": "2024-04-19",
+        "endDate": "2024-04-21",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MTZ7MFRV4X6P2NYY1TQCC9",
+      "sectionNumber": 6,
+      "sectionName": "UNDER 1000 SECTION",
+      "startDate": "2023-12-28",
+      "endDate": "2023-12-29",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MTZ7MFS61BM8NS74074CSC",
+          "sectionNumber": 6,
+          "preRating": 801,
+          "preRatingDecimal": 800.52,
+          "postRating": 828,
+          "postRatingDecimal": 828.49,
+          "ratingSource": "R",
+          "postProvisionalGameCount": 22
+        },
+        {
+          "eventId": "01K8MTZ7MFS61BM8NS74074CSC",
+          "sectionNumber": 6,
+          "preRating": 1064,
+          "preRatingDecimal": 1064.1,
+          "postRating": 878,
+          "postRatingDecimal": 878.37,
+          "ratingSource": "Q",
+          "postProvisionalGameCount": 10
+        }
+      ],
+      "event": {
+        "id": "202312292652",
+        "name": "48TH ANNUAL EASTERN OPEN!",
+        "startDate": "2023-12-26",
+        "endDate": "2023-12-29",
+        "stateCode": "VA"
+      }
+    },
+    {
+      "id": "01K8MTZ7MF5T7T52463EDKVWC6",
+      "sectionNumber": 5,
+      "sectionName": "UNDER 1300 SECTION",
+      "startDate": "2023-12-26",
+      "endDate": "2023-12-29",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MTZ7MFS61BM8NS74074CSC",
+          "sectionNumber": 5,
+          "preRating": 808,
+          "preRatingDecimal": 807.84,
+          "postRating": 801,
+          "postRatingDecimal": 800.52,
+          "ratingSource": "R",
+          "postProvisionalGameCount": 14
+        }
+      ],
+      "event": {
+        "id": "202312292652",
+        "name": "48TH ANNUAL EASTERN OPEN!",
+        "startDate": "2023-12-26",
+        "endDate": "2023-12-29",
+        "stateCode": "VA"
+      }
+    },
+    {
+      "id": "01K8MT8M8J53WSW8Q61T08FR0R",
+      "sectionNumber": 4,
+      "sectionName": "UNDER 1300",
+      "startDate": "2023-09-02",
+      "endDate": "2023-09-04",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MT8M8J1TJ5Z692ZBXHYP3N",
+          "sectionNumber": 4,
+          "preRating": 1078,
+          "preRatingDecimal": 1078.28,
+          "postRating": 808,
+          "postRatingDecimal": 807.84,
+          "ratingSource": "R",
+          "postProvisionalGameCount": 11
+        }
+      ],
+      "event": {
+        "id": "202309046112",
+        "name": "CCC ALTO FALL 2023",
+        "startDate": "2023-09-02",
+        "endDate": "2023-09-04",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8MHRX9PS7PMVNBQFGXZJDKE",
+      "sectionNumber": 10,
+      "sectionName": "BILLS",
+      "startDate": "2018-01-06",
+      "endDate": "2018-01-06",
+      "format": "Swiss",
+      "ratingSystem": "D",
+      "ratingRecords": [
+        {
+          "eventId": "01K8MHRX9P1470R2BNSGE2M3EK",
+          "sectionNumber": 10,
+          "preRating": 994,
+          "preRatingDecimal": 994,
+          "postRating": 1078,
+          "postRatingDecimal": 1078.28,
+          "ratingSource": "R",
+          "postProvisionalGameCount": 5
+        },
+        {
+          "eventId": "01K8MHRX9P1470R2BNSGE2M3EK",
+          "sectionNumber": 10,
+          "postRating": 1064,
+          "postRatingDecimal": 1064.1,
+          "ratingSource": "Q",
+          "postProvisionalGameCount": 2
+        }
+      ],
+      "event": {
+        "id": "201801061832",
+        "name": "CXXVI MASTER TREK",
+        "startDate": "2018-01-06",
+        "endDate": "2018-01-06",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K8M1R3TA89BFKRMEFGKGR5JX",
+      "sectionNumber": 3,
+      "sectionName": "U1400",
+      "startDate": "2003-09-27",
+      "endDate": "2003-09-27",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K8M1R3TAK5P8KSMW1GSCA6T2",
+          "sectionNumber": 3,
+          "postRating": 994,
+          "postRatingDecimal": 0,
+          "ratingSource": "R",
+          "postProvisionalGameCount": 3
+        }
+      ],
+      "event": {
+        "id": "200309277320",
+        "name": "TACO XII",
+        "startDate": "2003-09-27",
+        "endDate": "2003-09-27",
+        "stateCode": "NC"
+      }
+    }
+  ],
+  "offset": 0,
+  "pageSize": 100,
+  "hasPreviousPage": false,
+  "hasNextPage": false
+}
