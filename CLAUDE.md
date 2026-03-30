@@ -20,7 +20,7 @@ pytest                  # unit tests only (system tests excluded by default)
 ./with_coverage.sh      # pytest -v --cov=rating
 ```
 
-System tests (hit real network) are marked `@pytest.mark.system` and excluded by default via `pytest.ini`. Run them with:
+System tests (hit real network) are marked `@pytest.mark.system` and excluded by default via the pytest settings in `pyproject.toml`. Run them with:
 ```bash
 pytest -m system
 ```

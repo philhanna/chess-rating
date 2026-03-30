@@ -20,3 +20,8 @@ dependencies = [
 [tool.setuptools]
 packages = ["rating", "rating.ports", "rating.adapters"]
 
+[tool.pytest.ini_options]
+markers = [
+    "system: marks tests as system tests",
+]
+addopts = '-m "not system"'
