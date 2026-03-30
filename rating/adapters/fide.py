@@ -1,3 +1,9 @@
+"""FIDE rating adapter.
+
+FIDE does not expose the needed profile information as a simple JSON API, so
+this adapter scrapes the public profile page and extracts the visible ratings.
+"""
+
 from bs4 import BeautifulSoup
 
 from rating.ports.http_port import HttpPort
@@ -5,13 +11,15 @@ from rating.ports.rating_port import RatingPort
 
 
 class FIDE(RatingPort):
-    """Driven adapter: fetches FIDE rating information."""
+    """Fetch and normalize FIDE profile ratings for a single player."""
 
     def __init__(self, player: str, http_client: HttpPort = None):
+        """Store the player identifier and injected HTTP client."""
         self.player = player
         self._http_client = http_client
 
     def fetch(self) -> str:
+        """Request the FIDE profile page and parse visible ratings from it."""
         url = self.get_url()
         content = self._http_client.get(url)
         if content is None:
@@ -19,9 +27,11 @@ class FIDE(RatingPort):
         return self.parse_content(content)
 
     def get_url(self) -> str:
+        """Build the public FIDE profile URL for the configured player."""
         return f"https://ratings.fide.com/profile/{self.player}"
 
     def parse_content(self, content: str) -> str:
+        """Scrape the player's name and rating categories from the HTML page."""
         soup = BeautifulSoup(content, 'html.parser')
 
         parts = []
@@ -40,6 +50,8 @@ class FIDE(RatingPort):
 
         profile_games_div = profile_section_div.find("div", class_="profile-games")
         if profile_games_div:
+            # Each direct child div represents one rating category card whose
+            # first two <p> elements contain the numeric rating and label.
             divs = profile_games_div.find_all("div", recursive=False)
             for div in divs:
                 ps = div.find_all("p")
