@@ -278,27 +278,42 @@ def newRating(
         formula path. The final rounding mirrors the original script, including
         the ``roundAway`` adjustment used before applying ``Math.round``.
     """
+    # The legacy script treats the pre-event game count as the switch that
+    # decides both how to interpret missing inputs and which rating formula to
+    # use later.
     myGameCount = int(GameCount)
 
     if myGameCount > 0:
+        # Once a player has prior rated games, an empty old rating is treated as
+        # invalid input and the function returns the blank sentinel unchanged.
         if myOldRating == "":
             return ""
         oldRating = int(myOldRating)
     else:
+        # For unrated players, the fixture synthesizes a starting rating. If no
+        # age is supplied it uses 750; otherwise it clamps age into [4, 20] and
+        # maps that age to the historical seed formula used by the USCF page.
         if myOldRating == "":
             if age == "":
                 oldRating = 750
             else:
                 oldRating = 300 + 50.0 * max(min(age, 20), 4)
         else:
+            # Even with zero recorded games, callers may still supply an old
+            # rating explicitly; in that case the fixture trusts that value.
             oldRating = int(myOldRating)
 
+    # Collapse the fixed-width rating arguments into only the opponents that
+    # were actually supplied for this event.
     ratings = _ratings(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12)
     myCurrentGames = len(ratings)
     myExp = 0.0
     sumRatings = 0
     iCount = 0
 
+    # Compute the expected score against the event field using the logistic
+    # formula. This value is only needed on the established-player branch, but
+    # the original script computes it up front for all callers.
     for iRating in ratings:
         myExp += 1.0 / (math.exp(math.log(10) * ((iRating - oldRating) / 400.0)) + 1.0)
         sumRatings += iRating
@@ -307,6 +322,9 @@ def newRating(
     _ = sumRatings  # kept for parity with the source fixture
 
     if myGameCount <= 8:
+        # Provisional players do not use K-factor and bonus. Instead, the
+        # helper estimates a performance rating for the event and blends it with
+        # the pre-event rating based on how many prior games already existed.
         FALSE = 0
         rating = performanceRating(
             FALSE, score, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12
@@ -315,21 +333,34 @@ def newRating(
             (score == 0 and oldRating < rating)
             or (score == iCount and oldRating > rating)
         ):
+            # Brand-new players keep the seeded old rating when a perfect score
+            # or zero score would otherwise push the provisional performance
+            # estimate past that starting point in the "wrong" direction.
             rating = oldRating
         else:
+            # Blend the old rating and the event performance rating, weighted by
+            # prior games and games from the current event.
             rating = (myGameCount * oldRating + myCurrentGames * rating) / (
                 myGameCount + myCurrentGames
             )
+        # The provisional branch rounds directly with JavaScript semantics.
         roundAway = 0.0
     else:
+        # Established players use the expected-score update formula with a
+        # computed K-factor plus any earned bonus points.
         myK = computeK(oldRating, myGameCount, myCurrentGames, DualK)
         myBonus = computeBonus(score, myExp, myK, myCurrentGames)
         rating = oldRating + myK * (score - myExp) + myBonus
         if oldRating < rating:
+            # The JavaScript fixture nudges values slightly away from the old
+            # rating before rounding so upward and downward changes round away
+            # from the starting rating instead of to nearest-even.
             roundAway = 0.4999
         else:
             roundAway = -0.4999
 
+    # Final presentation uses JavaScript-compatible rounding rather than
+    # Python's built-in round().
     return _js_round(rating + roundAway)
 
 
