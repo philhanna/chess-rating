@@ -80,7 +80,7 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
         help="Fetch and print ratings without saving them to the history database",
     )
 
-    group = parser.add_mutually_exclusive_group()
+    group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
     group.add_argument("-l", "--lichess", action="store_true", help="Use Lichess platform")
     group.add_argument("-c", "--chess", action="store_true", help="Use chess.com platform")
@@ -140,8 +140,7 @@ def main() -> None:
 
     1. Load the local configuration file so each platform can supply a default
        user when the caller omits the positional ``player`` argument.
-    2. Parse the CLI options and select exactly one ratings platform, defaulting
-       to USCF when no platform flag is supplied.
+    2. Parse the CLI options and require exactly one ratings platform.
     3. Create the appropriate adapter and ask it to fetch the rating data.
     4. Print either the raw adapter output, JSON-converted output, or a helpful
        "not found" message when the adapter returns no data.
@@ -173,7 +172,7 @@ def main() -> None:
     elif args.fide:
         player = args.player or config["FIDE"]["defaultUser"]
         app = FIDE(player, http_client)
-    else:  # USCF is the default when no explicit platform flag is given.
+    else:
         player = args.player or config["USCF"]["defaultUser"]
         app = USCF(player, http_client)
 

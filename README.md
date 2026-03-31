@@ -61,7 +61,7 @@ You can still run the module directly with `python -m rating`, but the packaged 
 
 ## How to call
 ```
-usage: rating [-h] [-v] [-j] [--dry-run] [-u | -l | -c | -f] [player]
+usage: rating [-h] [-v] [-j] [--dry-run] (-u | -l | -c | -f) [player]
 
 Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com.
 
@@ -78,6 +78,9 @@ options:
   -c, --chess    Use chess.com platform
   -f, --fide     Use FIDE platform
 ```
+
+One source flag is required for rating lookups. For example, use `rating --uscf 12910923`
+rather than relying on an implicit default source.
 
 ## Persistent logging
 

@@ -101,7 +101,20 @@ class _FakeHistoryAdapter:
         cls.saved_profiles = []
 
 
-def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
+def test_main_requires_a_platform_selection(monkeypatch, capsys):
+    _FakeLoader.reset()
+
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating"])
+
+    with pytest.raises(SystemExit) as exc_info:
+        rating.main()
+
+    assert exc_info.value.code == 2
+    assert "one of the arguments -u/--uscf -l/--lichess -c/--chess -f/--fide is required" in capsys.readouterr().err
+
+
+def test_main_selects_uscf_and_uses_plain_output(monkeypatch, capsys):
     created = {}
     profile = _make_profile(provider="uscf", player_id="uscf-default", display_name="uscf-default")
     _FakeLoader.reset()
@@ -122,7 +135,7 @@ def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
     monkeypatch.setattr(rating, "Lichess", object)
     monkeypatch.setattr(rating, "ChessCom", object)
     monkeypatch.setattr(rating, "FIDE", object)
-    monkeypatch.setattr("sys.argv", ["rating"])
+    monkeypatch.setattr("sys.argv", ["rating", "--uscf"])
 
     rating.main()
 
