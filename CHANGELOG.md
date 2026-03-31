@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+
+## [1.5.0] - 2026-03-31
 - Added `rating logging [on|off|status]` to inspect or change persistent history logging from the CLI.
 - Added `rating config` to print the active configuration file path and its contents.
 - Require an explicit source flag (`--uscf`, `--lichess`, `--chess`, or `--fide`) for rating lookups instead of defaulting to USCF.
