@@ -27,7 +27,7 @@ rating --help
 Run the default test suite with:
 
 ```bash
-pytest
+python -m pytest
 ```
 
 Coverage reporting requires the dev/test dependencies:
@@ -40,7 +40,7 @@ python -m pip install -e '.[dev]'
 System tests are marked with `@pytest.mark.system` and excluded by default. Run them explicitly with:
 
 ```bash
-pytest -m system
+python -m pytest -m system
 ```
 
 ## Running the CLI
@@ -52,13 +52,16 @@ rating -u some_uscf_id
 rating -l some_lichess_user
 rating -c some_chesscom_user
 rating -f some_fide_id
+rating logging
+rating logging off
+rating logging on
 ```
 
 You can still run the module directly with `python -m rating`, but the packaged command is the preferred entry point. The main CLI implementation lives in `rating.application.rating`, while `rating.__main__` remains a thin compatibility wrapper.
 
 ## How to call
 ```
-usage: rating [-h] [-v] [-j] [-u | -l | -c | -f] [player]
+usage: rating [-h] [-v] [-j] [--dry-run] [-u | -l | -c | -f] [player]
 
 Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com.
 
@@ -69,10 +72,47 @@ options:
   -h, --help     show this help message and exit
   -v, --version  show the project version and exit
   -j, --json     Create JSON output
+  --dry-run      Fetch and print ratings without saving them to the history database
   -u, --uscf     Use USCF platform
   -l, --lichess  Use Lichess platform
   -c, --chess    Use chess.com platform
   -f, --fide     Use FIDE platform
+```
+
+## Persistent logging
+
+Successful fetches are stored in the history database when logging is enabled.
+You can inspect or change that persistent setting with:
+
+```bash
+rating logging
+rating logging status
+rating logging on
+rating logging off
+```
+
+`rating logging` behaves like `rating logging status`: it prints the current
+setting and exits.
+
+If you want to skip database writes for just one run, use:
+
+```bash
+rating --dry-run -l some_lichess_user
+```
+
+The persistent setting is stored in the per-user config file under the
+`chess-rating` application area. On Linux that is typically:
+
+```text
+~/.config/chess-rating/config.yaml
+```
+
+The relevant config section looks like this:
+
+```yaml
+database:
+  path: /tmp/chess-rating.db
+  enabled: true
 ```
 
 ## Chess.com
