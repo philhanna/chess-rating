@@ -27,7 +27,7 @@ _note the "." after the -e option!_
 Make a link to the command line interface into a directory in your path:
 
 ```bash
-ln .venv/bin/rating <some directory>/rating
+ln .venv/bin/rating path/to/bin/rating
 ```
 
 After installation, the CLI is available as:
