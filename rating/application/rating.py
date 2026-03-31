@@ -41,7 +41,10 @@ def _to_pipe(profile: NormalizedRatingProfile) -> str:
         parts.append(f"display_name={profile.player.display_name}")
 
     for key in CANONICAL_RATING_KEYS:
-        parts.append(f"{key}={_format_rating_value(profile.ratings.get(key))}")
+        value = profile.ratings.get(key)
+        if value is None:
+            continue
+        parts.append(f"{key}={_format_rating_value(value)}")
 
     for key in sorted(profile.extras):
         parts.append(f"{key}={_format_rating_value(profile.extras[key])}")

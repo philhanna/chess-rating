@@ -48,7 +48,7 @@ def test_to_pipe_renders_canonical_fields_extras_and_as_of():
     assert "player_id=player1" in result
     assert "display_name=Player One" in result
     assert "standard=1500" in result
-    assert "rapid=Not rated" in result
+    assert "rapid=" not in result
     assert "blitz=1400" in result
     assert "puzzle=2000" in result
     assert "as_of=2026-03-30" in result
