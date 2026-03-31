@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+- Added `rating logging [on|off|status]` to inspect or change persistent history logging from the CLI.
+- Added `rating config` to print the active configuration file path and its contents.
+- Require an explicit source flag (`--uscf`, `--lichess`, `--chess`, or `--fide`) for rating lookups instead of defaulting to USCF.
+- Changed plain-text output from pipe-delimited fields to newline-separated `key=value` lines and omitted unrated canonical categories.
+- Added a persistent `database.enabled` configuration setting with defaults in the sample config and support for preserving YAML comments when toggling it.
+- Hardened the USCF adapter so incomplete or missing section data returns no profile instead of raising parsing errors.
+- Expanded tests and README documentation for the new CLI commands, configuration behavior, and output format.
 
 ## [1.4.0] - 2026-03-30
 - Added SQLite-backed rating history persistence using a single `rating_history` table with a `provider` column.
