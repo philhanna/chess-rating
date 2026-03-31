@@ -44,6 +44,8 @@ def test_to_pipe_renders_canonical_fields_extras_and_as_of():
 
     result = rating._to_pipe(profile)
 
+    assert "|" not in result
+    assert "\n" in result
     assert "provider=uscf" in result
     assert "player_id=player1" in result
     assert "display_name=Player One" in result

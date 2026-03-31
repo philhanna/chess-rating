@@ -52,7 +52,7 @@ def _to_pipe(profile: NormalizedRatingProfile) -> str:
     if profile.metadata.as_of is not None:
         parts.append(f"as_of={profile.metadata.as_of}")
 
-    return "|".join(parts)
+    return "\n".join(parts)
 
 
 def _save_profile(profile: NormalizedRatingProfile, database_path: str) -> None:
