@@ -7,6 +7,7 @@ rating adapters.
 
 import argparse
 import json
+import sys
 from importlib.metadata import version
 
 from rating import PACKAGE_NAME
@@ -57,22 +58,8 @@ def _save_profile(profile: NormalizedRatingProfile, database_path: str) -> None:
     history.save(profile)
 
 
-def main() -> None:
-    """Run the CLI and print either rating data or a not-found message.
-
-    Flow:
-
-    1. Load the local configuration file so each platform can supply a default
-       user when the caller omits the positional ``player`` argument.
-    2. Parse the CLI options and select exactly one ratings platform, defaulting
-       to USCF when no platform flag is supplied.
-    3. Create the appropriate adapter and ask it to fetch the rating data.
-    4. Print either the raw adapter output, JSON-converted output, or a helpful
-       "not found" message when the adapter returns no data.
-    """
-    loader = ConfigLoader()
-    config = loader.config
-
+def _build_fetch_parser() -> argparse.ArgumentParser:
+    """Create the parser for normal rating-fetch commands."""
     parser = argparse.ArgumentParser(
         prog="rating",
         description="Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com."
@@ -97,8 +84,67 @@ def main() -> None:
     group.add_argument("-l", "--lichess", action="store_true", help="Use Lichess platform")
     group.add_argument("-c", "--chess", action="store_true", help="Use chess.com platform")
     group.add_argument("-f", "--fide", action="store_true", help="Use FIDE platform")
+    return parser
 
-    args = parser.parse_args()
+
+def _build_logging_parser() -> argparse.ArgumentParser:
+    """Create the parser for persistent logging configuration commands."""
+    parser = argparse.ArgumentParser(
+        prog="rating logging",
+        description="Show or change persistent database logging behavior.",
+    )
+    parser.add_argument(
+        "action",
+        nargs="?",
+        choices=("on", "off", "status"),
+        default="status",
+        help="Set logging on or off, or show the current status",
+    )
+    return parser
+
+
+def _print_logging_status(enabled: bool) -> None:
+    """Render the current logging state for the CLI."""
+    state = "enabled" if enabled else "disabled"
+    print(f"Database logging is {state}.")
+
+
+def _handle_logging_command(argv: list[str], loader: ConfigLoader) -> None:
+    """Run the persistent logging management command and exit."""
+    args = _build_logging_parser().parse_args(argv)
+    if args.action == "on":
+        loader.set_database_enabled(True)
+    elif args.action == "off":
+        loader.set_database_enabled(False)
+    _print_logging_status(loader.config["database"]["enabled"])
+
+
+def _should_persist(config: dict, dry_run: bool) -> bool:
+    """Return whether this invocation should record history."""
+    return config["database"]["enabled"] and not dry_run
+
+
+def main() -> None:
+    """Run the CLI and print either rating data or a not-found message.
+
+    Flow:
+
+    1. Load the local configuration file so each platform can supply a default
+       user when the caller omits the positional ``player`` argument.
+    2. Parse the CLI options and select exactly one ratings platform, defaulting
+       to USCF when no platform flag is supplied.
+    3. Create the appropriate adapter and ask it to fetch the rating data.
+    4. Print either the raw adapter output, JSON-converted output, or a helpful
+       "not found" message when the adapter returns no data.
+    """
+    loader = ConfigLoader()
+    config = loader.config
+    argv = sys.argv[1:]
+    if argv and argv[0] == "logging":
+        _handle_logging_command(argv[1:], loader)
+        return
+
+    args = _build_fetch_parser().parse_args(argv)
 
     # The HTTP adapter is shared by all platform clients. Keeping the concrete
     # transport creation here lets the individual rating adapters stay focused
@@ -125,7 +171,7 @@ def main() -> None:
     if not profile:
         print(f'No ratings found for "{player}"')
     else:
-        if not args.dry_run:
+        if _should_persist(config, args.dry_run):
             _save_profile(profile, config["database"]["path"])
         if args.json:
             print(_to_json(profile))

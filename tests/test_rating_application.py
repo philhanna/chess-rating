@@ -55,14 +55,29 @@ def test_to_pipe_renders_canonical_fields_extras_and_as_of():
 
 
 class _FakeLoader:
+    database_enabled = True
+    set_database_enabled_calls = []
+
     def __init__(self, *_args, **_kwargs):
         self.config = {
             "USCF": {"defaultUser": "uscf-default"},
             "lichess": {"defaultUser": "lichess-default"},
             "Chess": {"defaultUser": "chess-default"},
             "FIDE": {"defaultUser": "fide-default"},
-            "database": {"path": "/tmp/test-history.sqlite3"},
+            "database": {
+                "path": "/tmp/test-history.sqlite3",
+                "enabled": self.__class__.database_enabled,
+            },
         }
+
+    def set_database_enabled(self, enabled):
+        self.config["database"]["enabled"] = enabled
+        self.__class__.set_database_enabled_calls.append(enabled)
+
+    @classmethod
+    def reset(cls):
+        cls.database_enabled = True
+        cls.set_database_enabled_calls = []
 
 
 class _FakeHttpClient:
@@ -89,6 +104,7 @@ class _FakeHistoryAdapter:
 def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
     created = {}
     profile = _make_profile(provider="uscf", player_id="uscf-default", display_name="uscf-default")
+    _FakeLoader.reset()
     _FakeHistoryAdapter.reset()
 
     class FakeUSCF:
@@ -122,6 +138,7 @@ def test_main_defaults_to_uscf_and_uses_plain_output(monkeypatch, capsys):
 def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
     created = {}
     profile = _make_profile(provider="lichess", player_id="named-player", display_name="named-player")
+    _FakeLoader.reset()
     _FakeHistoryAdapter.reset()
 
     class FakeLichess:
@@ -154,6 +171,7 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
 def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
     created = {}
     profile = _make_profile(provider="chesscom", player_id="chess-default", display_name="chess-default")
+    _FakeLoader.reset()
     _FakeHistoryAdapter.reset()
 
     class FakeChessCom:
@@ -183,6 +201,7 @@ def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
 
 def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
     created = {}
+    _FakeLoader.reset()
     _FakeHistoryAdapter.reset()
 
     class FakeFIDE:
@@ -212,6 +231,7 @@ def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
 
 def test_main_dry_run_skips_persistence(monkeypatch, capsys):
     profile = _make_profile(provider="lichess", player_id="named-player", display_name="named-player")
+    _FakeLoader.reset()
     _FakeHistoryAdapter.reset()
 
     class FakeLichess:
@@ -236,6 +256,71 @@ def test_main_dry_run_skips_persistence(monkeypatch, capsys):
     assert _FakeHistoryAdapter.created_paths == []
     assert _FakeHistoryAdapter.saved_profiles == []
     assert "provider=lichess" in output
+
+
+def test_main_skips_persistence_when_logging_disabled(monkeypatch, capsys):
+    profile = _make_profile(provider="lichess", player_id="named-player", display_name="named-player")
+    _FakeLoader.reset()
+    _FakeLoader.database_enabled = False
+    _FakeHistoryAdapter.reset()
+
+    class FakeLichess:
+        def __init__(self, *_args, **_kwargs):
+            pass
+
+        def fetch(self):
+            return profile
+
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "SQLiteHistoryAdapter", _FakeHistoryAdapter)
+    monkeypatch.setattr(rating, "Lichess", FakeLichess)
+    monkeypatch.setattr(rating, "USCF", object)
+    monkeypatch.setattr(rating, "ChessCom", object)
+    monkeypatch.setattr(rating, "FIDE", object)
+    monkeypatch.setattr("sys.argv", ["rating", "--lichess", "named-player"])
+
+    rating.main()
+
+    output = capsys.readouterr().out.strip()
+    assert _FakeHistoryAdapter.created_paths == []
+    assert _FakeHistoryAdapter.saved_profiles == []
+    assert "provider=lichess" in output
+
+
+def test_main_logging_status_prints_current_state_and_exits(monkeypatch, capsys):
+    _FakeLoader.reset()
+    _FakeLoader.database_enabled = True
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "logging"])
+
+    rating.main()
+
+    assert capsys.readouterr().out.strip() == "Database logging is enabled."
+    assert _FakeLoader.set_database_enabled_calls == []
+
+
+def test_main_logging_off_updates_config_and_exits(monkeypatch, capsys):
+    _FakeLoader.reset()
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "logging", "off"])
+
+    rating.main()
+
+    assert capsys.readouterr().out.strip() == "Database logging is disabled."
+    assert _FakeLoader.set_database_enabled_calls == [False]
+
+
+def test_main_logging_on_updates_config_and_exits(monkeypatch, capsys):
+    _FakeLoader.reset()
+    _FakeLoader.database_enabled = False
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "logging", "on"])
+
+    rating.main()
+
+    assert capsys.readouterr().out.strip() == "Database logging is enabled."
+    assert _FakeLoader.set_database_enabled_calls == [True]
 
 
 def test_main_help_exits_cleanly(monkeypatch, capsys):

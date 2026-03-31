@@ -16,3 +16,4 @@ FIDE:
 
 database:
   path: /tmp/chess-rating.db
+  enabled: true
