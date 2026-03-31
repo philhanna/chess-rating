@@ -194,8 +194,7 @@ class TestUSCFParseContentErrors:
             "success": True
         })
         uscf = USCF("Test Player")
-        with pytest.raises(KeyError):
-            uscf.parse_content(json_content)
+        assert uscf.parse_content(json_content) is None
 
     def test_parse_content_empty_items_list(self):
         """Test parsing JSON with empty items list."""
@@ -203,8 +202,7 @@ class TestUSCFParseContentErrors:
             "items": []
         })
         uscf = USCF("Test Player")
-        with pytest.raises(IndexError):
-            uscf.parse_content(json_content)
+        assert uscf.parse_content(json_content) is None
 
     def test_parse_content_missing_endDate(self):
         """Test parsing JSON missing 'endDate' field."""
@@ -220,8 +218,7 @@ class TestUSCFParseContentErrors:
             ]
         })
         uscf = USCF("Test Player")
-        with pytest.raises(KeyError):
-            uscf.parse_content(json_content)
+        assert uscf.parse_content(json_content) is None
 
     def test_parse_content_missing_ratingRecords(self):
         """Test parsing JSON missing 'ratingRecords' field."""
@@ -233,8 +230,7 @@ class TestUSCFParseContentErrors:
             ]
         })
         uscf = USCF("Test Player")
-        with pytest.raises(KeyError):
-            uscf.parse_content(json_content)
+        assert uscf.parse_content(json_content) is None
 
     def test_parse_content_empty_ratingRecords_list(self):
         """Test parsing JSON with empty ratingRecords list."""
@@ -247,8 +243,7 @@ class TestUSCFParseContentErrors:
             ]
         })
         uscf = USCF("Test Player")
-        with pytest.raises(IndexError):
-            uscf.parse_content(json_content)
+        assert uscf.parse_content(json_content) is None
 
     def test_parse_content_missing_postRating(self):
         """Test parsing JSON missing 'postRating' field."""
@@ -265,8 +260,7 @@ class TestUSCFParseContentErrors:
             ]
         })
         uscf = USCF("Test Player")
-        with pytest.raises(KeyError):
-            uscf.parse_content(json_content)
+        assert uscf.parse_content(json_content) is None
 
 
 class TestUSCFComplexScenarios:

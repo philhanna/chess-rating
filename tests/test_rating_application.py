@@ -323,6 +323,18 @@ def test_main_logging_on_updates_config_and_exits(monkeypatch, capsys):
     assert _FakeLoader.set_database_enabled_calls == [True]
 
 
+def test_main_status_suggests_logging_status(monkeypatch, capsys):
+    _FakeLoader.reset()
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "status"])
+
+    with pytest.raises(SystemExit) as exc_info:
+        rating.main()
+
+    assert exc_info.value.code == 2
+    assert "did you mean 'rating logging status'?" in capsys.readouterr().err
+
+
 def test_main_help_exits_cleanly(monkeypatch, capsys):
     monkeypatch.setattr("sys.argv", ["rating", "--help"])
 

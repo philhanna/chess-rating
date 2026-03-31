@@ -62,7 +62,8 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
     """Create the parser for normal rating-fetch commands."""
     parser = argparse.ArgumentParser(
         prog="rating",
-        description="Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com."
+        description="Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com.",
+        epilog="Persistent logging controls: use 'rating logging [on|off|status]'.",
     )
     parser.add_argument(
         "-v",
@@ -124,6 +125,14 @@ def _should_persist(config: dict, dry_run: bool) -> bool:
     return config["database"]["enabled"] and not dry_run
 
 
+def _check_for_common_logging_mistakes(argv: list[str]) -> None:
+    """Surface a helpful error for likely mistyped logging commands."""
+    if argv and argv[0] == "status":
+        _build_fetch_parser().error(
+            "unrecognized command 'status'; did you mean 'rating logging status'?"
+        )
+
+
 def main() -> None:
     """Run the CLI and print either rating data or a not-found message.
 
@@ -143,6 +152,7 @@ def main() -> None:
     if argv and argv[0] == "logging":
         _handle_logging_command(argv[1:], loader)
         return
+    _check_for_common_logging_mistakes(argv)
 
     args = _build_fetch_parser().parse_args(argv)
 

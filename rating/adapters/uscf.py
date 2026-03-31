@@ -69,8 +69,27 @@ class USCF(RatingPort):
         data = json.loads(json_string)
         # The API returns sections in newest-first order, so the first item
         # represents the latest published rating snapshot.
-        date = data["items"][0]["endDate"]
-        rating = data["items"][0]["ratingRecords"][0]["postRating"]
+        items = data.get("items")
+        if not items:
+            return None
+
+        latest_item = items[0]
+        if not isinstance(latest_item, dict):
+            return None
+
+        date = latest_item.get("endDate")
+        rating_records = latest_item.get("ratingRecords")
+        if date is None or not rating_records:
+            return None
+
+        latest_rating_record = rating_records[0]
+        if not isinstance(latest_rating_record, dict):
+            return None
+
+        rating = latest_rating_record.get("postRating")
+        if rating is None:
+            return None
+
         return NormalizedRatingProfile(
             provider="uscf",
             player=PlayerIdentity(id=self.player, display_name=self.player),
