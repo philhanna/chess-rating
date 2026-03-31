@@ -1,5 +1,4 @@
 import json
-import runpy
 
 import pytest
 
@@ -239,11 +238,11 @@ def test_main_dry_run_skips_persistence(monkeypatch, capsys):
     assert "provider=lichess" in output
 
 
-def test_module_main_guard_executes(monkeypatch, capsys):
+def test_main_help_exits_cleanly(monkeypatch, capsys):
     monkeypatch.setattr("sys.argv", ["rating", "--help"])
 
     with pytest.raises(SystemExit) as exc_info:
-        runpy.run_module("rating.application.rating", run_name="__main__")
+        rating.main()
 
     assert exc_info.value.code == 0
     assert "Fetches and prints a players's chess rating" in capsys.readouterr().out
