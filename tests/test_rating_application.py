@@ -59,8 +59,10 @@ def test_to_pipe_renders_canonical_fields_extras_and_as_of():
 class _FakeLoader:
     database_enabled = True
     set_database_enabled_calls = []
+    filename = "/tmp/test-config.yaml"
 
     def __init__(self, *_args, **_kwargs):
+        self.filename = self.__class__.filename
         self.config = {
             "USCF": {"defaultUser": "uscf-default"},
             "lichess": {"defaultUser": "lichess-default"},
@@ -80,6 +82,7 @@ class _FakeLoader:
     def reset(cls):
         cls.database_enabled = True
         cls.set_database_enabled_calls = []
+        cls.filename = "/tmp/test-config.yaml"
 
 
 class _FakeHttpClient:
@@ -338,6 +341,21 @@ def test_main_logging_on_updates_config_and_exits(monkeypatch, capsys):
     assert _FakeLoader.set_database_enabled_calls == [True]
 
 
+def test_main_config_prints_filename_and_contents(monkeypatch, capsys, tmp_path):
+    _FakeLoader.reset()
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text("USCF:\n  defaultUser: sample-player\n", encoding="utf-8")
+    _FakeLoader.filename = str(config_file)
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "config"])
+
+    rating.main()
+
+    assert capsys.readouterr().out == (
+        f"{config_file}\nUSCF:\n  defaultUser: sample-player\n"
+    )
+
+
 def test_main_status_suggests_logging_status(monkeypatch, capsys):
     _FakeLoader.reset()
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
@@ -357,4 +375,7 @@ def test_main_help_exits_cleanly(monkeypatch, capsys):
         rating.main()
 
     assert exc_info.value.code == 0
-    assert "Fetches and prints a players's chess rating" in capsys.readouterr().out
+    help_output = capsys.readouterr().out
+    assert "Fetches and prints a players's chess rating" in help_output
+    assert "rating logging [on|off|status]" in help_output
+    assert "rating config" in help_output

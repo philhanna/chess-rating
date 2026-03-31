@@ -65,8 +65,16 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
     """Create the parser for normal rating-fetch commands."""
     parser = argparse.ArgumentParser(
         prog="rating",
-        description="Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com.",
-        epilog="Persistent logging controls: use 'rating logging [on|off|status]'.",
+        description=(
+            "Fetches and prints a players's chess rating from USCF, FIDE, "
+            "Lichess, or Chess.com.\n\n"
+            "Special commands:\n"
+            "  rating logging [on|off|status]\n"
+            "    Show or change persistent database logging behavior.\n"
+            "  rating config\n"
+            "    Print the active configuration file path and its contents."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         "-v",
@@ -107,6 +115,14 @@ def _build_logging_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _build_config_parser() -> argparse.ArgumentParser:
+    """Create the parser for configuration inspection commands."""
+    return argparse.ArgumentParser(
+        prog="rating config",
+        description="Show the active configuration file and its contents.",
+    )
+
+
 def _print_logging_status(enabled: bool) -> None:
     """Render the current logging state for the CLI."""
     state = "enabled" if enabled else "disabled"
@@ -121,6 +137,15 @@ def _handle_logging_command(argv: list[str], loader: ConfigLoader) -> None:
     elif args.action == "off":
         loader.set_database_enabled(False)
     _print_logging_status(loader.config["database"]["enabled"])
+
+
+def _handle_config_command(argv: list[str], loader: ConfigLoader) -> None:
+    """Print the active config filename and its raw contents, then exit."""
+    _build_config_parser().parse_args(argv)
+    print(loader.filename)
+    with open(loader.filename, "r") as fp:
+        contents = fp.read()
+    print(contents, end="" if not contents or contents.endswith("\n") else "\n")
 
 
 def _should_persist(config: dict, dry_run: bool) -> bool:
@@ -153,6 +178,9 @@ def main() -> None:
     argv = sys.argv[1:]
     if argv and argv[0] == "logging":
         _handle_logging_command(argv[1:], loader)
+        return
+    if argv and argv[0] == "config":
+        _handle_config_command(argv[1:], loader)
         return
     _check_for_common_logging_mistakes(argv)
 
