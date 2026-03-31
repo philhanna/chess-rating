@@ -46,7 +46,7 @@ class ConfigLoader:
 
     def _get_default_database_path(self):
         """Return the default path for the history SQLite database."""
-        return os.path.join(user_data_dir(PACKAGE_NAME), "history.sqlite3")
+        return os.path.join(user_data_dir(PACKAGE_NAME), "chess-rating.db")
 
     def _load_config(self):
         """Read and parse the YAML configuration file.

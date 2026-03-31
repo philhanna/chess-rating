@@ -15,4 +15,4 @@ FIDE:
   defaultUser: 30976537
 
 database:
-  path: /tmp/chess-rating-history.sqlite3
+  path: /tmp/chess-rating.db
