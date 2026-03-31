@@ -4,43 +4,36 @@ A Python command-line tool that retrieves and prints the chess rating of a perso
 
 ## Setup
 
+Clone this repository and change directory into its root,
+then create a Python virtual environment in which to run it:
+
+```bash
+git clone git@github.com:philhanna/chess-rating.git
+cd chess-rating
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Copy the sample configuration `sample_config.yaml` into the configuration
+directory `~/.config/chess-rating` as `config.yaml`
+
 Install the package and its runtime dependencies with:
 
 ```bash
 python -m pip install -e .
 ```
+_note the "." after the -e option!_
 
-If you also want the development and test tools, install the optional `dev` extra:
+Make a link to the command line interface into a directory in your path:
 
 ```bash
-python -m pip install -e '.[dev]'
+ln .venv/bin/rating <some directory>/rating
 ```
 
 After installation, the CLI is available as:
 
 ```bash
 rating --help
-```
-
-## Running tests
-
-Run the default test suite with:
-
-```bash
-python -m pytest
-```
-
-Coverage reporting requires the dev/test dependencies:
-
-```bash
-python -m pip install -e '.[dev]'
-./with_coverage.sh
-```
-
-System tests are marked with `@pytest.mark.system` and excluded by default. Run them explicitly with:
-
-```bash
-python -m pytest -m system
 ```
 
 ## Running the CLI
