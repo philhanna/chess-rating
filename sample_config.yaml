@@ -13,7 +13,3 @@ Chess:
 FIDE:
   url: https://ratings.fide.com/profile/{self.player}
   defaultUser: 30976537
-
-database:
-  path: /tmp/chess-rating.db
-  enabled: true

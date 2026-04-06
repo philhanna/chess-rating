@@ -7,21 +7,11 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ## [1.5.0] - 2026-03-31
-- Added `rating logging [on|off|status]` to inspect or change persistent history logging from the CLI.
 - Added `rating config` to print the active configuration file path and its contents.
 - Require an explicit source flag (`--uscf`, `--lichess`, `--chess`, or `--fide`) for rating lookups instead of defaulting to USCF.
 - Changed plain-text output from pipe-delimited fields to newline-separated `key=value` lines and omitted unrated canonical categories.
-- Added a persistent `database.enabled` configuration setting with defaults in the sample config and support for preserving YAML comments when toggling it.
 - Hardened the USCF adapter so incomplete or missing section data returns no profile instead of raising parsing errors.
 - Expanded tests and README documentation for the new CLI commands, configuration behavior, and output format.
-
-## [1.4.0] - 2026-03-30
-- Added SQLite-backed rating history persistence using a single `rating_history` table with a `provider` column.
-- Added a persistence port and SQLite adapter so successful CLI runs are recorded without coupling storage logic to the provider adapters.
-- Added the `--dry-run` CLI option to fetch and print ratings without writing to the history database.
-- Extended configuration loading with a default per-user database path and documented the database setting in `sample_config.yaml`.
-- Added tests covering CLI persistence behavior and SQLite history storage.
-- Simplified the CLI help test to avoid the `runpy` warning during pytest runs.
 
 ## [1.3.0] - 2026-03-29
 - Normalized all four rating-source adapters to return a shared domain schema with canonical rating categories, provider metadata, and provider-specific extras.

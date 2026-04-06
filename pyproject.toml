@@ -16,8 +16,7 @@ dependencies = [
     "numpy",
     "platformdirs",
     "PyYAML",
-    "ruamel.yaml",
-    "requests",
+"requests",
 ]
 
 [project.optional-dependencies]
