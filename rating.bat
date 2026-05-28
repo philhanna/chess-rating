@@ -3,7 +3,7 @@ setlocal
 
 rem Set this to the directory that contains the chess-rating project.
 set "PROJECT_DIR=%USERPROFILE%\dev\python\chess-rating"
-set "VENV_PYTHON=%PROJECT_DIR%\.venv\Scripts\python.exe"
+set "VENV_PYTHON=%PROJECT_DIR%\venv\Scripts\python.exe"
 
 if not exist "%VENV_PYTHON%" (
     echo Could not find virtualenv Python at "%VENV_PYTHON%".
