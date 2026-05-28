@@ -15,8 +15,8 @@ dependencies = [
     "beautifulsoup4",
     "numpy",
     "platformdirs",
-    "PyYAML",
-"requests",
+    "python-dotenv",
+    "requests",
 ]
 
 [project.optional-dependencies]

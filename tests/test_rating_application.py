@@ -74,7 +74,7 @@ def test_to_pipe_verbose_includes_source_url():
 
 
 class _FakeLoader:
-    filename = str(Path("test-config.yaml"))
+    filename = str(Path(".env"))
 
     def __init__(self, *_args, **_kwargs):
         self.filename = self.__class__.filename
@@ -87,7 +87,7 @@ class _FakeLoader:
 
     @classmethod
     def reset(cls):
-        cls.filename = str(Path("test-config.yaml"))
+        cls.filename = str(Path(".env"))
 
 
 class _FakeHttpClient:
@@ -269,8 +269,8 @@ def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
 
 def test_main_config_prints_filename_and_contents(monkeypatch, capsys, tmp_path):
     _FakeLoader.reset()
-    config_file = tmp_path / "config.yaml"
-    config_file.write_text("USCF:\n  defaultUser: sample-player\n", encoding="utf-8")
+    config_file = tmp_path / ".env"
+    config_file.write_text("USCF_DEFAULT_USER=sample-player\n", encoding="utf-8")
     _FakeLoader.filename = str(config_file)
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr("sys.argv", ["rating", "config"])
@@ -278,7 +278,7 @@ def test_main_config_prints_filename_and_contents(monkeypatch, capsys, tmp_path)
     rating.main()
 
     assert capsys.readouterr().out == (
-        f"{config_file}\nUSCF:\n  defaultUser: sample-player\n"
+        f"{config_file}\nUSCF_DEFAULT_USER=sample-player\n"
     )
 
 

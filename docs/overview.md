@@ -14,7 +14,7 @@ Hexagonal (ports and adapters):
 - `rating/domain/models.py` — provider-independent domain models (`NormalizedRatingProfile`, `PlayerIdentity`, `RatingMetadata`) and helpers (`build_ratings`, `normalize_rating_value`, `to_snake_case`)
 - `rating/application/rating.py` — CLI composition root; wires up adapters via argparse
 - `rating/__main__.py` — thin wrapper that preserves `python -m rating`
-- `rating/config_loader.py` — loads the user's `config.yaml` from the platform-specific config directory, with `sample_config.yaml` as the example template
+- `rating/config_loader.py` — loads the user's `.env` file from the platform-specific config directory, with `sample.env` as the example template
 
 ## Documentation
 - `docs/overview.md` — high-level project notes and test workflow
@@ -54,7 +54,7 @@ The pytest defaults live in `[tool.pytest.ini_options]` in `pyproject.toml`.
 - `tests/uscf_functions.py` is a Python port of the legacy US Chess helper logic used by the tests
 
 ## Dependencies
-- Runtime: `requests`, `beautifulsoup4`, `numpy`, `platformdirs`, `PyYAML`
+- Runtime: `requests`, `beautifulsoup4`, `numpy`, `platformdirs`, `python-dotenv`
 - Dev/test extra: `pytest`, `pytest-cov`, `coverage`
 - Install runtime package: `pip install .`
 - Install with dev tools: `pip install .[dev]`

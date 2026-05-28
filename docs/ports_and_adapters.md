@@ -175,8 +175,8 @@ is not itself a port, but it is part of the outer application layer.
 
 Its job is to:
 
-- find the platform-specific `config.yaml` location with `platformdirs`
-- load YAML configuration for default per-provider users
+- find the platform-specific `.env` location with `platformdirs`
+- load dotenv configuration for default per-provider users
 - expose both the resolved filename and parsed config object to the CLI
 
 This keeps config lookup separate from provider adapters and from the domain

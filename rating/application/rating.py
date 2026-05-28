@@ -116,14 +116,15 @@ def main() -> None:
     4. Print either the raw adapter output, JSON-converted output, or a helpful
        "not found" message when the adapter returns no data.
     """
-    loader = ConfigLoader()
-    config = loader.config
     argv = sys.argv[1:]
     if argv and argv[0] == "config":
+        loader = ConfigLoader()
         _handle_config_command(argv[1:], loader)
         return
 
     args = _build_fetch_parser().parse_args(argv)
+    loader = ConfigLoader()
+    config = loader.config
 
     # The HTTP adapter is shared by all platform clients. Keeping the concrete
     # transport creation here lets the individual rating adapters stay focused

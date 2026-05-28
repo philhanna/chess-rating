@@ -25,12 +25,21 @@ On Windows PowerShell use:
 .venv\Scripts\Activate.ps1
 ```
 
-Copy the sample configuration `sample_config.yaml` into the configuration
-directory for your platform as `config.yaml`:
+Copy the sample environment file `sample.env` into the configuration
+directory for your platform as `.env`:
 
-- Linux: `~/.config/chess-rating/config.yaml`
-- macOS: `~/Library/Application Support/chess-rating/config.yaml`
-- Windows: `%APPDATA%\chess-rating\config.yaml`
+- Linux: `~/.config/chess-rating/.env`
+- macOS: `~/Library/Application Support/chess-rating/.env`
+- Windows: `%APPDATA%\chess-rating\.env`
+
+The file uses standard dotenv syntax:
+
+```dotenv
+LICHESS_DEFAULT_USER=pehanna
+USCF_DEFAULT_USER=12910923
+CHESS_DEFAULT_USER=pehanna7
+FIDE_DEFAULT_USER=30976537
+```
 
 Install the package and its runtime dependencies with:
 
