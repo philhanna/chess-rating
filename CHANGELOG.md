@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-05-27
+- Added a primary rating key to normalized rating profiles and updated the CLI to print the primary rating.
+- Added a verbose flag to the CLI, with output suppressed by default.
+- Removed the `--version` CLI option.
+- Dropped database support.
+- Cleaned up outdated planning documents and refreshed README/architecture docs.
+
 ## [1.5.0] - 2026-03-31
 - Added `rating config` to print the active configuration file path and its contents.
 - Require an explicit source flag (`--uscf`, `--lichess`, `--chess`, or `--fide`) for rating lookups instead of defaulting to USCF.
