@@ -29,3 +29,11 @@ class RatingPort(ABC):
             A provider-independent rating profile on success, or ``None`` when
             the provider cannot supply usable data.
         """
+
+    @abstractmethod
+    def getPrimaryRatingKey(self) -> str:
+        """
+        Return the key of the entry in NormalizedRatingProfile.ratings dict
+        that contains the primary rating of interest
+        """
+        

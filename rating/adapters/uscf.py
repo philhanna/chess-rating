@@ -58,7 +58,9 @@ class USCF(RatingPort):
     def get_url(self) -> str:
         """Build the USCF endpoint, escaping the player identifier for URLs."""
         player_encoded = urllib.parse.quote_plus(self.player)
-        return f"https://ratings-api.uschess.org/api/v1/members/{player_encoded}/sections"
+        return (
+            f"https://ratings-api.uschess.org/api/v1/members/{player_encoded}/sections"
+        )
 
     def parse_content(self, json_string: str) -> NormalizedRatingProfile:
         """Extract the latest section end date and post-rating from the payload.
@@ -96,3 +98,6 @@ class USCF(RatingPort):
             ratings=build_ratings(standard=normalize_rating_value(rating)),
             metadata=RatingMetadata(as_of=date, source_url=self.get_url()),
         )
+
+    def getPrimaryRatingKey(self):
+        return "standard"

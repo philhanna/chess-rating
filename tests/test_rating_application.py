@@ -54,6 +54,15 @@ def test_to_pipe_renders_canonical_fields_extras_and_as_of():
     assert "blitz=1400" in result
     assert "puzzle=2000" in result
     assert "as_of=2026-03-30" in result
+    assert "source_url=" not in result
+
+
+def test_to_pipe_verbose_includes_source_url():
+    profile = _make_profile()
+
+    result = rating._to_pipe(profile, verbose=True)
+
+    assert "source_url=https://example.com/profile" in result
 
 
 class _FakeLoader:

@@ -30,7 +30,7 @@ def _to_json(profile: NormalizedRatingProfile) -> str:
     return json.dumps(profile.to_dict(), indent=4)
 
 
-def _to_pipe(profile: NormalizedRatingProfile) -> str:
+def _to_pipe(profile: NormalizedRatingProfile, verbose: bool = False) -> str:
     """Render a normalized rating profile in the CLI's plain-text format."""
     parts = [
         f"provider={profile.provider}",
@@ -51,6 +51,9 @@ def _to_pipe(profile: NormalizedRatingProfile) -> str:
     if profile.metadata.as_of is not None:
         parts.append(f"as_of={profile.metadata.as_of}")
 
+    if verbose and profile.metadata.source_url is not None:
+        parts.append(f"source_url={profile.metadata.source_url}")
+
     return "\n".join(parts)
 
 
@@ -69,6 +72,12 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("player", nargs="?", default=None, help="The player's ID or name.")
     parser.add_argument("-j", "--json", action="store_true", help="Create JSON output")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Include additional metadata (e.g. source URL) in plain-text output",
+    )
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
@@ -144,7 +153,7 @@ def main() -> None:
         if args.json:
             print(_to_json(profile))
         else:
-            print(_to_pipe(profile))
+            print(_to_pipe(profile, args.verbose))
 
 
 if __name__ == "__main__":

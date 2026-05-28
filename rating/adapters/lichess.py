@@ -99,3 +99,6 @@ class Lichess(RatingPort):
             extras=extras,
             metadata=RatingMetadata(source_url=self.get_url()),
         )
+
+    def getPrimaryRatingKey(self):
+        return "standard"

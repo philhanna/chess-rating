@@ -111,3 +111,6 @@ class FIDE(RatingPort):
             extras=raw_ratings,
             metadata=RatingMetadata(source_url=self.get_url()),
         )
+
+    def getPrimaryRatingKey(self):
+        return "standard"
