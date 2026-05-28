@@ -152,9 +152,10 @@ def main() -> None:
     else:
         if args.json:
             print(_to_json(profile))
-        else:
+        elif args.verbose:
             print(_to_pipe(profile, args.verbose))
-
+        else:
+            print(profile.ratings[app.getPrimaryRatingKey()])
 
 if __name__ == "__main__":
     main()
