@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import pytest
 
@@ -73,7 +74,7 @@ def test_to_pipe_verbose_includes_source_url():
 
 
 class _FakeLoader:
-    filename = "/tmp/test-config.yaml"
+    filename = str(Path("test-config.yaml"))
 
     def __init__(self, *_args, **_kwargs):
         self.filename = self.__class__.filename
@@ -86,7 +87,7 @@ class _FakeLoader:
 
     @classmethod
     def reset(cls):
-        cls.filename = "/tmp/test-config.yaml"
+        cls.filename = str(Path("test-config.yaml"))
 
 
 class _FakeHttpClient:

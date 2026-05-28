@@ -25,8 +25,10 @@ Hexagonal (ports and adapters):
 ## Running Tests
 ```bash
 pytest                  # unit tests only (system tests excluded by default)
-./with_coverage.sh      # python -m pytest -v --cov=rating
+python with_coverage.py # cross-platform coverage helper
 ```
+
+On Unix-like systems, `./with_coverage.sh` remains available as a thin wrapper.
 
 Coverage requires the dev/test dependencies to be installed first:
 ```bash
@@ -48,7 +50,7 @@ The pytest defaults live in `[tool.pytest.ini_options]` in `pyproject.toml`.
 - `tests/test_http_get.py` — unit tests for `RequestsHttpAdapter` (success, HTTP error, network error, timeout)
 - `tests/test_config_loader.py` — unit tests for `config_loader`
 - `tests/test_rating_application.py` — unit tests for the CLI composition root
-- `tests/test_live.py` — system tests (marked `@pytest.mark.system`) that invoke `python -m rating` as a subprocess
+- `tests/test_live.py` — system tests (marked `@pytest.mark.system`) that invoke the current Python interpreter as a subprocess
 - `tests/uscf_functions.py` is a Python port of the legacy US Chess helper logic used by the tests
 
 ## Dependencies

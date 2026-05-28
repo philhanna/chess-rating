@@ -7,4 +7,4 @@ if [ ! -x "${PYTHON_BIN}" ]; then
     PYTHON_BIN="python"
 fi
 
-"${PYTHON_BIN}" -m pytest -v --cov=rating
+"${PYTHON_BIN}" "${SCRIPT_DIR}/with_coverage.py"

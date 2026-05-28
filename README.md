@@ -11,11 +11,26 @@ then create a Python virtual environment in which to run it:
 git clone git@github.com:philhanna/chess-rating.git
 cd chess-rating
 python -m venv .venv
+```
+
+Activate the environment:
+
+```bash
 source .venv/bin/activate
 ```
 
+On Windows PowerShell use:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
 Copy the sample configuration `sample_config.yaml` into the configuration
-directory `~/.config/chess-rating` as `config.yaml`
+directory for your platform as `config.yaml`:
+
+- Linux: `~/.config/chess-rating/config.yaml`
+- macOS: `~/Library/Application Support/chess-rating/config.yaml`
+- Windows: `%APPDATA%\chess-rating\config.yaml`
 
 Install the package and its runtime dependencies with:
 
@@ -24,16 +39,16 @@ python -m pip install -e .
 ```
 _note the "." after the -e option!_
 
-Make a link to the command line interface into a directory in your path:
-
-```bash
-ln .venv/bin/rating path/to/bin/rating
-```
-
 After installation, the CLI is available as:
 
 ```bash
 rating --help
+```
+
+On Windows, if your shell has not refreshed its `PATH` yet, you can also run:
+
+```powershell
+.venv\Scripts\rating.exe --help
 ```
 
 ## Running the CLI
