@@ -11,11 +11,18 @@ from rating.domain.models import (
 )
 
 
-def _make_profile(provider="uscf", player_id="player1", display_name="Player One"):
+def _make_profile(
+    provider="uscf",
+    player_id="player1",
+    display_name="Player One",
+    ratings=None,
+):
+    if ratings is None:
+        ratings = build_ratings(standard=1500, blitz=1400)
     return NormalizedRatingProfile(
         provider=provider,
         player=PlayerIdentity(id=player_id, display_name=display_name),
-        ratings=build_ratings(standard=1500, blitz=1400),
+        ratings=ratings,
         extras={"puzzle": 2000},
         metadata=RatingMetadata(as_of="2026-03-30", source_url="https://example.com/profile"),
     )
@@ -112,6 +119,9 @@ def test_main_selects_uscf_and_uses_plain_output(monkeypatch, capsys):
         def fetch(self):
             return profile
 
+        def getPrimaryRatingKey(self):
+            return "standard"
+
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
     monkeypatch.setattr(rating, "USCF", FakeUSCF)
@@ -125,8 +135,39 @@ def test_main_selects_uscf_and_uses_plain_output(monkeypatch, capsys):
     output = capsys.readouterr().out.strip()
     assert created["player"] == "uscf-default"
     assert isinstance(created["http_client"], _FakeHttpClient)
+    assert output == "1500"
+
+
+def test_main_uscf_verbose_renders_full_pipe(monkeypatch, capsys):
+    profile = _make_profile(provider="uscf", player_id="uscf-default", display_name="uscf-default")
+    _FakeLoader.reset()
+
+    class FakeUSCF:
+        def __init__(self, player, http_client):
+            pass
+
+        def fetch(self):
+            return profile
+
+        def getPrimaryRatingKey(self):
+            return "standard"
+
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "USCF", FakeUSCF)
+    monkeypatch.setattr(rating, "Lichess", object)
+    monkeypatch.setattr(rating, "ChessCom", object)
+    monkeypatch.setattr(rating, "FIDE", object)
+    monkeypatch.setattr("sys.argv", ["rating", "--uscf", "--verbose"])
+
+    rating.main()
+
+    output = capsys.readouterr().out
     assert "provider=uscf" in output
     assert "player_id=uscf-default" in output
+    assert "standard=1500" in output
+    assert "as_of=2026-03-30" in output
+    assert "source_url=https://example.com/profile" in output
 
 
 def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
@@ -141,6 +182,9 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
 
         def fetch(self):
             return profile
+
+        def getPrimaryRatingKey(self):
+            return "standard"
 
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
@@ -161,7 +205,12 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
 
 def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
     created = {}
-    profile = _make_profile(provider="chesscom", player_id="chess-default", display_name="chess-default")
+    profile = _make_profile(
+        provider="chesscom",
+        player_id="chess-default",
+        display_name="chess-default",
+        ratings=build_ratings(rapid=1200, blitz=1100),
+    )
     _FakeLoader.reset()
 
     class FakeChessCom:
@@ -171,6 +220,9 @@ def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
 
         def fetch(self):
             return profile
+
+        def getPrimaryRatingKey(self):
+            return "rapid"
 
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
     monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
@@ -184,7 +236,7 @@ def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
 
     output = capsys.readouterr().out.strip()
     assert created["player"] == "chess-default"
-    assert "provider=chesscom" in output
+    assert output == "1200"
 
 
 def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
