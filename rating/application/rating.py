@@ -67,13 +67,6 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        version=f"%(prog)s {version(PACKAGE_NAME)}",
-        help="Show the project version and exit",
-    )
     parser.add_argument("player", nargs="?", default=None, help="The player's ID or name.")
     parser.add_argument("-j", "--json", action="store_true", help="Create JSON output")
 
