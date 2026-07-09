@@ -9,9 +9,12 @@ The current flow is:
 1. the CLI parses arguments and loads default player ids from config
 2. the composition root creates the concrete HTTP adapter
 3. the composition root selects one concrete rating adapter
-4. the rating adapter fetches provider data through `HttpPort`
+4. the rating adapter fetches provider data through `HttpPort` (USCF first
+   resolves a non-numeric `player` argument to a member ID via a fuzzy-search
+   lookup, raising `AmbiguousUSCFPlayerError` if more than one member matches)
 5. the rating adapter maps provider-specific data into a shared domain model
-6. the CLI formats that normalized model as pipe-delimited text or JSON
+6. the CLI prints the profile's primary rating by default, or renders the
+   full profile as pipe-delimited text (`-v`) or JSON (`-j`)
 
 ## Composition Root
 
@@ -24,8 +27,11 @@ That module is responsible for wiring the system together:
 - creates `RequestsHttpAdapter()`
 - chooses one `RatingPort` implementation: `USCF`, `Lichess`, `ChessCom`, or `FIDE`
 - injects the shared HTTP dependency into that adapter
-- calls `fetch()` to obtain a `NormalizedRatingProfile`
-- renders the result as JSON or the project's plain-text output format
+- calls `fetch()` to obtain a `NormalizedRatingProfile`, catching
+  `AmbiguousUSCFPlayerError` to print the candidate list when a USCF name
+  search matches more than one member
+- renders the result as JSON (`-j`), verbose pipe-delimited text (`-v`), or by
+  default just the value at `profile.ratings[app.getPrimaryRatingKey()]`
 
 It also handles the `rating config` subcommand, which prints the active config
 file path and contents.
@@ -94,9 +100,12 @@ Purpose:
 Represents the ability to fetch rating data for one configured player and
 return it in the application's normalized form.
 
-Method:
+Methods:
 
 - `fetch() -> NormalizedRatingProfile | None`
+- `getPrimaryRatingKey() -> str` — the key into
+  `NormalizedRatingProfile.ratings` that holds the provider's headline rating
+  (e.g. `standard` for USCF), used for the CLI's default, non-verbose output
 
 Why it exists:
 The CLI can work with every provider through one shared interface even though
@@ -142,10 +151,15 @@ Each provider adapter implements `RatingPort` and depends on an injected
 
 [`rating/adapters/uscf.py`](/home/saspeh/dev/python/chess-rating/rating/adapters/uscf.py)
 
+- accepts either a numeric USCF member ID or a player name
+- if given a name, resolves it to a member ID via the fuzzy-search endpoint,
+  raising `AmbiguousUSCFPlayerError` (with the candidate list) when more than
+  one member matches
 - builds the USCF sections endpoint
 - fetches JSON through `HttpPort`
 - selects the newest section entry
-- maps the latest post-rating into `NormalizedRatingProfile`
+- maps the latest post-rating into `NormalizedRatingProfile`, using the
+  resolved display name when the lookup started from a name
 
 [`rating/adapters/lichess.py`](/home/saspeh/dev/python/chess-rating/rating/adapters/lichess.py)
 
