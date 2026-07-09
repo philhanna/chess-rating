@@ -8,9 +8,7 @@ rating adapters.
 import argparse
 import json
 import sys
-from importlib.metadata import version
 
-from rating import PACKAGE_NAME
 from rating.adapters.chesscom import ChessCom
 from rating.adapters.fide import FIDE
 from rating.adapters.lichess import Lichess
