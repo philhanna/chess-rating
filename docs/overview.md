@@ -3,18 +3,28 @@
 ## Project Overview
 CLI tool that fetches and prints a player's chess rating from USCF, FIDE, Lichess, or Chess.com.
 
-Run: `rating [-u|-l|-c|-f] [player]`
+Run: `rating [-u|-l|-c|-f] [player] [-j|-v]`
+
+By default the CLI prints just the player's primary rating value. Pass `-v`
+for verbose pipe-delimited output (all ratings plus metadata) or `-j` for
+JSON. For USCF (`-u`), `player` may be a numeric member ID or a name; a name
+is resolved via fuzzy search, and multiple matches raise
+`AmbiguousUSCFPlayerError`, printing the candidate list instead of a rating.
+
+`rating config` prints the active configuration file path and its contents.
 
 ## Architecture
 Hexagonal (ports and adapters):
 
-- `rating/ports/rating_port.py` — abstract `RatingPort` (each platform implements `fetch() -> str`)
+- `rating/ports/rating_port.py` — abstract `RatingPort` (each platform implements `fetch() -> NormalizedRatingProfile | None` and `getPrimaryRatingKey() -> str`)
 - `rating/ports/http_port.py` — abstract `HttpPort` (infrastructure adapter for HTTP)
-- `rating/adapters/` — one file per platform (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) plus `requests_http.py` (the real HTTP adapter)
+- `rating/adapters/` — one file per platform (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) plus `requests_http.py` (the real HTTP adapter); `uscf.py` also resolves player names to member IDs and defines `AmbiguousUSCFPlayerError`
 - `rating/domain/models.py` — provider-independent domain models (`NormalizedRatingProfile`, `PlayerIdentity`, `RatingMetadata`) and helpers (`build_ratings`, `normalize_rating_value`, `to_snake_case`)
 - `rating/application/rating.py` — CLI composition root; wires up adapters via argparse
 - `rating/__main__.py` — thin wrapper that preserves `python -m rating`
 - `rating/config_loader.py` — loads the user's `.env` file from the platform-specific config directory, with `sample.env` as the example template
+
+See `docs/ports_and_adapters.md` for the full dependency picture.
 
 ## Documentation
 - `docs/overview.md` — high-level project notes and test workflow
@@ -51,6 +61,7 @@ The pytest defaults live in `[tool.pytest.ini_options]` in `pyproject.toml`.
 - `tests/test_config_loader.py` — unit tests for `config_loader`
 - `tests/test_rating_application.py` — unit tests for the CLI composition root
 - `tests/test_live.py` — system tests (marked `@pytest.mark.system`) that invoke the current Python interpreter as a subprocess
+- `tests/test_uscf.py` — covers USCF name-to-member-ID resolution and the `AmbiguousUSCFPlayerError` multi-match path, not exercised by system tests
 - `tests/uscf_functions.py` is a Python port of the legacy US Chess helper logic used by the tests
 
 ## Dependencies
@@ -58,4 +69,4 @@ The pytest defaults live in `[tool.pytest.ini_options]` in `pyproject.toml`.
 - Dev/test extra: `pytest`, `pytest-cov`, `coverage`
 - Install runtime package: `pip install .`
 - Install with dev tools: `pip install .[dev]`
-- Virtual environment: `venv/`
+- Virtual environment: `.venv/`
