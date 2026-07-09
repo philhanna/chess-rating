@@ -15,7 +15,7 @@ from rating.adapters.chesscom import ChessCom
 from rating.adapters.fide import FIDE
 from rating.adapters.lichess import Lichess
 from rating.adapters.requests_http import RequestsHttpAdapter
-from rating.adapters.uscf import USCF
+from rating.adapters.uscf import USCF, AmbiguousUSCFPlayerError
 from rating.config_loader import ConfigLoader
 from rating.domain.models import CANONICAL_RATING_KEYS, NormalizedRatingProfile
 
@@ -147,7 +147,15 @@ def main() -> None:
         player = args.player or config["USCF"]["defaultUser"]
         app = USCF(player, http_client)
 
-    profile = app.fetch()
+    try:
+        profile = app.fetch()
+    except AmbiguousUSCFPlayerError as exc:
+        print(f'Multiple USCF members match "{exc.query}":')
+        for candidate in exc.candidates:
+            print(f'  {candidate["id"]}\t{candidate["name"]}\t{candidate["state"]}')
+        print("Rerun with -u <id> using one of the IDs above.")
+        return
+
     if not profile:
         print(f'No ratings found for "{player}"')
     else:

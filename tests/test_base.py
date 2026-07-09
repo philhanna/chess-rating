@@ -10,7 +10,7 @@ def test_fetch_chains_http_and_parse():
     mock_http = Mock(spec=HttpPort)
     mock_http.get.return_value = None
 
-    uscf = USCF("testplayer", mock_http)
+    uscf = USCF("12345678", mock_http)
     result = uscf.fetch()
 
     mock_http.get.assert_called_once_with(uscf.get_url())

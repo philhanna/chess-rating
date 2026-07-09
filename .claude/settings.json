@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import ast; ast.parse\\(open\\('rating/application/rating.py'\\).read\\(\\)\\); ast.parse\\(open\\('rating/adapters/uscf.py'\\).read\\(\\)\\)\")",
+      "Bash(python -m rating.application.rating -u \"Dan Bock\" -v)",
+      "Bash(python -m rating.application.rating -u \"Phil Hanna\" -v)",
+      "Bash(python -m rating.application.rating -u 12910923 -v)",
+      "Bash(python -m rating.application.rating -u \"Nonexistent Zzyzzyx\" -v)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}

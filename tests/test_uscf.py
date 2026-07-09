@@ -2,7 +2,7 @@ import json
 import pytest
 from unittest.mock import Mock
 
-from rating.adapters.uscf import USCF
+from rating.adapters.uscf import USCF, AmbiguousUSCFPlayerError
 from rating.ports.http_port import HttpPort
 
 
@@ -403,12 +403,12 @@ class TestUSCFFetch:
         http_client = Mock(spec=HttpPort)
         http_client.get.return_value = json_content
 
-        uscf = USCF("Test Player", http_client)
+        uscf = USCF("12345678", http_client)
 
         result = uscf.fetch()
 
         assert result.provider == "uscf"
-        assert result.player.id == "Test Player"
+        assert result.player.id == "12345678"
         assert result.ratings["standard"] == 1500
         assert result.metadata.as_of == "2025-02-01"
         assert result.metadata.source_url == uscf.get_url()
@@ -418,9 +418,119 @@ class TestUSCFFetch:
         http_client = Mock(spec=HttpPort)
         http_client.get.return_value = None
 
-        uscf = USCF("Test Player", http_client)
+        uscf = USCF("12345678", http_client)
 
         result = uscf.fetch()
 
         assert result is None
         http_client.get.assert_called_once_with(uscf.get_url())
+
+    def test_fetch_with_numeric_id_never_calls_fuzzy_endpoint(self):
+        json_content = json.dumps({
+            "items": [
+                {
+                    "endDate": "2025-02-01",
+                    "ratingRecords": [
+                        {
+                            "postRating": 1500
+                        }
+                    ]
+                }
+            ]
+        })
+        http_client = Mock(spec=HttpPort)
+        http_client.get.return_value = json_content
+
+        uscf = USCF("12345678", http_client)
+        uscf.fetch()
+
+        called_urls = [call.args[0] for call in http_client.get.call_args_list]
+        assert all("Fuzzy" not in url for url in called_urls)
+
+
+class TestUSCFFetchByName:
+    """Tests for USCF fetch orchestration when given a non-numeric name."""
+
+    def test_fetch_resolves_single_fuzzy_match_then_fetches_sections(self):
+        fuzzy_content = json.dumps({
+            "items": [
+                {"id": "12663913", "firstName": "Dan", "lastName": "Bock", "stateRep": "NC"}
+            ]
+        })
+        sections_content = json.dumps({
+            "items": [
+                {
+                    "endDate": "2025-02-01",
+                    "ratingRecords": [
+                        {
+                            "postRating": 1889
+                        }
+                    ]
+                }
+            ]
+        })
+        http_client = Mock(spec=HttpPort)
+        http_client.get.side_effect = [fuzzy_content, sections_content]
+
+        uscf = USCF("Dan Bock", http_client)
+        result = uscf.fetch()
+
+        assert result.player.id == "12663913"
+        assert result.player.display_name == "Dan Bock"
+        assert result.ratings["standard"] == 1889
+        assert http_client.get.call_args_list[0].args[0] == uscf.get_fuzzy_url("Dan Bock")
+        assert http_client.get.call_args_list[1].args[0] == (
+            "https://ratings-api.uschess.org/api/v1/members/12663913/sections"
+        )
+
+    def test_fetch_returns_none_when_fuzzy_search_has_no_matches(self):
+        http_client = Mock(spec=HttpPort)
+        http_client.get.return_value = json.dumps({"items": []})
+
+        uscf = USCF("Nobody Findable", http_client)
+        result = uscf.fetch()
+
+        assert result is None
+        http_client.get.assert_called_once_with(uscf.get_fuzzy_url("Nobody Findable"))
+
+    def test_fetch_returns_none_when_fuzzy_search_http_call_fails(self):
+        http_client = Mock(spec=HttpPort)
+        http_client.get.return_value = None
+
+        uscf = USCF("Dan Bock", http_client)
+        result = uscf.fetch()
+
+        assert result is None
+
+    def test_fetch_raises_when_fuzzy_search_has_multiple_matches(self):
+        fuzzy_content = json.dumps({
+            "items": [
+                {"id": "12663913", "firstName": "Dan", "lastName": "Bock", "stateRep": "NC"},
+                {"id": "13557564", "firstName": "Daniel", "lastName": "Bockelman", "stateRep": "NY"},
+            ]
+        })
+        http_client = Mock(spec=HttpPort)
+        http_client.get.return_value = fuzzy_content
+
+        uscf = USCF("Dan Bock", http_client)
+
+        with pytest.raises(AmbiguousUSCFPlayerError) as exc_info:
+            uscf.fetch()
+
+        error = exc_info.value
+        assert error.query == "Dan Bock"
+        assert error.candidates == [
+            {"id": "12663913", "name": "Dan Bock", "state": "NC"},
+            {"id": "13557564", "name": "Daniel Bockelman", "state": "NY"},
+        ]
+        # An ambiguous match must not fall through to a sections fetch.
+        assert http_client.get.call_count == 1
+
+
+class TestUSCFGetFuzzyURL:
+    """Tests for USCF fuzzy-search URL generation."""
+
+    def test_get_fuzzy_url_encodes_spaces(self):
+        uscf = USCF("Dan Bock")
+        expected_url = "https://ratings-api.uschess.org/api/v1/members?Fuzzy=Dan+Bock"
+        assert uscf.get_fuzzy_url("Dan Bock") == expected_url
