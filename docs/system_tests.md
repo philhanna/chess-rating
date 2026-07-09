@@ -26,6 +26,12 @@ Each test in `test_live.py` runs the CLI as a subprocess and checks the return c
 | `test_default_uscf` | `python -m rating someplayer` (defaults to USCF) |
 | `test_invalid_option` | `python -m rating someplayer --invalid` (expects non-zero exit) |
 
+Not covered by system tests, but exercised by unit tests instead:
+
+- the `rating config` subcommand (see `test_rating_application.py`)
+- USCF name-to-member-ID resolution via fuzzy search, including the
+  `AmbiguousUSCFPlayerError` multi-match path (see `test_uscf.py`)
+
 ## Adding a new system test
 
 Mark it with `@pytest.mark.system` and use `subprocess.run` to invoke the CLI:
