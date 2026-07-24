@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-07-24
+- Added Windows support, including a `rating.bat` launcher script.
+- Switched configuration loading to `python-dotenv`.
+- Allowed looking up USCF ratings by user name instead of requiring a USCF ID.
+- Added a SQLite adapter for logging rating profiles.
+- Updated architecture, overview, and system test documentation to reflect current CLI behavior.
+- Updated project packaging metadata and removed unused imports.
+
 ## [1.6.0] - 2026-05-27
 - Added a primary rating key to normalized rating profiles and updated the CLI to print the primary rating.
 - Added a verbose flag to the CLI, with output suppressed by default.
