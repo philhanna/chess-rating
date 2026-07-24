@@ -12,6 +12,14 @@ from rating.domain.models import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _disable_profile_logging_from_cli_tests(monkeypatch):
+    """Keep CLI unit tests from writing to the user's real cache directory."""
+    logged_profiles = []
+    monkeypatch.setattr(rating, "log_profile", logged_profiles.append)
+    return logged_profiles
+
+
 def _make_profile(
     provider="uscf",
     player_id="player1",
@@ -107,7 +115,9 @@ def test_main_requires_a_platform_selection(monkeypatch, capsys):
     assert "one of the arguments -u/--uscf -l/--lichess -c/--chess -f/--fide is required" in capsys.readouterr().err
 
 
-def test_main_selects_uscf_and_uses_plain_output(monkeypatch, capsys):
+def test_main_selects_uscf_and_uses_plain_output(
+    monkeypatch, capsys, _disable_profile_logging_from_cli_tests
+):
     created = {}
     profile = _make_profile(provider="uscf", player_id="uscf-default", display_name="uscf-default")
     _FakeLoader.reset()
@@ -136,6 +146,7 @@ def test_main_selects_uscf_and_uses_plain_output(monkeypatch, capsys):
     output = capsys.readouterr().out.strip()
     assert created["player"] == "uscf-default"
     assert isinstance(created["http_client"], _FakeHttpClient)
+    assert _disable_profile_logging_from_cli_tests == [profile]
     assert output == "1500"
 
 

@@ -8,14 +8,17 @@ rating adapters.
 import argparse
 import json
 import sys
+from typing import Optional
 
 from rating.adapters.chesscom import ChessCom
 from rating.adapters.fide import FIDE
 from rating.adapters.lichess import Lichess
 from rating.adapters.requests_http import RequestsHttpAdapter
+from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
 from rating.adapters.uscf import USCF, AmbiguousUSCFPlayerError
 from rating.config_loader import ConfigLoader
 from rating.domain.models import CANONICAL_RATING_KEYS, NormalizedRatingProfile
+from rating.ports.profile_log_port import ProfileLogPort
 
 
 def _format_rating_value(value) -> str:
@@ -157,12 +160,24 @@ def main() -> None:
     if not profile:
         print(f'No ratings found for "{player}"')
     else:
+        log_profile(profile)
         if args.json:
             print(_to_json(profile))
         elif args.verbose:
             print(_to_pipe(profile, args.verbose))
         else:
             print(profile.ratings[app.getPrimaryRatingKey()])
+
+
+def log_profile(
+    profile: NormalizedRatingProfile,
+    profile_log: Optional[ProfileLogPort] = None,
+) -> None:
+    """Record a fetched profile through the configured outbound logging port."""
+    if profile_log is None:
+        profile_log = SQLiteProfileLogAdapter()
+    profile_log.log(profile)
+
 
 if __name__ == "__main__":
     main()
