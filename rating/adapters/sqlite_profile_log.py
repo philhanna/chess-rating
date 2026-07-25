@@ -2,7 +2,7 @@
 
 import sqlite3
 from pathlib import Path
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 
 from rating.domain.models import NormalizedRatingProfile
 from rating.ports.profile_log_port import ProfileLogPort
@@ -17,7 +17,10 @@ class SQLiteProfileLogAdapter(ProfileLogPort):
         self.database_path = Path(database_path).expanduser()
 
     def log(self, profile: NormalizedRatingProfile) -> None:
-        """Write one profile snapshot, creating its database and schema as needed."""
+        """Write one profile snapshot, creating its database and schema as needed.
+
+        Skips writing if the ratings match the player's most recent snapshot.
+        """
         self.database_path.parent.mkdir(parents=True, exist_ok=True)
 
         with sqlite3.connect(str(self.database_path)) as connection:
@@ -30,6 +33,11 @@ class SQLiteProfileLogAdapter(ProfileLogPort):
                 provider_id,
                 profile.player.id,
             )
+
+            new_ratings = {**profile.ratings, **profile.extras}
+            if self._latest_ratings(connection, player_id) == new_ratings:
+                return
+
             snapshot_id = connection.execute(
                 """
                 INSERT INTO profile_snapshots
@@ -135,6 +143,34 @@ class SQLiteProfileLogAdapter(ProfileLogPort):
         ).fetchone()
         assert row is not None
         return row[0]
+
+    @staticmethod
+    def _latest_ratings(
+        connection: sqlite3.Connection, player_id: int
+    ) -> Optional[Dict[str, Optional[int]]]:
+        snapshot_row = connection.execute(
+            """
+            SELECT id
+            FROM profile_snapshots
+            WHERE player_id = ?
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (player_id,),
+        ).fetchone()
+        if snapshot_row is None:
+            return None
+
+        rows = connection.execute(
+            """
+            SELECT c.name, v.value
+            FROM rating_values AS v
+            JOIN rating_categories AS c ON c.id = v.category_id
+            WHERE v.snapshot_id = ?
+            """,
+            (snapshot_row[0],),
+        ).fetchall()
+        return dict(rows)
 
     @staticmethod
     def _get_or_create_category(

@@ -11,11 +11,11 @@ from rating.domain.models import (
 )
 
 
-def _profile(display_name="Player One"):
+def _profile(display_name="Player One", standard=1500):
     return NormalizedRatingProfile(
         provider="lichess",
         player=PlayerIdentity(id="player1", display_name=display_name),
-        ratings=build_ratings(standard=1500, blitz=1400),
+        ratings=build_ratings(standard=standard, blitz=1400),
         extras={"puzzle": 2000},
         metadata=RatingMetadata(
             as_of="2026-03-30",
@@ -100,8 +100,8 @@ def test_repeated_logs_reuse_dimensions_and_create_new_snapshots(tmp_path):
     database = tmp_path / "ratings.db"
     adapter = SQLiteProfileLogAdapter(database)
 
-    adapter.log(_profile("Old Name"))
-    adapter.log(_profile("New Name"))
+    adapter.log(_profile("Old Name", standard=1500))
+    adapter.log(_profile("New Name", standard=1510))
 
     assert _rows(database, "SELECT COUNT(*) FROM providers") == [(1,)]
     assert _rows(database, "SELECT COUNT(*) FROM players") == [(1,)]
@@ -112,6 +112,20 @@ def test_repeated_logs_reuse_dimensions_and_create_new_snapshots(tmp_path):
         database,
         "SELECT display_name FROM profile_snapshots ORDER BY id",
     ) == [("Old Name",), ("New Name",)]
+
+
+def test_repeated_logs_skip_when_ratings_unchanged(tmp_path):
+    database = tmp_path / "ratings.db"
+    adapter = SQLiteProfileLogAdapter(database)
+
+    adapter.log(_profile("Old Name"))
+    adapter.log(_profile("New Name"))
+
+    assert _rows(database, "SELECT COUNT(*) FROM profile_snapshots") == [(1,)]
+    assert _rows(
+        database,
+        "SELECT display_name FROM profile_snapshots",
+    ) == [("Old Name",)]
 
 
 def test_default_database_path_is_under_home_cache(monkeypatch, tmp_path):
