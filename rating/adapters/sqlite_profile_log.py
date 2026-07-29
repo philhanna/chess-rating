@@ -13,7 +13,7 @@ class SQLiteProfileLogAdapter(ProfileLogPort):
 
     def __init__(self, database_path: Optional[Union[str, Path]] = None):
         if database_path is None:
-            database_path = Path.home() / ".cache" / "chess-rating" / "ratings.db"
+            database_path = Path.home() / ".local" / "share" / "chess-rating" / "ratings.db"
         self.database_path = Path(database_path).expanduser()
 
     def log(self, profile: NormalizedRatingProfile) -> None:
