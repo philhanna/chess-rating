@@ -80,6 +80,44 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
         help="Include additional metadata (e.g. source URL) in plain-text output",
     )
 
+    rating_group = parser.add_mutually_exclusive_group()
+    rating_group.add_argument(
+        "--standard",
+        dest="rating_key",
+        action="store_const",
+        const="standard",
+        help="Display the standard rating (default)",
+    )
+    rating_group.add_argument(
+        "--rapid",
+        dest="rating_key",
+        action="store_const",
+        const="rapid",
+        help="Display the rapid rating",
+    )
+    rating_group.add_argument(
+        "--blitz",
+        dest="rating_key",
+        action="store_const",
+        const="blitz",
+        help="Display the blitz rating",
+    )
+    rating_group.add_argument(
+        "--bullet",
+        dest="rating_key",
+        action="store_const",
+        const="bullet",
+        help="Display the bullet rating",
+    )
+    rating_group.add_argument(
+        "--correspondence",
+        dest="rating_key",
+        action="store_const",
+        const="correspondence",
+        help="Display the correspondence rating",
+    )
+    parser.set_defaults(rating_key="standard")
+
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
     group.add_argument("-l", "--lichess", action="store_true", help="Use Lichess platform")
@@ -166,7 +204,7 @@ def main() -> None:
         elif args.verbose:
             print(_to_pipe(profile, args.verbose))
         else:
-            print(profile.ratings[app.getPrimaryRatingKey()])
+            print(_format_rating_value(profile.ratings[args.rating_key]))
 
 
 def log_profile(

@@ -215,13 +215,13 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
     assert output["player"]["id"] == "named-player"
 
 
-def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
+def test_main_defaults_to_standard_rating(monkeypatch, capsys):
     created = {}
     profile = _make_profile(
         provider="chesscom",
         player_id="chess-default",
         display_name="chess-default",
-        ratings=build_ratings(rapid=1200, blitz=1100),
+        ratings=build_ratings(standard=1300, rapid=1200, blitz=1100),
     )
     _FakeLoader.reset()
 
@@ -248,7 +248,74 @@ def test_main_selects_chesscom_with_default_player(monkeypatch, capsys):
 
     output = capsys.readouterr().out.strip()
     assert created["player"] == "chess-default"
-    assert output == "1200"
+    assert output == "1300"
+
+
+@pytest.mark.parametrize(
+    ("option", "expected"),
+    [
+        ("--standard", "1500"),
+        ("--rapid", "1450"),
+        ("--blitz", "1400"),
+        ("--bullet", "1350"),
+        ("--correspondence", "1300"),
+    ],
+)
+def test_main_displays_selected_rating(monkeypatch, capsys, option, expected):
+    profile = _make_profile(
+        provider="lichess",
+        ratings=build_ratings(
+            standard=1500,
+            rapid=1450,
+            blitz=1400,
+            bullet=1350,
+            correspondence=1300,
+        ),
+    )
+    _FakeLoader.reset()
+
+    class FakeLichess:
+        def __init__(self, player, http_client):
+            pass
+
+        def fetch(self):
+            return profile
+
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "Lichess", FakeLichess)
+    monkeypatch.setattr(rating, "USCF", object)
+    monkeypatch.setattr(rating, "ChessCom", object)
+    monkeypatch.setattr(rating, "FIDE", object)
+    monkeypatch.setattr("sys.argv", ["rating", "--lichess", option])
+
+    rating.main()
+
+    assert capsys.readouterr().out.strip() == expected
+
+
+def test_main_formats_an_unrated_selection(monkeypatch, capsys):
+    profile = _make_profile(provider="chesscom", ratings=build_ratings(rapid=1200))
+    _FakeLoader.reset()
+
+    class FakeChessCom:
+        def __init__(self, player, http_client):
+            pass
+
+        def fetch(self):
+            return profile
+
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr(rating, "RequestsHttpAdapter", _FakeHttpClient)
+    monkeypatch.setattr(rating, "ChessCom", FakeChessCom)
+    monkeypatch.setattr(rating, "USCF", object)
+    monkeypatch.setattr(rating, "Lichess", object)
+    monkeypatch.setattr(rating, "FIDE", object)
+    monkeypatch.setattr("sys.argv", ["rating", "--chess", "--bullet"])
+
+    rating.main()
+
+    assert capsys.readouterr().out.strip() == "Not rated"
 
 
 def test_main_selects_fide_and_handles_missing_profile(monkeypatch, capsys):
@@ -303,3 +370,8 @@ def test_main_help_exits_cleanly(monkeypatch, capsys):
     help_output = capsys.readouterr().out
     assert "Fetches and prints a players's chess rating" in help_output
     assert "rating config" in help_output
+    assert "--standard" in help_output
+    assert "--rapid" in help_output
+    assert "--blitz" in help_output
+    assert "--bullet" in help_output
+    assert "--correspondence" in help_output
