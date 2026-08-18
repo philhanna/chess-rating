@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-08-18
+- Added CLI rating type selectors.
+- Defaulted Chess.com output to rapid rating.
+- Changed rating database location.
+- Skipped logging a snapshot when ratings are unchanged.
+- Added a plan for running the project in the browser via Pyodide.
+
 ## [1.7.0] - 2026-07-24
 - Added Windows support, including a `rating.bat` launcher script.
 - Switched configuration loading to `python-dotenv`.
