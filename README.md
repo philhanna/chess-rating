@@ -67,14 +67,15 @@ Use the installed console script:
 ```bash
 rating -u some_uscf_id
 rating -l --rapid some_lichess_user
-rating -c --blitz some_chesscom_user
+rating -c some_chesscom_user
 rating -f some_fide_id
 ```
 
 Choose the rating to print with `--standard`, `--rapid`, `--blitz`,
 `--bullet`, or `--correspondence`. The options are mutually exclusive, and
-`--standard` is used when none is supplied. If the selected rating is not
-available for the player or platform, the command prints `Not rated`.
+`--standard` is used when none is supplied except for Chess.com, which defaults
+to `--rapid`. If the selected rating is not available for the player or
+platform, the command prints `Not rated`.
 
 The rating selector applies to the normal single-value output. `--json` and
 `--verbose` continue to display the full normalized profile.
@@ -98,8 +99,8 @@ options:
   -j, --json        Create JSON output
   -v, --verbose     Include additional metadata (e.g. source URL) in plain-
                     text output
-  --standard        Display the standard rating (default)
-  --rapid           Display the rapid rating
+  --standard        Display the standard rating (default except for Chess.com)
+  --rapid           Display the rapid rating (default for Chess.com)
   --blitz           Display the blitz rating
   --bullet          Display the bullet rating
   --correspondence  Display the correspondence rating

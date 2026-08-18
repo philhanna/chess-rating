@@ -215,7 +215,7 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
     assert output["player"]["id"] == "named-player"
 
 
-def test_main_defaults_to_standard_rating(monkeypatch, capsys):
+def test_main_defaults_to_rapid_rating_for_chesscom(monkeypatch, capsys):
     created = {}
     profile = _make_profile(
         provider="chesscom",
@@ -248,7 +248,7 @@ def test_main_defaults_to_standard_rating(monkeypatch, capsys):
 
     output = capsys.readouterr().out.strip()
     assert created["player"] == "chess-default"
-    assert output == "1300"
+    assert output == "1200"
 
 
 @pytest.mark.parametrize(
@@ -375,3 +375,5 @@ def test_main_help_exits_cleanly(monkeypatch, capsys):
     assert "--blitz" in help_output
     assert "--bullet" in help_output
     assert "--correspondence" in help_output
+    assert "default except for Chess.com" in help_output
+    assert "default for Chess.com" in help_output

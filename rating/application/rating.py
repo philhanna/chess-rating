@@ -86,14 +86,14 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
         dest="rating_key",
         action="store_const",
         const="standard",
-        help="Display the standard rating (default)",
+        help="Display the standard rating (default except for Chess.com)",
     )
     rating_group.add_argument(
         "--rapid",
         dest="rating_key",
         action="store_const",
         const="rapid",
-        help="Display the rapid rating",
+        help="Display the rapid rating (default for Chess.com)",
     )
     rating_group.add_argument(
         "--blitz",
@@ -116,8 +116,6 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
         const="correspondence",
         help="Display the correspondence rating",
     )
-    parser.set_defaults(rating_key="standard")
-
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
     group.add_argument("-l", "--lichess", action="store_true", help="Use Lichess platform")
@@ -204,7 +202,8 @@ def main() -> None:
         elif args.verbose:
             print(_to_pipe(profile, args.verbose))
         else:
-            print(_format_rating_value(profile.ratings[args.rating_key]))
+            rating_key = args.rating_key or ("rapid" if args.chess else "standard")
+            print(_format_rating_value(profile.ratings[rating_key]))
 
 
 def log_profile(
