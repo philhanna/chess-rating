@@ -24,6 +24,14 @@ def _disable_profile_logging_from_cli_tests(monkeypatch):
     return logged_profiles
 
 
+@pytest.fixture(autouse=True)
+def _no_graph_popups_in_tests(monkeypatch):
+    """Keep --graph tests from blocking on a real GUI window."""
+    import matplotlib.pyplot as plt
+
+    monkeypatch.setattr(rating, "_show_graph", plt.close)
+
+
 def _make_profile(
     provider="uscf",
     player_id="player1",

@@ -145,10 +145,11 @@ $ rating history pehanna7 -c --category rapid
 2026-09-01 14:28:31	1144
 ```
 
-Add `-g`/`--graph` instead to plot the same history as a line graph and
-save it as a PNG image in the system temp directory
+Add `-g`/`--graph` instead to plot the same history as a line graph, save
+it as a PNG image in the system temp directory
 (`<provider>_<player>_<category>.png` by default, or a custom path via
-`-o`/`--output`):
+`-o`/`--output`), and pop it up in a window if a display is available
+(it falls back to just saving the file when run headless, e.g. from cron):
 ```
 $ rating history pehanna7 -c --category rapid --graph
 Wrote /tmp/chesscom_pehanna7_rapid.png

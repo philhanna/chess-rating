@@ -171,7 +171,8 @@ def _build_history_parser() -> argparse.ArgumentParser:
         "-g",
         "--graph",
         action="store_true",
-        help="Plot the history as a line graph and save it as a PNG image",
+        help="Plot the history as a line graph, save it as a PNG image, and "
+        "pop it up in a window if a display is available",
     )
     parser.add_argument(
         "-o",
@@ -230,10 +231,12 @@ def _handle_history_command(
 def _write_graph(
     rows: list, provider: str, player: str, category: str, output_path: Optional[str]
 ) -> str:
-    """Plot ``rows`` as a line graph and save it as a PNG. Returns the path."""
-    import matplotlib
+    """Plot ``rows`` as a line graph and save it as a PNG. Returns the path.
 
-    matplotlib.use("Agg")
+    Also pops up an interactive window when a GUI backend is available
+    (matplotlib falls back to the non-interactive Agg backend on its own in
+    headless environments like cron, so no window is shown there).
+    """
     import matplotlib.dates as mdates
     import matplotlib.pyplot as plt
 
@@ -254,8 +257,19 @@ def _write_graph(
         tempfile.gettempdir(), f"{provider}_{player}_{category}.png"
     )
     fig.savefig(path)
-    plt.close(fig)
+    _show_graph(fig)
     return path
+
+
+def _show_graph(fig) -> None:
+    """Display ``fig`` in a window, or just close it under a headless backend."""
+    import matplotlib
+    import matplotlib.pyplot as plt
+
+    if matplotlib.get_backend().lower() == "agg":
+        plt.close(fig)
+    else:
+        plt.show()
 
 
 def _parse_when(value: str):
