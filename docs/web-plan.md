@@ -27,9 +27,8 @@ See [ports_and_adapters.md](ports_and_adapters.md). Relevant for this plan:
 - `ConfigLoader` reads a `.env` file from a `platformdirs` OS config
   directory.
 - `SQLiteProfileLogAdapter` writes to a local file
-  (`~/.local/share/chess-rating/ratings.db` per current code / README says
-  `~/.cache/...` — reconcile when touching this file) using the stdlib
-  `sqlite3` module.
+  (`~/.local/share/chess-rating/ratings.db`) using the stdlib `sqlite3`
+  module.
 - Provider adapters (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) hard-code
   their base URLs as f-strings and call `requests`/BeautifulSoup indirectly
   through `HttpPort`.

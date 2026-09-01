@@ -91,8 +91,12 @@ usage: rating [-h] [-j] [-v]
 
 Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.com.
 
+Special commands:
+  rating config
+    Print the active configuration file path and its contents.
+
 positional arguments:
-  player         The player's ID or name.
+  player            The player's ID or name.
 
 options:
   -h, --help        show this help message and exit
@@ -114,8 +118,11 @@ One source flag is required for rating lookups. For example, use `rating --uscf 
 rather than relying on an implicit default source.
 
 Every successful lookup is also recorded in
-`~/.cache/chess-rating/ratings.db`. The SQLite database is created
+`~/.local/share/chess-rating/ratings.db`. The SQLite database is created
 automatically and stores each lookup as a new historical snapshot.
+
+Run `rating config` to print the active configuration file's path and its
+contents.
 
 ## Chess.com
 Data from chess.com is obtained using this URL:

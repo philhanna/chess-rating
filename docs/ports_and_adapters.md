@@ -32,9 +32,11 @@ That module is responsible for wiring the system together:
   `AmbiguousUSCFPlayerError` to print the candidate list when a USCF name
   search matches more than one member
 - creates `SQLiteProfileLogAdapter()` and records successful fetches in
-  `~/.cache/chess-rating/ratings.db`
+  `~/.local/share/chess-rating/ratings.db`
 - renders the result as JSON (`-j`), verbose pipe-delimited text (`-v`), or by
-  default just the value at `profile.ratings[app.getPrimaryRatingKey()]`
+  default just the value at `profile.ratings[rating_key]`, where `rating_key`
+  comes from the `--standard`/`--rapid`/`--blitz`/`--bullet`/`--correspondence`
+  flags, defaulting to `standard` (`rapid` for Chess.com when no flag is given)
 
 It also handles the `rating config` subcommand, which prints the active config
 file path and contents.
@@ -81,7 +83,7 @@ ProfileLogPort
 SQLiteProfileLogAdapter
     |
     v
-~/.cache/chess-rating/ratings.db
+~/.local/share/chess-rating/ratings.db
 ```
 
 ## Ports
@@ -116,7 +118,13 @@ Methods:
 - `fetch() -> NormalizedRatingProfile | None`
 - `getPrimaryRatingKey() -> str` — the key into
   `NormalizedRatingProfile.ratings` that holds the provider's headline rating
-  (e.g. `standard` for USCF), used for the CLI's default, non-verbose output
+  (e.g. `standard` for USCF). Every adapter still implements this as part of
+  the port contract, but the composition root no longer calls it: the CLI's
+  default, non-verbose output now picks its rating key from the
+  `--standard`/`--rapid`/`--blitz`/`--bullet`/`--correspondence` flags (see
+  `_build_fetch_parser` and `main()` in
+  [`rating/application/rating.py`](/home/saspeh/dev/python/chess-rating/rating/application/rating.py)),
+  defaulting to `standard` except for Chess.com, which defaults to `rapid`.
 
 Why it exists:
 The CLI can work with every provider through one shared interface even though
@@ -214,7 +222,7 @@ Each provider adapter implements `RatingPort` and depends on an injected
 [`rating/adapters/sqlite_profile_log.py`](/home/saspeh/dev/python/chess-rating/rating/adapters/sqlite_profile_log.py)
 
 - implements `ProfileLogPort`
-- creates `~/.cache/chess-rating/ratings.db` and its schema on first use
+- creates `~/.local/share/chess-rating/ratings.db` and its schema on first use
 - separates providers, players, rating categories, snapshots, and rating
   values into normalized tables
 - retains null ratings and changing display names in each historical snapshot

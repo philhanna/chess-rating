@@ -16,7 +16,7 @@ is resolved via fuzzy search, and multiple matches raise
 ## Architecture
 Hexagonal (ports and adapters):
 
-- `rating/ports/rating_port.py` — abstract `RatingPort` (each platform implements `fetch() -> NormalizedRatingProfile | None` and `getPrimaryRatingKey() -> str`)
+- `rating/ports/rating_port.py` — abstract `RatingPort` (each platform implements `fetch() -> NormalizedRatingProfile | None` and `getPrimaryRatingKey() -> str`, though the CLI now picks its default rating key from the `--standard`/`--rapid`/etc. flags rather than calling `getPrimaryRatingKey()`)
 - `rating/ports/http_port.py` — abstract `HttpPort` (infrastructure adapter for HTTP)
 - `rating/adapters/` — one file per platform (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) plus `requests_http.py` (the real HTTP adapter); `uscf.py` also resolves player names to member IDs and defines `AmbiguousUSCFPlayerError`
 - `rating/domain/models.py` — provider-independent domain models (`NormalizedRatingProfile`, `PlayerIdentity`, `RatingMetadata`) and helpers (`build_ratings`, `normalize_rating_value`, `to_snake_case`)

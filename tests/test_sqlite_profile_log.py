@@ -128,13 +128,13 @@ def test_repeated_logs_skip_when_ratings_unchanged(tmp_path):
     ) == [("Old Name",)]
 
 
-def test_default_database_path_is_under_home_cache(monkeypatch, tmp_path):
+def test_default_database_path_is_under_home_local_share(monkeypatch, tmp_path):
     monkeypatch.setattr(Path, "home", classmethod(lambda cls: tmp_path))
 
     adapter = SQLiteProfileLogAdapter()
     adapter.log(_profile())
 
     assert adapter.database_path == (
-        tmp_path / ".cache" / "chess-rating" / "ratings.db"
+        tmp_path / ".local" / "share" / "chess-rating" / "ratings.db"
     )
     assert adapter.database_path.is_file()
