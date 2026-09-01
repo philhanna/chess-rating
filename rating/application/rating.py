@@ -241,7 +241,7 @@ def _write_graph(
     values = [float("nan") if value is None else value for _, value in rows]
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(dates, values, marker="o", linewidth=1.5, markersize=3)
+    (line,) = ax.plot(dates, values, marker="o", linewidth=1.5, markersize=3)
     ax.set_title(f"{provider} {category} rating history for {player}")
     ax.set_xlabel("Date")
     ax.set_ylabel("Rating")
@@ -254,19 +254,59 @@ def _write_graph(
         tempfile.gettempdir(), f"{provider}_{player}_{category}.png"
     )
     fig.savefig(path)
-    _show_graph(fig)
+    _show_graph(fig, ax, line, dates, values, category)
     return path
 
 
-def _show_graph(fig) -> None:
-    """Display ``fig`` in a window, or just close it under a headless backend."""
+def _show_graph(fig, ax, line, dates: list, values: list, category: str) -> None:
+    """Display ``fig`` in a window with a hover tooltip, or just close it
+    under a headless backend."""
     import matplotlib
     import matplotlib.pyplot as plt
 
     if matplotlib.get_backend().lower() == "agg":
         plt.close(fig)
     else:
+        _add_hover_tooltip(ax, line, dates, values, category)
         plt.show()
+
+
+def _add_hover_tooltip(ax, line, dates: list, values: list, category: str) -> None:
+    """Show the date and rating value in a tooltip when hovering over a point."""
+    annotation = ax.annotate(
+        "",
+        xy=(0, 0),
+        xytext=(15, 15),
+        textcoords="offset points",
+        bbox={"boxstyle": "round", "fc": "w"},
+        arrowprops={"arrowstyle": "->"},
+    )
+    annotation.set_visible(False)
+
+    def hide_annotation():
+        if annotation.get_visible():
+            annotation.set_visible(False)
+            ax.figure.canvas.draw_idle()
+
+    def on_move(event):
+        if event.inaxes != ax:
+            hide_annotation()
+            return
+
+        contains, details = line.contains(event)
+        if not contains:
+            hide_annotation()
+            return
+
+        index = details["ind"][0]
+        value = values[index]
+        rating_text = "Not rated" if value != value else str(int(value))
+        annotation.xy = (line.get_xdata()[index], line.get_ydata()[index])
+        annotation.set_text(f"{dates[index]:%Y-%m-%d}\n{category}: {rating_text}")
+        annotation.set_visible(True)
+        ax.figure.canvas.draw_idle()
+
+    ax.figure.canvas.mpl_connect("motion_notify_event", on_move)
 
 
 def _parse_when(value: str):

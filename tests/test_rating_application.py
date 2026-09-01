@@ -29,7 +29,7 @@ def _no_graph_popups_in_tests(monkeypatch):
     """Keep history-graph tests from blocking on a real GUI window."""
     import matplotlib.pyplot as plt
 
-    monkeypatch.setattr(rating, "_show_graph", plt.close)
+    monkeypatch.setattr(rating, "_show_graph", lambda fig, *args, **kwargs: plt.close(fig))
 
 
 def _make_profile(
@@ -496,6 +496,79 @@ def test_main_history_reports_when_nothing_is_logged(monkeypatch, capsys, tmp_pa
 
     output = capsys.readouterr().out.strip()
     assert output == 'No "standard" history found for uscf player "nobody"'
+
+
+def _hover_callback(fig):
+    """Retrieve the motion_notify_event callback most recently connected to fig."""
+    registry = fig.canvas.callbacks.callbacks["motion_notify_event"]
+    cid = list(registry)[-1]
+    return registry[cid]()
+
+
+def test_hover_tooltip_shows_date_and_rating_for_the_hovered_point(monkeypatch):
+    from datetime import datetime
+    from types import SimpleNamespace
+
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots()
+    dates = [datetime(2026, 3, 30), datetime(2026, 4, 1)]
+    values = [1500, 1550]
+    (line,) = ax.plot(dates, values)
+    rating._add_hover_tooltip(ax, line, dates, values, "blitz")
+    monkeypatch.setattr(line, "contains", lambda event: (True, {"ind": [1]}))
+
+    _hover_callback(fig)(SimpleNamespace(inaxes=ax))
+
+    annotation = ax.texts[-1]
+    assert annotation.get_visible()
+    assert annotation.get_text() == "2026-04-01\nblitz: 1550"
+    plt.close(fig)
+
+
+def test_hover_tooltip_shows_not_rated_for_a_missing_value(monkeypatch):
+    from datetime import datetime
+    from types import SimpleNamespace
+
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots()
+    dates = [datetime(2026, 3, 30)]
+    values = [float("nan")]
+    (line,) = ax.plot(dates, values)
+    rating._add_hover_tooltip(ax, line, dates, values, "standard")
+    monkeypatch.setattr(line, "contains", lambda event: (True, {"ind": [0]}))
+
+    _hover_callback(fig)(SimpleNamespace(inaxes=ax))
+
+    assert ax.texts[-1].get_text() == "2026-03-30\nstandard: Not rated"
+    plt.close(fig)
+
+
+def test_hover_tooltip_hides_when_pointer_leaves_a_point_or_the_axes(monkeypatch):
+    from datetime import datetime
+    from types import SimpleNamespace
+
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots()
+    dates = [datetime(2026, 3, 30)]
+    values = [1500]
+    (line,) = ax.plot(dates, values)
+    rating._add_hover_tooltip(ax, line, dates, values, "standard")
+    callback = _hover_callback(fig)
+
+    monkeypatch.setattr(line, "contains", lambda event: (True, {"ind": [0]}))
+    callback(SimpleNamespace(inaxes=ax))
+    assert ax.texts[-1].get_visible()
+
+    monkeypatch.setattr(line, "contains", lambda event: (False, {}))
+    callback(SimpleNamespace(inaxes=ax))
+    assert not ax.texts[-1].get_visible()
+
+    callback(SimpleNamespace(inaxes=None))
+    assert not ax.texts[-1].get_visible()
+    plt.close(fig)
 
 
 def test_parse_when_handles_date_and_timestamp_formats():
