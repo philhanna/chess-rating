@@ -68,9 +68,10 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
             "Special commands:\n"
             "  rating config\n"
             "    Print the active configuration file path and its contents.\n"
-            "  rating history [player] -u|-l|-c|-f [--category NAME]\n"
-            "    Print a player's logged rating history for one category.\n"
-            "    Uses the platform's configured default player if omitted."
+            "  rating history [player] -u|-l|-c|-f [--category NAME] [-g|-j]\n"
+            "    Print a player's logged rating history for one category, or\n"
+            "    plot it as a line graph PNG with --graph. Uses the\n"
+            "    platform's configured default player if omitted."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -162,7 +163,20 @@ def _build_history_parser() -> argparse.ArgumentParser:
         default=None,
         help="Rating category to show (default: standard, or rapid for Chess.com)",
     )
-    parser.add_argument("-j", "--json", action="store_true", help="Create JSON output")
+    output_group = parser.add_mutually_exclusive_group()
+    output_group.add_argument("-j", "--json", action="store_true", help="Create JSON output")
+    output_group.add_argument(
+        "-g",
+        "--graph",
+        action="store_true",
+        help="Plot the history as a line graph and save it as a PNG image",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        default=None,
+        help="Output path for --graph (default: <provider>_<player>_<category>.png)",
+    )
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
@@ -201,11 +215,59 @@ def _handle_history_command(
         print(f'No "{category}" history found for {provider} player "{player}"')
         return
 
-    if args.json:
+    if args.graph:
+        path = _write_graph(rows, provider, player, category, args.output)
+        print(f"Wrote {path}")
+    elif args.json:
         print(json.dumps([{"as_of": when, "value": value} for when, value in rows], indent=4))
     else:
         for when, value in rows:
             print(f"{when}\t{_format_rating_value(value)}")
+
+
+def _write_graph(
+    rows: list, provider: str, player: str, category: str, output_path: Optional[str]
+) -> str:
+    """Plot ``rows`` as a line graph and save it as a PNG. Returns the path."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.dates as mdates
+    import matplotlib.pyplot as plt
+
+    dates = [_parse_when(when) for when, _ in rows]
+    values = [float("nan") if value is None else value for _, value in rows]
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(dates, values, marker="o", linewidth=1.5, markersize=3)
+    ax.set_title(f"{provider} {category} rating history for {player}")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Rating")
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+    ax.grid(True, alpha=0.3)
+    fig.autofmt_xdate()
+    fig.tight_layout()
+
+    path = output_path or f"{provider}_{player}_{category}.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def _parse_when(value: str):
+    """Parse a ``history()`` timestamp string into a ``datetime``.
+
+    Rows carry either a bare date (USCF's ``as_of``) or a full logged-at
+    timestamp, so both formats must be tried.
+    """
+    from datetime import datetime
+
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(value, fmt)
+        except ValueError:
+            continue
+    raise ValueError(f"Unrecognized timestamp format: {value!r}")
 
 
 def main() -> None:

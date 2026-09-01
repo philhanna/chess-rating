@@ -95,9 +95,10 @@ Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.c
 Special commands:
   rating config
     Print the active configuration file path and its contents.
-  rating history [player] -u|-l|-c|-f [--category NAME]
-    Print a player's logged rating history for one category.
-    Uses the platform's configured default player if omitted.
+  rating history [player] -u|-l|-c|-f [--category NAME] [-g|-j]
+    Print a player's logged rating history for one category, or plot
+    it as a line graph PNG with --graph. Uses the platform's
+    configured default player if omitted.
 
 positional arguments:
   player            The player's ID or name.
@@ -142,6 +143,14 @@ $ rating history pehanna7 -c --category rapid
 2026-08-31 23:45:54	1122
 2026-09-01 00:54:41	1134
 2026-09-01 14:28:31	1144
+```
+
+Add `-g`/`--graph` instead to plot the same history as a line graph and
+save it as a PNG image (`<provider>_<player>_<category>.png` by default,
+or a custom path via `-o`/`--output`):
+```
+$ rating history pehanna7 -c --category rapid --graph
+Wrote chesscom_pehanna7_rapid.png
 ```
 
 ## Chess.com
