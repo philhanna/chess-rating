@@ -87,6 +87,7 @@ def test_to_pipe_verbose_includes_source_url():
 
 class _FakeLoader:
     filename = str(Path(".env"))
+    config_overrides = {}
 
     def __init__(self, *_args, **_kwargs):
         self.filename = self.__class__.filename
@@ -97,10 +98,12 @@ class _FakeLoader:
             "Chess": {"defaultUser": "chess-default"},
             "FIDE": {"defaultUser": "fide-default"},
         }
+        self.config.update(self.__class__.config_overrides)
 
     @classmethod
     def reset(cls):
         cls.filename = str(Path(".env"))
+        cls.config_overrides = {}
 
 
 class _FakeHttpClient:
@@ -365,6 +368,59 @@ def test_main_config_prints_filename_and_contents(monkeypatch, capsys, tmp_path)
     assert capsys.readouterr().out == (
         f"{config_file}\nUSCF_DEFAULT_USER=sample-player\n"
     )
+
+
+def test_main_history_prints_chronological_ratings(monkeypatch, capsys, tmp_path):
+    from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
+
+    database = tmp_path / "ratings.db"
+    adapter = SQLiteProfileLogAdapter(database)
+    adapter.log(_make_profile(provider="lichess", player_id="pehanna"))
+    adapter.log(
+        _make_profile(
+            provider="lichess",
+            player_id="pehanna",
+            ratings=build_ratings(standard=1550, blitz=1400),
+        )
+    )
+    _FakeLoader.reset()
+    _FakeLoader.config_overrides = {"DBFILE": str(database)}
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "history", "pehanna", "--lichess"])
+
+    rating.main()
+
+    lines = capsys.readouterr().out.strip().splitlines()
+    assert lines == ["2026-03-30\t1500", "2026-03-30\t1550"]
+
+
+def test_main_history_uses_configured_default_player_when_omitted(monkeypatch, capsys, tmp_path):
+    from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
+
+    database = tmp_path / "ratings.db"
+    SQLiteProfileLogAdapter(database).log(
+        _make_profile(provider="lichess", player_id="lichess-default")
+    )
+    _FakeLoader.reset()
+    _FakeLoader.config_overrides = {"DBFILE": str(database)}
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "history", "--lichess"])
+
+    rating.main()
+
+    assert capsys.readouterr().out.strip() == "2026-03-30\t1500"
+
+
+def test_main_history_reports_when_nothing_is_logged(monkeypatch, capsys, tmp_path):
+    _FakeLoader.reset()
+    _FakeLoader.config_overrides = {"DBFILE": str(tmp_path / "missing.db")}
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "history", "nobody", "--uscf"])
+
+    rating.main()
+
+    output = capsys.readouterr().out.strip()
+    assert output == 'No "standard" history found for uscf player "nobody"'
 
 
 def test_main_help_exits_cleanly(monkeypatch, capsys):

@@ -136,3 +136,37 @@ def test_database_path_expands_user_directory(monkeypatch, tmp_path):
 
     assert adapter.database_path == tmp_path / ".data" / "ratings.db"
     assert adapter.database_path.is_file()
+
+
+def test_history_returns_chronological_values_for_category(tmp_path):
+    database = tmp_path / "ratings.db"
+    adapter = SQLiteProfileLogAdapter(database)
+    adapter.log(_profile(standard=1500))
+    adapter.log(_profile(standard=1510))
+
+    rows = adapter.history("lichess", "player1", "standard")
+
+    assert rows == [("2026-03-30", 1500), ("2026-03-30", 1510)]
+
+
+def test_history_falls_back_to_logged_at_when_as_of_is_missing(tmp_path):
+    database = tmp_path / "ratings.db"
+    profile = NormalizedRatingProfile(
+        provider="chesscom",
+        player=PlayerIdentity(id="player1", display_name="Player One"),
+        ratings=build_ratings(rapid=1200),
+    )
+    SQLiteProfileLogAdapter(database).log(profile)
+
+    rows = SQLiteProfileLogAdapter(database).history("chesscom", "player1", "rapid")
+
+    assert len(rows) == 1
+    as_of, value = rows[0]
+    assert as_of is not None
+    assert value == 1200
+
+
+def test_history_returns_empty_list_for_unknown_player_or_missing_database(tmp_path):
+    database = tmp_path / "missing.db"
+
+    assert SQLiteProfileLogAdapter(database).history("uscf", "nobody", "standard") == []

@@ -2,7 +2,7 @@
 
 import sqlite3
 from pathlib import Path
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from rating.domain.models import NormalizedRatingProfile
 from rating.ports.profile_log_port import ProfileLogPort
@@ -57,6 +57,35 @@ class SQLiteProfileLogAdapter(ProfileLogPort):
             for name, value in profile.extras.items():
                 category_id = self._get_or_create_category(connection, name, False)
                 self._insert_rating(connection, snapshot_id, category_id, value)
+
+    def history(
+        self, provider: str, external_id: str, category: str
+    ) -> List[Tuple[Optional[str], Optional[int]]]:
+        """Return a player's ``(when, value)`` pairs for one rating category.
+
+        ``when`` is the provider-reported ``as_of`` date if available, else the
+        timestamp this app logged the snapshot. Rows are ordered oldest to
+        newest by snapshot. Returns an empty list if the database, player, or
+        category doesn't exist.
+        """
+        if not self.database_path.exists():
+            return []
+
+        with sqlite3.connect(str(self.database_path)) as connection:
+            rows = connection.execute(
+                """
+                SELECT COALESCE(s.as_of, s.logged_at), v.value
+                FROM profile_snapshots AS s
+                JOIN players AS pl ON pl.id = s.player_id
+                JOIN providers AS pr ON pr.id = pl.provider_id
+                JOIN rating_values AS v ON v.snapshot_id = s.id
+                JOIN rating_categories AS c ON c.id = v.category_id
+                WHERE pr.name = ? AND pl.external_id = ? AND c.name = ?
+                ORDER BY s.id
+                """,
+                (provider, external_id, category),
+            ).fetchall()
+        return rows
 
     @staticmethod
     def _create_schema(connection: sqlite3.Connection) -> None:

@@ -95,6 +95,9 @@ Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.c
 Special commands:
   rating config
     Print the active configuration file path and its contents.
+  rating history [player] -u|-l|-c|-f [--category NAME]
+    Print a player's logged rating history for one category.
+    Uses the platform's configured default player if omitted.
 
 positional arguments:
   player            The player's ID or name.
@@ -125,6 +128,21 @@ snapshot.
 
 Run `rating config` to print the active configuration file's path and its
 contents.
+
+Run `rating history [player] -u|-l|-c|-f [--category NAME]` to print every
+logged snapshot's date and value for one player and rating category,
+oldest first. If `player` is omitted, the platform's configured default
+user is used, same as with a normal lookup. The category defaults to
+`standard` (`rapid` for Chess.com). Add `-j`/`--json` for JSON output.
+For example:
+```
+$ rating history pehanna7 -c --category rapid
+2026-08-31 02:56:51	1116
+2026-08-31 14:46:44	1116
+2026-08-31 23:45:54	1122
+2026-09-01 00:54:41	1134
+2026-09-01 14:28:31	1144
+```
 
 ## Chess.com
 Data from chess.com is obtained using this URL:

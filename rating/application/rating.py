@@ -67,7 +67,10 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
             "Lichess, or Chess.com.\n\n"
             "Special commands:\n"
             "  rating config\n"
-            "    Print the active configuration file path and its contents."
+            "    Print the active configuration file path and its contents.\n"
+            "  rating history [player] -u|-l|-c|-f [--category NAME]\n"
+            "    Print a player's logged rating history for one category.\n"
+            "    Uses the platform's configured default player if omitted."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -141,6 +144,70 @@ def _handle_config_command(argv: list[str], loader: ConfigLoader) -> None:
     print(contents, end="" if not contents or contents.endswith("\n") else "\n")
 
 
+def _build_history_parser() -> argparse.ArgumentParser:
+    """Create the parser for the rating-history report command."""
+    parser = argparse.ArgumentParser(
+        prog="rating history",
+        description="Show a player's rating history over time for one category.",
+    )
+    parser.add_argument(
+        "player",
+        nargs="?",
+        default=None,
+        help="The player's ID as stored in the database (default: the "
+        "configured default user for the selected platform).",
+    )
+    parser.add_argument(
+        "--category",
+        default=None,
+        help="Rating category to show (default: standard, or rapid for Chess.com)",
+    )
+    parser.add_argument("-j", "--json", action="store_true", help="Create JSON output")
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
+    group.add_argument("-l", "--lichess", action="store_true", help="Use Lichess platform")
+    group.add_argument("-c", "--chess", action="store_true", help="Use chess.com platform")
+    group.add_argument("-f", "--fide", action="store_true", help="Use FIDE platform")
+    return parser
+
+
+def _handle_history_command(
+    argv: list[str], config: dict, profile_log: Optional[SQLiteProfileLogAdapter] = None
+) -> None:
+    """Print a player's rating history for one category, then exit."""
+    args = _build_history_parser().parse_args(argv)
+
+    if args.lichess:
+        provider = "lichess"
+        player = args.player or config["lichess"]["defaultUser"]
+    elif args.chess:
+        provider = "chesscom"
+        player = args.player or config["Chess"]["defaultUser"]
+    elif args.fide:
+        provider = "fide"
+        player = args.player or config["FIDE"]["defaultUser"]
+    else:
+        provider = "uscf"
+        player = args.player or config["USCF"]["defaultUser"]
+
+    category = args.category or ("rapid" if args.chess else "standard")
+
+    if profile_log is None:
+        profile_log = SQLiteProfileLogAdapter(config["DBFILE"])
+    rows = profile_log.history(provider, player, category)
+
+    if not rows:
+        print(f'No "{category}" history found for {provider} player "{player}"')
+        return
+
+    if args.json:
+        print(json.dumps([{"as_of": when, "value": value} for when, value in rows], indent=4))
+    else:
+        for when, value in rows:
+            print(f"{when}\t{_format_rating_value(value)}")
+
+
 def main() -> None:
     """Run the CLI and print either rating data or a not-found message.
 
@@ -157,6 +224,11 @@ def main() -> None:
     if argv and argv[0] == "config":
         loader = ConfigLoader()
         _handle_config_command(argv[1:], loader)
+        return
+
+    if argv and argv[0] == "history":
+        loader = ConfigLoader()
+        _handle_history_command(argv[1:], loader.config)
         return
 
     args = _build_fetch_parser().parse_args(argv)
