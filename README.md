@@ -146,11 +146,12 @@ $ rating history pehanna7 -c --category rapid
 ```
 
 Add `-g`/`--graph` instead to plot the same history as a line graph and
-save it as a PNG image (`<provider>_<player>_<category>.png` by default,
-or a custom path via `-o`/`--output`):
+save it as a PNG image in the system temp directory
+(`<provider>_<player>_<category>.png` by default, or a custom path via
+`-o`/`--output`):
 ```
 $ rating history pehanna7 -c --category rapid --graph
-Wrote chesscom_pehanna7_rapid.png
+Wrote /tmp/chesscom_pehanna7_rapid.png
 ```
 
 ## Chess.com

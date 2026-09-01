@@ -430,7 +430,9 @@ def test_parse_when_handles_date_and_timestamp_formats():
     assert rating._parse_when("2026-03-30 12:34:56") == datetime(2026, 3, 30, 12, 34, 56)
 
 
-def test_main_history_graph_writes_png_with_default_filename(monkeypatch, capsys, tmp_path):
+def test_main_history_graph_writes_png_to_tmpdir_by_default(monkeypatch, capsys, tmp_path):
+    import tempfile
+
     from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
 
     database = tmp_path / "ratings.db"
@@ -440,14 +442,16 @@ def test_main_history_graph_writes_png_with_default_filename(monkeypatch, capsys
     _FakeLoader.reset()
     _FakeLoader.config_overrides = {"DBFILE": str(database)}
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
-    monkeypatch.chdir(tmp_path)
     monkeypatch.setattr("sys.argv", ["rating", "history", "pehanna", "--lichess", "--graph"])
 
-    rating.main()
+    expected = Path(tempfile.gettempdir()) / "lichess_pehanna_standard.png"
+    try:
+        rating.main()
 
-    expected = tmp_path / "lichess_pehanna_standard.png"
-    assert capsys.readouterr().out.strip() == f"Wrote {expected.name}"
-    assert expected.is_file()
+        assert capsys.readouterr().out.strip() == f"Wrote {expected}"
+        assert expected.is_file()
+    finally:
+        expected.unlink(missing_ok=True)
 
 
 def test_main_history_graph_respects_output_option(monkeypatch, capsys, tmp_path):

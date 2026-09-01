@@ -7,7 +7,9 @@ rating adapters.
 
 import argparse
 import json
+import os
 import sys
+import tempfile
 from typing import Optional
 
 from rating.adapters.chesscom import ChessCom
@@ -175,7 +177,7 @@ def _build_history_parser() -> argparse.ArgumentParser:
         "-o",
         "--output",
         default=None,
-        help="Output path for --graph (default: <provider>_<player>_<category>.png)",
+        help="Output path for --graph (default: <tmpdir>/<provider>_<player>_<category>.png)",
     )
 
     group = parser.add_mutually_exclusive_group(required=True)
@@ -248,7 +250,9 @@ def _write_graph(
     fig.autofmt_xdate()
     fig.tight_layout()
 
-    path = output_path or f"{provider}_{player}_{category}.png"
+    path = output_path or os.path.join(
+        tempfile.gettempdir(), f"{provider}_{player}_{category}.png"
+    )
     fig.savefig(path)
     plt.close(fig)
     return path
