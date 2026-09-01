@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.0] - 2026-09-01
+- Added a `rating history` command to report a player's logged ratings over time.
+- Added a `--graph` option to plot rating history as a line chart, and made the line graph the default output mode.
+- Used the standard rating-selector flags for rating history instead of `--category`.
+- Defaulted rating history graph output to the system temp directory, popping it up in a window when a display is available.
+- Added a hover tooltip with date and rating on the history graph.
+- Added a nightly `fetch-all-providers` script for cron.
+
 ## [1.9.0] - 2026-08-31
 - Read the SQLite database path from `DBFILE` in the active `.env` file.
 - Synced README and docs with current CLI behavior and fixed the stale `ratings.db` path.
