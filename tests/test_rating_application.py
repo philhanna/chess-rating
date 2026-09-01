@@ -402,6 +402,27 @@ def test_main_history_prints_chronological_ratings(monkeypatch, capsys, tmp_path
     assert lines == ["2026-03-30\t1500", "2026-03-30\t1550"]
 
 
+def test_main_history_respects_rating_key_flag(monkeypatch, capsys, tmp_path):
+    from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
+
+    database = tmp_path / "ratings.db"
+    SQLiteProfileLogAdapter(database).log(
+        _make_profile(
+            provider="lichess",
+            player_id="pehanna",
+            ratings=build_ratings(standard=1500, blitz=1400),
+        )
+    )
+    _FakeLoader.reset()
+    _FakeLoader.config_overrides = {"DBFILE": str(database)}
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "history", "pehanna", "--lichess", "--blitz"])
+
+    rating.main()
+
+    assert capsys.readouterr().out.strip() == "2026-03-30\t1400"
+
+
 def test_main_history_uses_configured_default_player_when_omitted(monkeypatch, capsys, tmp_path):
     from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
 

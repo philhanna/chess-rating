@@ -60,6 +60,46 @@ def _to_pipe(profile: NormalizedRatingProfile, verbose: bool = False) -> str:
     return "\n".join(parts)
 
 
+def _add_rating_key_options(parser: argparse.ArgumentParser) -> None:
+    """Add the mutually exclusive --standard/--rapid/--blitz/--bullet/--correspondence flags."""
+    rating_group = parser.add_mutually_exclusive_group()
+    rating_group.add_argument(
+        "--standard",
+        dest="rating_key",
+        action="store_const",
+        const="standard",
+        help="Use the standard rating (default except for Chess.com)",
+    )
+    rating_group.add_argument(
+        "--rapid",
+        dest="rating_key",
+        action="store_const",
+        const="rapid",
+        help="Use the rapid rating (default for Chess.com)",
+    )
+    rating_group.add_argument(
+        "--blitz",
+        dest="rating_key",
+        action="store_const",
+        const="blitz",
+        help="Use the blitz rating",
+    )
+    rating_group.add_argument(
+        "--bullet",
+        dest="rating_key",
+        action="store_const",
+        const="bullet",
+        help="Use the bullet rating",
+    )
+    rating_group.add_argument(
+        "--correspondence",
+        dest="rating_key",
+        action="store_const",
+        const="correspondence",
+        help="Use the correspondence rating",
+    )
+
+
 def _build_fetch_parser() -> argparse.ArgumentParser:
     """Create the parser for normal rating-fetch commands."""
     parser = argparse.ArgumentParser(
@@ -70,7 +110,8 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
             "Special commands:\n"
             "  rating config\n"
             "    Print the active configuration file path and its contents.\n"
-            "  rating history [player] -u|-l|-c|-f [--category NAME] [-g|-j]\n"
+            "  rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|\n"
+            "    --bullet|--correspondence] [-g|-j]\n"
             "    Print a player's logged rating history for one category, or\n"
             "    plot it as a line graph PNG with --graph. Uses the\n"
             "    platform's configured default player if omitted."
@@ -86,42 +127,7 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
         help="Include additional metadata (e.g. source URL) in plain-text output",
     )
 
-    rating_group = parser.add_mutually_exclusive_group()
-    rating_group.add_argument(
-        "--standard",
-        dest="rating_key",
-        action="store_const",
-        const="standard",
-        help="Display the standard rating (default except for Chess.com)",
-    )
-    rating_group.add_argument(
-        "--rapid",
-        dest="rating_key",
-        action="store_const",
-        const="rapid",
-        help="Display the rapid rating (default for Chess.com)",
-    )
-    rating_group.add_argument(
-        "--blitz",
-        dest="rating_key",
-        action="store_const",
-        const="blitz",
-        help="Display the blitz rating",
-    )
-    rating_group.add_argument(
-        "--bullet",
-        dest="rating_key",
-        action="store_const",
-        const="bullet",
-        help="Display the bullet rating",
-    )
-    rating_group.add_argument(
-        "--correspondence",
-        dest="rating_key",
-        action="store_const",
-        const="correspondence",
-        help="Display the correspondence rating",
-    )
+    _add_rating_key_options(parser)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
     group.add_argument("-l", "--lichess", action="store_true", help="Use Lichess platform")
@@ -160,11 +166,7 @@ def _build_history_parser() -> argparse.ArgumentParser:
         help="The player's ID as stored in the database (default: the "
         "configured default user for the selected platform).",
     )
-    parser.add_argument(
-        "--category",
-        default=None,
-        help="Rating category to show (default: standard, or rapid for Chess.com)",
-    )
+    _add_rating_key_options(parser)
     output_group = parser.add_mutually_exclusive_group()
     output_group.add_argument("-j", "--json", action="store_true", help="Create JSON output")
     output_group.add_argument(
@@ -208,7 +210,7 @@ def _handle_history_command(
         provider = "uscf"
         player = args.player or config["USCF"]["defaultUser"]
 
-    category = args.category or ("rapid" if args.chess else "standard")
+    category = args.rating_key or ("rapid" if args.chess else "standard")
 
     if profile_log is None:
         profile_log = SQLiteProfileLogAdapter(config["DBFILE"])

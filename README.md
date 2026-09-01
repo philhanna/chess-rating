@@ -95,7 +95,8 @@ Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.c
 Special commands:
   rating config
     Print the active configuration file path and its contents.
-  rating history [player] -u|-l|-c|-f [--category NAME] [-g|-j]
+  rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|
+    --bullet|--correspondence] [-g|-j]
     Print a player's logged rating history for one category, or plot
     it as a line graph PNG with --graph. Uses the platform's
     configured default player if omitted.
@@ -130,14 +131,14 @@ snapshot.
 Run `rating config` to print the active configuration file's path and its
 contents.
 
-Run `rating history [player] -u|-l|-c|-f [--category NAME]` to print every
-logged snapshot's date and value for one player and rating category,
-oldest first. If `player` is omitted, the platform's configured default
-user is used, same as with a normal lookup. The category defaults to
-`standard` (`rapid` for Chess.com). Add `-j`/`--json` for JSON output.
-For example:
+Run `rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|--bullet|--correspondence]`
+to print every logged snapshot's date and value for one player and rating
+category, oldest first, using the same rating-selector flags as a normal
+lookup. If `player` is omitted, the platform's configured default user is
+used, same as with a normal lookup. The category defaults to `standard`
+(`rapid` for Chess.com). Add `-j`/`--json` for JSON output. For example:
 ```
-$ rating history pehanna7 -c --category rapid
+$ rating history pehanna7 -c --rapid
 2026-08-31 02:56:51	1116
 2026-08-31 14:46:44	1116
 2026-08-31 23:45:54	1122
@@ -151,7 +152,7 @@ it as a PNG image in the system temp directory
 `-o`/`--output`), and pop it up in a window if a display is available
 (it falls back to just saving the file when run headless, e.g. from cron):
 ```
-$ rating history pehanna7 -c --category rapid --graph
+$ rating history pehanna7 -c --rapid --graph
 Wrote /tmp/chesscom_pehanna7_rapid.png
 ```
 
