@@ -26,9 +26,8 @@ See [ports_and_adapters.md](ports_and_adapters.md). Relevant for this plan:
 - `RequestsHttpAdapter` uses the `requests` library and real TCP sockets.
 - `ConfigLoader` reads a `.env` file from a `platformdirs` OS config
   directory.
-- `SQLiteProfileLogAdapter` writes to a local file
-  (`~/.local/share/chess-rating/ratings.db`) using the stdlib `sqlite3`
-  module.
+- `SQLiteProfileLogAdapter` writes to the local file selected by `DBFILE` in
+  `.env` using the stdlib `sqlite3` module.
 - Provider adapters (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) hard-code
   their base URLs as f-strings and call `requests`/BeautifulSoup indirectly
   through `HttpPort`.

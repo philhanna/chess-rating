@@ -16,7 +16,11 @@ from rating.domain.models import (
 def _disable_profile_logging_from_cli_tests(monkeypatch):
     """Keep CLI unit tests from writing to the user's real cache directory."""
     logged_profiles = []
-    monkeypatch.setattr(rating, "log_profile", logged_profiles.append)
+    monkeypatch.setattr(
+        rating,
+        "log_profile",
+        lambda profile, database_path: logged_profiles.append((profile, database_path)),
+    )
     return logged_profiles
 
 
@@ -87,6 +91,7 @@ class _FakeLoader:
     def __init__(self, *_args, **_kwargs):
         self.filename = self.__class__.filename
         self.config = {
+            "DBFILE": "/configured/ratings.db",
             "USCF": {"defaultUser": "uscf-default"},
             "lichess": {"defaultUser": "lichess-default"},
             "Chess": {"defaultUser": "chess-default"},
@@ -146,7 +151,9 @@ def test_main_selects_uscf_and_uses_plain_output(
     output = capsys.readouterr().out.strip()
     assert created["player"] == "uscf-default"
     assert isinstance(created["http_client"], _FakeHttpClient)
-    assert _disable_profile_logging_from_cli_tests == [profile]
+    assert _disable_profile_logging_from_cli_tests == [
+        (profile, "/configured/ratings.db")
+    ]
     assert output == "1500"
 
 

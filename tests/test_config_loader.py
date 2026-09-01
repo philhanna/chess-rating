@@ -13,6 +13,7 @@ def test_load_config_from_file():
     loader = ConfigLoader(config_file)
     assert loader.config.get("lichess") is not None
     assert loader.config["lichess"]["defaultUser"] == "pehanna"
+    assert loader.config["DBFILE"] == "~/.local/share/chess-rating/ratings.db"
 
 
 def test_load_config_from_default_file(tmp_path, monkeypatch):
@@ -20,7 +21,7 @@ def test_load_config_from_default_file(tmp_path, monkeypatch):
     config_dir.mkdir()
     config_path = config_dir / ".env"
     config_path.write_text(
-        "CHESS_DEFAULT_USER=pehanna7\n",
+        "CHESS_DEFAULT_USER=pehanna7\nDBFILE=/tmp/ratings.db\n",
         encoding="utf-8",
     )
 
@@ -29,6 +30,7 @@ def test_load_config_from_default_file(tmp_path, monkeypatch):
     loader = ConfigLoader()
     assert loader.config.get("Chess") is not None
     assert loader.config["Chess"]["defaultUser"] == "pehanna7"
+    assert loader.config["DBFILE"] == "/tmp/ratings.db"
     assert Path(loader.filename) == config_path
 
 

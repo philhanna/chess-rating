@@ -11,9 +11,7 @@ from rating.ports.profile_log_port import ProfileLogPort
 class SQLiteProfileLogAdapter(ProfileLogPort):
     """Persist rating profiles as normalized, immutable snapshots."""
 
-    def __init__(self, database_path: Optional[Union[str, Path]] = None):
-        if database_path is None:
-            database_path = Path.home() / ".local" / "share" / "chess-rating" / "ratings.db"
+    def __init__(self, database_path: Union[str, Path]):
         self.database_path = Path(database_path).expanduser()
 
     def log(self, profile: NormalizedRatingProfile) -> None:

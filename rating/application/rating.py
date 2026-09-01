@@ -196,7 +196,7 @@ def main() -> None:
     if not profile:
         print(f'No ratings found for "{player}"')
     else:
-        log_profile(profile)
+        log_profile(profile, config["DBFILE"])
         if args.json:
             print(_to_json(profile))
         elif args.verbose:
@@ -208,11 +208,12 @@ def main() -> None:
 
 def log_profile(
     profile: NormalizedRatingProfile,
+    database_path: str,
     profile_log: Optional[ProfileLogPort] = None,
 ) -> None:
     """Record a fetched profile through the configured outbound logging port."""
     if profile_log is None:
-        profile_log = SQLiteProfileLogAdapter()
+        profile_log = SQLiteProfileLogAdapter(database_path)
     profile_log.log(profile)
 
 

@@ -39,6 +39,7 @@ LICHESS_DEFAULT_USER=pehanna
 USCF_DEFAULT_USER=12910923
 CHESS_DEFAULT_USER=pehanna7
 FIDE_DEFAULT_USER=30976537
+DBFILE=~/.local/share/chess-rating/ratings.db
 ```
 
 Install the package and its runtime dependencies with:
@@ -117,9 +118,10 @@ options:
 One source flag is required for rating lookups. For example, use `rating --uscf 12910923`
 rather than relying on an implicit default source.
 
-Every successful lookup is also recorded in
-`~/.local/share/chess-rating/ratings.db`. The SQLite database is created
-automatically and stores each lookup as a new historical snapshot.
+Every successful lookup is also recorded in the SQLite database selected by
+`DBFILE` in the active `.env` file. The database and its parent directory are
+created automatically, and each changed rating is stored as a new historical
+snapshot.
 
 Run `rating config` to print the active configuration file's path and its
 contents.

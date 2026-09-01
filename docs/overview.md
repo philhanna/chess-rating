@@ -22,7 +22,7 @@ Hexagonal (ports and adapters):
 - `rating/domain/models.py` — provider-independent domain models (`NormalizedRatingProfile`, `PlayerIdentity`, `RatingMetadata`) and helpers (`build_ratings`, `normalize_rating_value`, `to_snake_case`)
 - `rating/application/rating.py` — CLI composition root; wires up adapters via argparse
 - `rating/__main__.py` — thin wrapper that preserves `python -m rating`
-- `rating/config_loader.py` — loads the user's `.env` file from the platform-specific config directory, with `sample.env` as the example template
+- `rating/config_loader.py` — loads the user's default player identifiers and `DBFILE` from the platform-specific `.env`, with `sample.env` as the example template
 
 See `docs/ports_and_adapters.md` for the full dependency picture.
 

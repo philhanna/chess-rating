@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+- Read the SQLite database path from `DBFILE` in the active `.env` file.
 
 ## [1.8.0] - 2026-08-18
 - Added CLI rating type selectors.

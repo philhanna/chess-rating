@@ -31,8 +31,8 @@ That module is responsible for wiring the system together:
 - calls `fetch()` to obtain a `NormalizedRatingProfile`, catching
   `AmbiguousUSCFPlayerError` to print the candidate list when a USCF name
   search matches more than one member
-- creates `SQLiteProfileLogAdapter()` and records successful fetches in
-  `~/.local/share/chess-rating/ratings.db`
+- passes the configured `DBFILE` path to `SQLiteProfileLogAdapter` and records
+  successful fetches there
 - renders the result as JSON (`-j`), verbose pipe-delimited text (`-v`), or by
   default just the value at `profile.ratings[rating_key]`, where `rating_key`
   comes from the `--standard`/`--rapid`/`--blitz`/`--bullet`/`--correspondence`
@@ -83,7 +83,7 @@ ProfileLogPort
 SQLiteProfileLogAdapter
     |
     v
-~/.local/share/chess-rating/ratings.db
+DBFILE from .env
 ```
 
 ## Ports
@@ -222,7 +222,7 @@ Each provider adapter implements `RatingPort` and depends on an injected
 [`rating/adapters/sqlite_profile_log.py`](/home/saspeh/dev/python/chess-rating/rating/adapters/sqlite_profile_log.py)
 
 - implements `ProfileLogPort`
-- creates `~/.local/share/chess-rating/ratings.db` and its schema on first use
+- creates the database selected by `DBFILE` and its schema on first use
 - separates providers, players, rating categories, snapshots, and rating
   values into normalized tables
 - retains null ratings and changing display names in each historical snapshot
@@ -235,7 +235,7 @@ is not itself a port, but it is part of the outer application layer.
 Its job is to:
 
 - find the platform-specific `.env` location with `platformdirs`
-- load dotenv configuration for default per-provider users
+- load dotenv configuration for default per-provider users and the SQLite database path
 - expose both the resolved filename and parsed config object to the CLI
 
 This keeps config lookup separate from provider adapters and from the domain

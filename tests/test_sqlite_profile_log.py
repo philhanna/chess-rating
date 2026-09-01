@@ -37,7 +37,7 @@ def test_log_profile_delegates_to_profile_log_port():
             received.append(profile)
 
     profile = _profile()
-    log_profile(profile, FakeProfileLog())
+    log_profile(profile, "unused.db", FakeProfileLog())
 
     assert received == [profile]
 
@@ -128,13 +128,11 @@ def test_repeated_logs_skip_when_ratings_unchanged(tmp_path):
     ) == [("Old Name",)]
 
 
-def test_default_database_path_is_under_home_local_share(monkeypatch, tmp_path):
-    monkeypatch.setattr(Path, "home", classmethod(lambda cls: tmp_path))
+def test_database_path_expands_user_directory(monkeypatch, tmp_path):
+    monkeypatch.setenv("HOME", str(tmp_path))
 
-    adapter = SQLiteProfileLogAdapter()
+    adapter = SQLiteProfileLogAdapter("~/.data/ratings.db")
     adapter.log(_profile())
 
-    assert adapter.database_path == (
-        tmp_path / ".local" / "share" / "chess-rating" / "ratings.db"
-    )
+    assert adapter.database_path == tmp_path / ".data" / "ratings.db"
     assert adapter.database_path.is_file()

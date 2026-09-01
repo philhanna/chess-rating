@@ -58,6 +58,7 @@ class ConfigLoader:
 
         env = dotenv_values(self.filename)
         return {
+            "DBFILE": env.get("DBFILE"),
             "lichess": {"defaultUser": env.get("LICHESS_DEFAULT_USER")},
             "USCF": {"defaultUser": env.get("USCF_DEFAULT_USER")},
             "Chess": {"defaultUser": env.get("CHESS_DEFAULT_USER")},
