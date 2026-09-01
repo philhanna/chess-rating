@@ -96,9 +96,9 @@ Special commands:
   rating config
     Print the active configuration file path and its contents.
   rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|
-    --bullet|--correspondence] [-g|-j]
-    Print a player's logged rating history for one category, or plot
-    it as a line graph PNG with --graph. Uses the platform's
+    --bullet|--correspondence] [-j]
+    Plot a player's logged rating history as a line graph PNG,
+    or print it as JSON with --json. Uses the platform's
     configured default player if omitted.
 
 positional arguments:
@@ -109,11 +109,11 @@ options:
   -j, --json        Create JSON output
   -v, --verbose     Include additional metadata (e.g. source URL) in plain-
                     text output
-  --standard        Display the standard rating (default except for Chess.com)
-  --rapid           Display the rapid rating (default for Chess.com)
-  --blitz           Display the blitz rating
-  --bullet          Display the bullet rating
-  --correspondence  Display the correspondence rating
+  --standard        Use the standard rating (default except for Chess.com)
+  --rapid           Use the rapid rating (default for Chess.com)
+  --blitz           Use the blitz rating
+  --bullet          Use the bullet rating
+  --correspondence  Use the correspondence rating
   -u, --uscf        Use USCF platform
   -l, --lichess     Use Lichess platform
   -c, --chess       Use chess.com platform
@@ -132,28 +132,31 @@ Run `rating config` to print the active configuration file's path and its
 contents.
 
 Run `rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|--bullet|--correspondence]`
-to print every logged snapshot's date and value for one player and rating
-category, oldest first, using the same rating-selector flags as a normal
-lookup. If `player` is omitted, the platform's configured default user is
-used, same as with a normal lookup. The category defaults to `standard`
-(`rapid` for Chess.com). Add `-j`/`--json` for JSON output. For example:
+to plot every logged snapshot for one player and rating category, oldest
+first, as a line graph. It uses the same rating-selector flags as a normal
+lookup, and if `player` is omitted, the platform's configured default user
+is used too. The category defaults to `standard` (`rapid` for Chess.com).
+
+The graph is saved as a PNG in the system temp directory
+(`<provider>_<player>_<category>.png` by default, or a custom path via
+`-o`/`--output`), and pops up in a window if a display is available (it
+falls back to just saving the file when run headless, e.g. from cron):
 ```
 $ rating history pehanna7 -c --rapid
-2026-08-31 02:56:51	1116
-2026-08-31 14:46:44	1116
-2026-08-31 23:45:54	1122
-2026-09-01 00:54:41	1134
-2026-09-01 14:28:31	1144
+Wrote /tmp/chesscom_pehanna7_rapid.png
 ```
 
-Add `-g`/`--graph` instead to plot the same history as a line graph, save
-it as a PNG image in the system temp directory
-(`<provider>_<player>_<category>.png` by default, or a custom path via
-`-o`/`--output`), and pop it up in a window if a display is available
-(it falls back to just saving the file when run headless, e.g. from cron):
+Add `-j`/`--json` instead to print the raw snapshots as JSON rather than
+plotting them:
 ```
-$ rating history pehanna7 -c --rapid --graph
-Wrote /tmp/chesscom_pehanna7_rapid.png
+$ rating history pehanna7 -c --rapid --json
+[
+    {
+        "as_of": "2026-08-31 02:56:51",
+        "value": 1116
+    },
+    ...
+]
 ```
 
 ## Chess.com

@@ -111,10 +111,10 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
             "  rating config\n"
             "    Print the active configuration file path and its contents.\n"
             "  rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|\n"
-            "    --bullet|--correspondence] [-g|-j]\n"
-            "    Print a player's logged rating history for one category, or\n"
-            "    plot it as a line graph PNG with --graph. Uses the\n"
-            "    platform's configured default player if omitted."
+            "    --bullet|--correspondence] [-j]\n"
+            "    Plot a player's logged rating history as a line graph PNG,\n"
+            "    or print it as JSON with --json. Uses the platform's\n"
+            "    configured default player if omitted."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -157,7 +157,7 @@ def _build_history_parser() -> argparse.ArgumentParser:
     """Create the parser for the rating-history report command."""
     parser = argparse.ArgumentParser(
         prog="rating history",
-        description="Show a player's rating history over time for one category.",
+        description="Plot a player's rating history over time for one category.",
     )
     parser.add_argument(
         "player",
@@ -167,20 +167,18 @@ def _build_history_parser() -> argparse.ArgumentParser:
         "configured default user for the selected platform).",
     )
     _add_rating_key_options(parser)
-    output_group = parser.add_mutually_exclusive_group()
-    output_group.add_argument("-j", "--json", action="store_true", help="Create JSON output")
-    output_group.add_argument(
-        "-g",
-        "--graph",
+    parser.add_argument(
+        "-j",
+        "--json",
         action="store_true",
-        help="Plot the history as a line graph, save it as a PNG image, and "
-        "pop it up in a window if a display is available",
+        help="Create JSON output instead of plotting a graph",
     )
     parser.add_argument(
         "-o",
         "--output",
         default=None,
-        help="Output path for --graph (default: <tmpdir>/<provider>_<player>_<category>.png)",
+        help="Output path for the plotted graph "
+        "(default: <tmpdir>/<provider>_<player>_<category>.png)",
     )
 
     group = parser.add_mutually_exclusive_group(required=True)
@@ -194,7 +192,7 @@ def _build_history_parser() -> argparse.ArgumentParser:
 def _handle_history_command(
     argv: list[str], config: dict, profile_log: Optional[SQLiteProfileLogAdapter] = None
 ) -> None:
-    """Print a player's rating history for one category, then exit."""
+    """Plot or print a player's rating history for one category, then exit."""
     args = _build_history_parser().parse_args(argv)
 
     if args.lichess:
@@ -220,14 +218,11 @@ def _handle_history_command(
         print(f'No "{category}" history found for {provider} player "{player}"')
         return
 
-    if args.graph:
-        path = _write_graph(rows, provider, player, category, args.output)
-        print(f"Wrote {path}")
-    elif args.json:
+    if args.json:
         print(json.dumps([{"as_of": when, "value": value} for when, value in rows], indent=4))
     else:
-        for when, value in rows:
-            print(f"{when}\t{_format_rating_value(value)}")
+        path = _write_graph(rows, provider, player, category, args.output)
+        print(f"Wrote {path}")
 
 
 def _write_graph(

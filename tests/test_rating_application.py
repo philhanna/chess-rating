@@ -26,7 +26,7 @@ def _disable_profile_logging_from_cli_tests(monkeypatch):
 
 @pytest.fixture(autouse=True)
 def _no_graph_popups_in_tests(monkeypatch):
-    """Keep --graph tests from blocking on a real GUI window."""
+    """Keep history-graph tests from blocking on a real GUI window."""
     import matplotlib.pyplot as plt
 
     monkeypatch.setattr(rating, "_show_graph", plt.close)
@@ -378,7 +378,29 @@ def test_main_config_prints_filename_and_contents(monkeypatch, capsys, tmp_path)
     )
 
 
-def test_main_history_prints_chronological_ratings(monkeypatch, capsys, tmp_path):
+def _capture_write_graph(monkeypatch, fake_path="/fake/path.png"):
+    """Replace rating._write_graph with a fake that records its call and
+    returns ``fake_path``, so tests can assert on selection logic without
+    paying for real plotting."""
+    calls = []
+
+    def fake_write_graph(rows, provider, player, category, output_path):
+        calls.append(
+            {
+                "rows": rows,
+                "provider": provider,
+                "player": player,
+                "category": category,
+                "output_path": output_path,
+            }
+        )
+        return fake_path
+
+    monkeypatch.setattr(rating, "_write_graph", fake_write_graph)
+    return calls
+
+
+def test_main_history_plots_a_graph_by_default(monkeypatch, capsys, tmp_path):
     from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
 
     database = tmp_path / "ratings.db"
@@ -391,6 +413,7 @@ def test_main_history_prints_chronological_ratings(monkeypatch, capsys, tmp_path
             ratings=build_ratings(standard=1550, blitz=1400),
         )
     )
+    calls = _capture_write_graph(monkeypatch)
     _FakeLoader.reset()
     _FakeLoader.config_overrides = {"DBFILE": str(database)}
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
@@ -398,8 +421,12 @@ def test_main_history_prints_chronological_ratings(monkeypatch, capsys, tmp_path
 
     rating.main()
 
-    lines = capsys.readouterr().out.strip().splitlines()
-    assert lines == ["2026-03-30\t1500", "2026-03-30\t1550"]
+    assert capsys.readouterr().out.strip() == "Wrote /fake/path.png"
+    assert len(calls) == 1
+    assert calls[0]["provider"] == "lichess"
+    assert calls[0]["player"] == "pehanna"
+    assert calls[0]["category"] == "standard"
+    assert calls[0]["rows"] == [("2026-03-30", 1500), ("2026-03-30", 1550)]
 
 
 def test_main_history_respects_rating_key_flag(monkeypatch, capsys, tmp_path):
@@ -413,6 +440,7 @@ def test_main_history_respects_rating_key_flag(monkeypatch, capsys, tmp_path):
             ratings=build_ratings(standard=1500, blitz=1400),
         )
     )
+    calls = _capture_write_graph(monkeypatch)
     _FakeLoader.reset()
     _FakeLoader.config_overrides = {"DBFILE": str(database)}
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
@@ -420,7 +448,8 @@ def test_main_history_respects_rating_key_flag(monkeypatch, capsys, tmp_path):
 
     rating.main()
 
-    assert capsys.readouterr().out.strip() == "2026-03-30\t1400"
+    assert calls[0]["category"] == "blitz"
+    assert calls[0]["rows"] == [("2026-03-30", 1400)]
 
 
 def test_main_history_uses_configured_default_player_when_omitted(monkeypatch, capsys, tmp_path):
@@ -430,6 +459,7 @@ def test_main_history_uses_configured_default_player_when_omitted(monkeypatch, c
     SQLiteProfileLogAdapter(database).log(
         _make_profile(provider="lichess", player_id="lichess-default")
     )
+    calls = _capture_write_graph(monkeypatch)
     _FakeLoader.reset()
     _FakeLoader.config_overrides = {"DBFILE": str(database)}
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
@@ -437,7 +467,23 @@ def test_main_history_uses_configured_default_player_when_omitted(monkeypatch, c
 
     rating.main()
 
-    assert capsys.readouterr().out.strip() == "2026-03-30\t1500"
+    assert calls[0]["player"] == "lichess-default"
+
+
+def test_main_history_json_output(monkeypatch, capsys, tmp_path):
+    from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
+
+    database = tmp_path / "ratings.db"
+    SQLiteProfileLogAdapter(database).log(_make_profile(provider="lichess", player_id="pehanna"))
+    _FakeLoader.reset()
+    _FakeLoader.config_overrides = {"DBFILE": str(database)}
+    monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
+    monkeypatch.setattr("sys.argv", ["rating", "history", "pehanna", "--lichess", "--json"])
+
+    rating.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    assert payload == [{"as_of": "2026-03-30", "value": 1500}]
 
 
 def test_main_history_reports_when_nothing_is_logged(monkeypatch, capsys, tmp_path):
@@ -459,7 +505,7 @@ def test_parse_when_handles_date_and_timestamp_formats():
     assert rating._parse_when("2026-03-30 12:34:56") == datetime(2026, 3, 30, 12, 34, 56)
 
 
-def test_main_history_graph_writes_png_to_tmpdir_by_default(monkeypatch, capsys, tmp_path):
+def test_main_history_writes_png_to_tmpdir_by_default(monkeypatch, capsys, tmp_path):
     import tempfile
 
     from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
@@ -471,7 +517,7 @@ def test_main_history_graph_writes_png_to_tmpdir_by_default(monkeypatch, capsys,
     _FakeLoader.reset()
     _FakeLoader.config_overrides = {"DBFILE": str(database)}
     monkeypatch.setattr(rating, "ConfigLoader", _FakeLoader)
-    monkeypatch.setattr("sys.argv", ["rating", "history", "pehanna", "--lichess", "--graph"])
+    monkeypatch.setattr("sys.argv", ["rating", "history", "pehanna", "--lichess"])
 
     expected = Path(tempfile.gettempdir()) / "lichess_pehanna_standard.png"
     try:
@@ -483,7 +529,7 @@ def test_main_history_graph_writes_png_to_tmpdir_by_default(monkeypatch, capsys,
         expected.unlink(missing_ok=True)
 
 
-def test_main_history_graph_respects_output_option(monkeypatch, capsys, tmp_path):
+def test_main_history_respects_output_option(monkeypatch, capsys, tmp_path):
     from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
 
     database = tmp_path / "ratings.db"
@@ -496,7 +542,7 @@ def test_main_history_graph_respects_output_option(monkeypatch, capsys, tmp_path
     output_path = tmp_path / "custom.png"
     monkeypatch.setattr(
         "sys.argv",
-        ["rating", "history", "pehanna", "--lichess", "--graph", "-o", str(output_path)],
+        ["rating", "history", "pehanna", "--lichess", "-o", str(output_path)],
     )
 
     rating.main()
