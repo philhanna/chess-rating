@@ -39,7 +39,6 @@ LICHESS_DEFAULT_USER=pehanna
 USCF_DEFAULT_USER=12910923
 CHESS_DEFAULT_USER=pehanna7
 FIDE_DEFAULT_USER=30976537
-DBFILE=~/.local/share/chess-rating/ratings.db
 ```
 
 Install the package and its runtime dependencies with:
@@ -95,11 +94,6 @@ Fetches and prints a players's chess rating from USCF, FIDE, Lichess, or Chess.c
 Special commands:
   rating config
     Print the active configuration file path and its contents.
-  rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|
-    --bullet|--correspondence] [-j]
-    Plot a player's logged rating history as a line graph PNG,
-    or print it as JSON with --json. Uses the platform's
-    configured default player if omitted.
 
 positional arguments:
   player            The player's ID or name.
@@ -123,41 +117,8 @@ options:
 One source flag is required for rating lookups. For example, use `rating --uscf 12910923`
 rather than relying on an implicit default source.
 
-Every successful lookup is also recorded in the SQLite database selected by
-`DBFILE` in the active `.env` file. The database and its parent directory are
-created automatically, and each changed rating is stored as a new historical
-snapshot.
-
 Run `rating config` to print the active configuration file's path and its
 contents.
-
-Run `rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|--bullet|--correspondence]`
-to plot every logged snapshot for one player and rating category, oldest
-first, as a line graph. It uses the same rating-selector flags as a normal
-lookup, and if `player` is omitted, the platform's configured default user
-is used too. The category defaults to `standard` (`rapid` for Chess.com).
-
-The graph is saved as a PNG in the system temp directory
-(`<provider>_<player>_<category>.png` by default, or a custom path via
-`-o`/`--output`), and pops up in a window if a display is available (it
-falls back to just saving the file when run headless, e.g. from cron):
-```
-$ rating history pehanna7 -c --rapid
-Wrote /tmp/chesscom_pehanna7_rapid.png
-```
-
-Add `-j`/`--json` instead to print the raw snapshots as JSON rather than
-plotting them:
-```
-$ rating history pehanna7 -c --rapid --json
-[
-    {
-        "as_of": "2026-08-31 02:56:51",
-        "value": 1116
-    },
-    ...
-]
-```
 
 ## Chess.com
 Data from chess.com is obtained using this URL:

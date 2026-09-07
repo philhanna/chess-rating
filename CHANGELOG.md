@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+- Removed SQLite rating-history logging and the `rating history` command.
+- Removed the Matplotlib and NumPy runtime dependencies.
+- Removed the nightly history-collection script.
+
 ## [1.10.0] - 2026-09-01
 - Added a `rating history` command to report a player's logged ratings over time.
 - Added a `--graph` option to plot rating history as a line chart, and made the line graph the default output mode.

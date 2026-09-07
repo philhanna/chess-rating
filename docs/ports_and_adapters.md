@@ -13,8 +13,7 @@ The current flow is:
    resolves a non-numeric `player` argument to a member ID via a fuzzy-search
    lookup, raising `AmbiguousUSCFPlayerError` if more than one member matches)
 5. the rating adapter maps provider-specific data into a shared domain model
-6. the CLI records the normalized profile through `ProfileLogPort`
-7. the CLI prints the profile's primary rating by default, or renders the
+6. the CLI prints the profile's primary rating by default, or renders the
    full profile as pipe-delimited text (`-v`) or JSON (`-j`)
 
 ## Composition Root
@@ -31,8 +30,6 @@ That module is responsible for wiring the system together:
 - calls `fetch()` to obtain a `NormalizedRatingProfile`, catching
   `AmbiguousUSCFPlayerError` to print the candidate list when a USCF name
   search matches more than one member
-- passes the configured `DBFILE` path to `SQLiteProfileLogAdapter` and records
-  successful fetches there
 - renders the result as JSON (`-j`), verbose pipe-delimited text (`-v`), or by
   default just the value at `profile.ratings[rating_key]`, where `rating_key`
   comes from the `--standard`/`--rapid`/`--blitz`/`--bullet`/`--correspondence`
@@ -76,14 +73,6 @@ NormalizedRatingProfile
     +-- ratings
     +-- extras
     +-- RatingMetadata
-
-ProfileLogPort
-    ^
-    |
-SQLiteProfileLogAdapter
-    |
-    v
-DBFILE from .env
 ```
 
 ## Ports
@@ -129,22 +118,6 @@ Methods:
 Why it exists:
 The CLI can work with every provider through one shared interface even though
 each provider has a different endpoint and response format.
-
-### `ProfileLogPort`
-
-Defined in
-[`rating/ports/profile_log_port.py`](/home/saspeh/dev/python/chess-rating/rating/ports/profile_log_port.py).
-
-Purpose:
-Represents the application's outbound profile-history capability.
-
-Method:
-
-- `log(profile: NormalizedRatingProfile) -> None`
-
-Why it exists:
-The application can record successful fetches without depending on SQLite or
-on a particular storage layout.
 
 ## Domain Model
 
@@ -217,16 +190,6 @@ Each provider adapter implements `RatingPort` and depends on an injected
 - scrapes the page with BeautifulSoup
 - maps visible rating cards into `NormalizedRatingProfile`
 
-### Profile log adapter
-
-[`rating/adapters/sqlite_profile_log.py`](/home/saspeh/dev/python/chess-rating/rating/adapters/sqlite_profile_log.py)
-
-- implements `ProfileLogPort`
-- creates the database selected by `DBFILE` and its schema on first use
-- separates providers, players, rating categories, snapshots, and rating
-  values into normalized tables
-- retains null ratings and changing display names in each historical snapshot
-
 ## Config Loading
 
 [`rating/config_loader.py`](/home/saspeh/dev/python/chess-rating/rating/config_loader.py)
@@ -235,7 +198,7 @@ is not itself a port, but it is part of the outer application layer.
 Its job is to:
 
 - find the platform-specific `.env` location with `platformdirs`
-- load dotenv configuration for default per-provider users and the SQLite database path
+- load dotenv configuration for default per-provider users
 - expose both the resolved filename and parsed config object to the CLI
 
 This keeps config lookup separate from provider adapters and from the domain

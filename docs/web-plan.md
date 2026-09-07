@@ -22,12 +22,10 @@ See [ports_and_adapters.md](ports_and_adapters.md). Relevant for this plan:
 
 - `rating/application/rating.py` is the composition root: it parses `argv`,
   builds a `RequestsHttpAdapter`, picks a `RatingPort` adapter, calls
-  `fetch()`, logs the result through `SQLiteProfileLogAdapter`, and prints.
+  `fetch()`, and prints the result.
 - `RequestsHttpAdapter` uses the `requests` library and real TCP sockets.
 - `ConfigLoader` reads a `.env` file from a `platformdirs` OS config
   directory.
-- `SQLiteProfileLogAdapter` writes to the local file selected by `DBFILE` in
-  `.env` using the stdlib `sqlite3` module.
 - Provider adapters (`uscf.py`, `lichess.py`, `chesscom.py`, `fide.py`) hard-code
   their base URLs as f-strings and call `requests`/BeautifulSoup indirectly
   through `HttpPort`.
@@ -98,45 +96,17 @@ directly from the user (with browser `localStorage` handling "remember my
 last player id" if wanted, entirely in JS). `ConfigLoader` stays CLI-only —
 no Python-side change needed.
 
-### 4. `sqlite3` file persistence
-
-Pyodide ships `sqlite3` in the stdlib and it works out of the box, but the
-default filesystem (`MEMFS`) is wiped on every page reload. To persist
-`ratings.db` across sessions:
-
-1. Mount an `IDBFS` directory before running any Python that touches the
-   database (JS side, once per page load):
-   ```js
-   pyodide.FS.mkdir('/ratings');
-   pyodide.FS.mount(pyodide.FS.filesystems.IDBFS, {}, '/ratings');
-   await new Promise(r => pyodide.FS.syncfs(true, r)); // pull from IndexedDB
-   ```
-2. Point `SQLiteProfileLogAdapter(database_path=...)` at a path under
-   `/ratings` for the web build (the constructor already accepts an
-   explicit path — no code change needed there).
-3. After each write, flush back to IndexedDB from JS:
-   ```js
-   await new Promise(r => pyodide.FS.syncfs(false, r));
-   ```
-
-This is entirely a driving-adapter (JS) responsibility; `SQLiteProfileLogAdapter`
-itself is already storage-path-agnostic and needs no change.
-
-If this turns out to be more trouble than it's worth for a v1, logging can
-simply be skipped in the web build (call `app.fetch()` without
-`log_profile()`) and revisited later.
-
-### 5. Composition root is CLI-shaped
+### 4. Composition root is CLI-shaped
 
 `main()` in `rating/application/rating.py` mixes `argv` parsing, `print`,
 and orchestration together. The web front end needs the orchestration
-(pick adapter → fetch → log → normalize) without the `argparse`/`print`
+(pick adapter → fetch → normalize) without the `argparse`/`print`
 parts. Extract that middle step into a small, desktop-testable function:
 
 ```python
-def fetch_rating(provider: str, player: str, http_client: HttpPort,
-                  profile_log: Optional[ProfileLogPort] = None) -> NormalizedRatingProfile | None:
-    """Look up one player's rating and log it. Raises AmbiguousUSCFPlayerError as today."""
+def fetch_rating(provider: str, player: str,
+                 http_client: HttpPort) -> NormalizedRatingProfile | None:
+    """Look up one player's rating. Raises AmbiguousUSCFPlayerError as today."""
 ```
 
 `main()` calls this instead of duplicating the branch-and-fetch logic
@@ -146,21 +116,17 @@ keeps behavior identical between CLI and browser and is covered by the
 existing `tests/test_rating_application.py` pattern — no special web test
 needed.
 
-### 6. Dependency footprint
+### 5. Dependency footprint
 
 - `beautifulsoup4` — available as a prebuilt Pyodide package; load with
   `pyodide.loadPackage` or `micropip.install`. No change needed.
-- `numpy` — declared in `pyproject.toml` but **not imported anywhere** in
-  `rating/`. Drop it from `dependencies` regardless of the web work; it's
-  currently dead weight and would otherwise pull in a large wasm package for
-  nothing.
 - `python-dotenv` / `platformdirs` — only used by `ConfigLoader`, which per
   §3 stays CLI-only. Not needed in the web build's dependency set (they can
   stay in `pyproject.toml`; the web build simply doesn't install them).
 - `requests` — replaced at runtime by `pyodide-http`'s patched version
   inside the worker (§2); no source change.
 
-### 7. Packaging and hosting
+### 6. Packaging and hosting
 
 - Build a wheel of the existing package: `python -m build --wheel` (already
   pure Python, no compiled extensions).
@@ -174,22 +140,21 @@ needed.
 ## New/changed pieces, by side of the hexagon
 
 - **Driving adapter (new, JS/HTML, no tests):** `web/index.html`,
-  `web/worker.js` — loads Pyodide + `pyodide-http` + the wheel, mounts
-  IDBFS, wires a form to `fetch_rating()`, renders `profile.to_dict()` as
+  `web/worker.js` — loads Pyodide + `pyodide-http` + the wheel, wires a form
+  to `fetch_rating()`, renders `profile.to_dict()` as
   JSON, and catches `AmbiguousUSCFPlayerError` to show the candidate list
   (mirrors what `main()` already does for the CLI).
 - **Application layer (existing package, gets normal pytest coverage):**
-  extract `fetch_rating()` per §5; add overridable `base_url` params to the
+  extract `fetch_rating()` per §4; add overridable `base_url` params to the
   USCF/FIDE adapters per §1.
 - **Driven adapter (existing, unmodified or lightly configured):**
   `RequestsHttpAdapter` continues to be used as-is inside the worker thanks
-  to `pyodide-http`'s monkeypatch; `SQLiteProfileLogAdapter` continues to be
-  used as-is with a different `database_path`.
+  to `pyodide-http`'s monkeypatch.
 - **Not ported:** `ConfigLoader` (§3) and `rating config` subcommand — CLI-only.
 
 ## Suggested build order
 
-1. Extract `fetch_rating()` and add the `base_url` params (§1, §5) — pure
+1. Extract `fetch_rating()` and add the `base_url` params (§1, §4) — pure
    desktop change, covered by existing pytest patterns, ships independently
    of any browser work.
 2. Verify CORS for all four providers from a browser console. This decides
@@ -199,6 +164,4 @@ needed.
    work end-to-end through `pyodide-http`.
 4. If needed, stand up the CORS proxy for USCF/FIDE and point the web
    build's `base_url` at it.
-5. Add IDBFS-backed SQLite persistence (§4) — optional, can ship without it
-   first.
-6. Package and host the static site.
+5. Package and host the static site.

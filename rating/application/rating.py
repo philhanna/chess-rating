@@ -7,20 +7,15 @@ rating adapters.
 
 import argparse
 import json
-import os
 import sys
-import tempfile
-from typing import Optional
 
 from rating.adapters.chesscom import ChessCom
 from rating.adapters.fide import FIDE
 from rating.adapters.lichess import Lichess
 from rating.adapters.requests_http import RequestsHttpAdapter
-from rating.adapters.sqlite_profile_log import SQLiteProfileLogAdapter
 from rating.adapters.uscf import USCF, AmbiguousUSCFPlayerError
 from rating.config_loader import ConfigLoader
 from rating.domain.models import CANONICAL_RATING_KEYS, NormalizedRatingProfile
-from rating.ports.profile_log_port import ProfileLogPort
 
 
 def _format_rating_value(value) -> str:
@@ -109,12 +104,7 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
             "Lichess, or Chess.com.\n\n"
             "Special commands:\n"
             "  rating config\n"
-            "    Print the active configuration file path and its contents.\n"
-            "  rating history [player] -u|-l|-c|-f [--standard|--rapid|--blitz|\n"
-            "    --bullet|--correspondence] [-j]\n"
-            "    Plot a player's logged rating history as a line graph PNG,\n"
-            "    or print it as JSON with --json. Uses the platform's\n"
-            "    configured default player if omitted."
+            "    Print the active configuration file path and its contents."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -153,178 +143,6 @@ def _handle_config_command(argv: list[str], loader: ConfigLoader) -> None:
     print(contents, end="" if not contents or contents.endswith("\n") else "\n")
 
 
-def _build_history_parser() -> argparse.ArgumentParser:
-    """Create the parser for the rating-history report command."""
-    parser = argparse.ArgumentParser(
-        prog="rating history",
-        description="Plot a player's rating history over time for one category.",
-    )
-    parser.add_argument(
-        "player",
-        nargs="?",
-        default=None,
-        help="The player's ID as stored in the database (default: the "
-        "configured default user for the selected platform).",
-    )
-    _add_rating_key_options(parser)
-    parser.add_argument(
-        "-j",
-        "--json",
-        action="store_true",
-        help="Create JSON output instead of plotting a graph",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        default=None,
-        help="Output path for the plotted graph "
-        "(default: <tmpdir>/<provider>_<player>_<category>.png)",
-    )
-
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("-u", "--uscf", action="store_true", help="Use USCF platform")
-    group.add_argument("-l", "--lichess", action="store_true", help="Use Lichess platform")
-    group.add_argument("-c", "--chess", action="store_true", help="Use chess.com platform")
-    group.add_argument("-f", "--fide", action="store_true", help="Use FIDE platform")
-    return parser
-
-
-def _handle_history_command(
-    argv: list[str], config: dict, profile_log: Optional[SQLiteProfileLogAdapter] = None
-) -> None:
-    """Plot or print a player's rating history for one category, then exit."""
-    args = _build_history_parser().parse_args(argv)
-
-    if args.lichess:
-        provider = "lichess"
-        player = args.player or config["lichess"]["defaultUser"]
-    elif args.chess:
-        provider = "chesscom"
-        player = args.player or config["Chess"]["defaultUser"]
-    elif args.fide:
-        provider = "fide"
-        player = args.player or config["FIDE"]["defaultUser"]
-    else:
-        provider = "uscf"
-        player = args.player or config["USCF"]["defaultUser"]
-
-    category = args.rating_key or ("rapid" if args.chess else "standard")
-
-    if profile_log is None:
-        profile_log = SQLiteProfileLogAdapter(config["DBFILE"])
-    rows = profile_log.history(provider, player, category)
-
-    if not rows:
-        print(f'No "{category}" history found for {provider} player "{player}"')
-        return
-
-    if args.json:
-        print(json.dumps([{"as_of": when, "value": value} for when, value in rows], indent=4))
-    else:
-        path = _write_graph(rows, provider, player, category, args.output)
-        print(f"Wrote {path}")
-
-
-def _write_graph(
-    rows: list, provider: str, player: str, category: str, output_path: Optional[str]
-) -> str:
-    """Plot ``rows`` as a line graph and save it as a PNG. Returns the path.
-
-    Also pops up an interactive window when a GUI backend is available
-    (matplotlib falls back to the non-interactive Agg backend on its own in
-    headless environments like cron, so no window is shown there).
-    """
-    import matplotlib.dates as mdates
-    import matplotlib.pyplot as plt
-
-    dates = [_parse_when(when) for when, _ in rows]
-    values = [float("nan") if value is None else value for _, value in rows]
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    (line,) = ax.plot(dates, values, marker="o", linewidth=1.5, markersize=3)
-    ax.set_title(f"{provider} {category} rating history for {player}")
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Rating")
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-    ax.grid(True, alpha=0.3)
-    fig.autofmt_xdate()
-    fig.tight_layout()
-
-    path = output_path or os.path.join(
-        tempfile.gettempdir(), f"{provider}_{player}_{category}.png"
-    )
-    fig.savefig(path)
-    _show_graph(fig, ax, line, dates, values, category)
-    return path
-
-
-def _show_graph(fig, ax, line, dates: list, values: list, category: str) -> None:
-    """Display ``fig`` in a window with a hover tooltip, or just close it
-    under a headless backend."""
-    import matplotlib
-    import matplotlib.pyplot as plt
-
-    if matplotlib.get_backend().lower() == "agg":
-        plt.close(fig)
-    else:
-        _add_hover_tooltip(ax, line, dates, values, category)
-        plt.show()
-
-
-def _add_hover_tooltip(ax, line, dates: list, values: list, category: str) -> None:
-    """Show the date and rating value in a tooltip when hovering over a point."""
-    annotation = ax.annotate(
-        "",
-        xy=(0, 0),
-        xytext=(15, 15),
-        textcoords="offset points",
-        bbox={"boxstyle": "round", "fc": "w"},
-        arrowprops={"arrowstyle": "->"},
-    )
-    annotation.set_visible(False)
-
-    def hide_annotation():
-        if annotation.get_visible():
-            annotation.set_visible(False)
-            ax.figure.canvas.draw_idle()
-
-    def on_move(event):
-        if event.inaxes != ax:
-            hide_annotation()
-            return
-
-        contains, details = line.contains(event)
-        if not contains:
-            hide_annotation()
-            return
-
-        index = details["ind"][0]
-        value = values[index]
-        rating_text = "Not rated" if value != value else str(int(value))
-        annotation.xy = (line.get_xdata()[index], line.get_ydata()[index])
-        annotation.set_text(f"{dates[index]:%Y-%m-%d}\n{category}: {rating_text}")
-        annotation.set_visible(True)
-        ax.figure.canvas.draw_idle()
-
-    ax.figure.canvas.mpl_connect("motion_notify_event", on_move)
-
-
-def _parse_when(value: str):
-    """Parse a ``history()`` timestamp string into a ``datetime``.
-
-    Rows carry either a bare date (USCF's ``as_of``) or a full logged-at
-    timestamp, so both formats must be tried.
-    """
-    from datetime import datetime
-
-    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
-        try:
-            return datetime.strptime(value, fmt)
-        except ValueError:
-            continue
-    raise ValueError(f"Unrecognized timestamp format: {value!r}")
-
-
 def main() -> None:
     """Run the CLI and print either rating data or a not-found message.
 
@@ -341,11 +159,6 @@ def main() -> None:
     if argv and argv[0] == "config":
         loader = ConfigLoader()
         _handle_config_command(argv[1:], loader)
-        return
-
-    if argv and argv[0] == "history":
-        loader = ConfigLoader()
-        _handle_history_command(argv[1:], loader.config)
         return
 
     args = _build_fetch_parser().parse_args(argv)
@@ -385,7 +198,6 @@ def main() -> None:
     if not profile:
         print(f'No ratings found for "{player}"')
     else:
-        log_profile(profile, config["DBFILE"])
         if args.json:
             print(_to_json(profile))
         elif args.verbose:
@@ -393,17 +205,6 @@ def main() -> None:
         else:
             rating_key = args.rating_key or ("rapid" if args.chess else "standard")
             print(_format_rating_value(profile.ratings[rating_key]))
-
-
-def log_profile(
-    profile: NormalizedRatingProfile,
-    database_path: str,
-    profile_log: Optional[ProfileLogPort] = None,
-) -> None:
-    """Record a fetched profile through the configured outbound logging port."""
-    if profile_log is None:
-        profile_log = SQLiteProfileLogAdapter(database_path)
-    profile_log.log(profile)
 
 
 if __name__ == "__main__":
