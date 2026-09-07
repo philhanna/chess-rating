@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## [1.11.0] - 2026-09-06
+- Added cross-platform Docker support.
 - Removed SQLite rating-history logging and the `rating history` command.
 - Removed the Matplotlib and NumPy runtime dependencies.
 - Removed the nightly history-collection script.
