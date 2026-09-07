@@ -1,0 +1,16 @@
+.git
+.gitignore
+.coverage
+.pytest_cache
+.venv
+.vscode
+__pycache__
+*.egg-info
+*.py[cod]
+build
+dist
+docs
+tests
+sample.env
+with_coverage.*
+rating.bat

@@ -1,0 +1,10 @@
+services:
+  rating:
+    build:
+      context: .
+    image: chess-rating:local
+    volumes:
+      - type: bind
+        source: ${CHESS_RATING_CONFIG_FILE:-$HOME/.config/chess-rating/.env}
+        target: /home/rating/.config/chess-rating/.env
+        read_only: true

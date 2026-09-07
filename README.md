@@ -60,6 +60,68 @@ On Windows, if your shell has not refreshed its `PATH` yet, you can also run:
 .venv\Scripts\rating.exe --help
 ```
 
+## Running with Docker
+
+The container runs on Linux and on Windows with Docker Desktop using Linux
+containers. The Compose configuration mounts the host configuration file into
+the container as read-only; it never copies the file into the image.
+
+On Linux, the default host path is `~/.config/chess-rating/.env`, so you can
+build and run directly:
+
+```bash
+docker compose build
+docker compose run --rm rating -u
+docker compose run --rm rating -l --rapid some_lichess_user
+docker compose run --rm rating config
+```
+
+On Windows PowerShell, select the host configuration file before running the
+same Compose commands. Use the first path if you keep the file under `.config`,
+or the second for the normal Windows application-data location:
+
+```powershell
+$env:CHESS_RATING_CONFIG_FILE = "$HOME\.config\chess-rating\.env"
+# Or: $env:CHESS_RATING_CONFIG_FILE = "$env:APPDATA\chess-rating\.env"
+
+docker compose build
+docker compose run --rm rating -u
+docker compose run --rm rating -l --rapid some_lichess_user
+docker compose run --rm rating config
+```
+
+`CHESS_RATING_CONFIG_FILE` can also point to another absolute host path on
+either operating system. The variable only controls the bind-mount source; the
+container always sees the file at its Linux configuration path.
+
+Running the service without arguments displays the CLI help:
+
+```bash
+docker compose run --rm rating
+```
+
+Make sure the selected configuration file exists before starting the
+container. If `CHESS_RATING_CONFIG_FILE` is unset, Compose uses
+`${HOME}/.config/chess-rating/.env`.
+
+To run the image without Compose, build it and bind-mount the same file:
+
+```bash
+docker build -t chess-rating .
+docker run --rm \
+  --mount type=bind,src="${HOME}/.config/chess-rating/.env",dst=/home/rating/.config/chess-rating/.env,readonly \
+  chess-rating -u
+```
+
+The equivalent direct Docker command in Windows PowerShell is:
+
+```powershell
+docker build -t chess-rating .
+docker run --rm `
+  --mount "type=bind,src=$env:CHESS_RATING_CONFIG_FILE,dst=/home/rating/.config/chess-rating/.env,readonly" `
+  chess-rating -u
+```
+
 ## Running the CLI
 
 Use the installed console script:
