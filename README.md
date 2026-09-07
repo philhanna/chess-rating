@@ -75,6 +75,10 @@ docker compose run --rm rating -u
 docker compose run --rm rating -l --rapid some_lichess_user
 docker compose run --rm rating config
 ```
+from an arbitrary directory, you can run
+```bash
+docker compose -f /path/to/compose.yaml run --rm rating <options>
+```
 
 On Windows PowerShell, select the host configuration file before running the
 same Compose commands. Use the first path if you keep the file under `.config`,
