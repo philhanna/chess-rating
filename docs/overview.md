@@ -3,12 +3,12 @@
 ## Project Overview
 CLI tool that fetches and prints a player's chess rating from USCF, FIDE, Lichess, or Chess.com.
 
-Run: `rating [-u|-l|-c|-f] [player] [-j|-v]`
+Run: `rating [-u|-l|-c|-f] [player] [-j|-v|--verbose]`
 
-By default the CLI prints just the player's primary rating value. Pass `-v`
-for verbose pipe-delimited output (all ratings plus metadata) or `-j` for
-JSON. For USCF (`-u`), `player` may be a numeric member ID or a name; a name
-is resolved via fuzzy search, and multiple matches raise
+By default the CLI prints just the player's primary rating value. Pass `-j` or
+`-v` for JSON, or `--verbose` for verbose plain-text output (all ratings plus
+metadata). For USCF (`-u`), `player` may be a numeric member ID or a name; a
+name is resolved via fuzzy search, and multiple matches raise
 `AmbiguousUSCFPlayerError`, printing the candidate list instead of a rating.
 
 `rating config` prints the active configuration file path and its contents.

@@ -171,7 +171,8 @@ def test_main_uscf_verbose_renders_full_pipe(monkeypatch, capsys):
     assert "source_url=https://example.com/profile" in output
 
 
-def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
+@pytest.mark.parametrize("json_option", ["-j", "-v", "--json"])
+def test_main_selects_lichess_and_renders_json(monkeypatch, capsys, json_option):
     created = {}
     profile = _make_profile(provider="lichess", player_id="named-player", display_name="named-player")
     _FakeLoader.reset()
@@ -193,7 +194,7 @@ def test_main_selects_lichess_and_renders_json(monkeypatch, capsys):
     monkeypatch.setattr(rating, "USCF", object)
     monkeypatch.setattr(rating, "ChessCom", object)
     monkeypatch.setattr(rating, "FIDE", object)
-    monkeypatch.setattr("sys.argv", ["rating", "--lichess", "--json", "named-player"])
+    monkeypatch.setattr("sys.argv", ["rating", "--lichess", json_option, "named-player"])
 
     rating.main()
 

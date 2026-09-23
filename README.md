@@ -143,14 +143,15 @@ Choose the rating to print with `--standard`, `--rapid`, `--blitz`,
 to `--rapid`. If the selected rating is not available for the player or
 platform, the command prints `Not rated`.
 
-The rating selector applies to the normal single-value output. `--json` and
-`--verbose` continue to display the full normalized profile.
+The rating selector applies to the normal single-value output. `-j`, `-v`, and
+`--json` display the full normalized profile as JSON, while `--verbose`
+displays it as plain text with additional metadata.
 
 You can still run the module directly with `python -m rating`, but the packaged command is the preferred entry point. The main CLI implementation lives in `rating.application.rating`, while `rating.__main__` remains a thin compatibility wrapper.
 
 ## How to call
 ```
-usage: rating [-h] [-j] [-v]
+usage: rating [-h] [-j] [--verbose]
               [--standard | --rapid | --blitz | --bullet | --correspondence]
               (-u | -l | -c | -f)
               [player]
@@ -166,8 +167,8 @@ positional arguments:
 
 options:
   -h, --help        show this help message and exit
-  -j, --json        Create JSON output
-  -v, --verbose     Include additional metadata (e.g. source URL) in plain-
+  -j, -v, --json    Create JSON output
+  --verbose         Include additional metadata (e.g. source URL) in plain-
                     text output
   --standard        Use the standard rating (default except for Chess.com)
   --rapid           Use the rapid rating (default for Chess.com)

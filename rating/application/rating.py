@@ -109,9 +109,14 @@ def _build_fetch_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("player", nargs="?", default=None, help="The player's ID or name.")
-    parser.add_argument("-j", "--json", action="store_true", help="Create JSON output")
     parser.add_argument(
+        "-j",
         "-v",
+        "--json",
+        action="store_true",
+        help="Create JSON output",
+    )
+    parser.add_argument(
         "--verbose",
         action="store_true",
         help="Include additional metadata (e.g. source URL) in plain-text output",

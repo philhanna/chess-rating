@@ -14,7 +14,7 @@ The current flow is:
    lookup, raising `AmbiguousUSCFPlayerError` if more than one member matches)
 5. the rating adapter maps provider-specific data into a shared domain model
 6. the CLI prints the profile's primary rating by default, or renders the
-   full profile as pipe-delimited text (`-v`) or JSON (`-j`)
+   full profile as plain text (`--verbose`) or JSON (`-j`/`-v`)
 
 ## Composition Root
 
@@ -30,7 +30,7 @@ That module is responsible for wiring the system together:
 - calls `fetch()` to obtain a `NormalizedRatingProfile`, catching
   `AmbiguousUSCFPlayerError` to print the candidate list when a USCF name
   search matches more than one member
-- renders the result as JSON (`-j`), verbose pipe-delimited text (`-v`), or by
+- renders the result as JSON (`-j`/`-v`), verbose plain text (`--verbose`), or by
   default just the value at `profile.ratings[rating_key]`, where `rating_key`
   comes from the `--standard`/`--rapid`/`--blitz`/`--bullet`/`--correspondence`
   flags, defaulting to `standard` (`rapid` for Chess.com when no flag is given)
